@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 2.6//EN"
+        "http://tuckey.org/res/dtds/urlrewrite3.1.dtd">
+<urlrewrite>
+	<rule>
+		<from>^/static/(.*)$</from>
+		<to>/$1</to>
+	</rule>
+	<rule>
+		<from>^/(.*)$</from>
+		<to>/spring/$1</to>
+	</rule>
+</urlrewrite>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.4.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<global-method-security secured-annotations="enabled"
+		jsr250-annotations="enabled" />
+
+	<http auto-config="true">
+		<intercept-url pattern="/css/**" filters="none" />
+		<intercept-url pattern="/img/**" filters="none" />
+		<intercept-url pattern="/js/**" filters="none" />
+
+		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
+	</http>
+
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider user-service-ref="userDetailsService">
+			<password-encoder hash="plaintext" />
+		</authentication-provider>
+	</authentication-manager>
+</beans:beans>
