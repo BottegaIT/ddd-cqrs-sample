@@ -1,10 +1,10 @@
 package pl.com.bottega.erp.sagas;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import pl.com.bottega.ddd.sagas.LoadSaga;
@@ -15,10 +15,10 @@ import pl.com.bottega.erp.shipping.domain.events.OrderShippedEvent;
 import pl.com.bottega.erp.shipping.domain.events.ShipmentDeliveredEvent;
 
 @Component
-@Scope(BeanDefinition.SCOPE_SINGLETON)
 public class OrderShipmentStatusTrackerSagaLoader implements SagaLoader<OrderShipmentStatusTrackerSaga> {
 
-    private Set<OrderShipmentStatusTrackerData> data = new HashSet<OrderShipmentStatusTrackerData>();
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @LoadSaga
     public OrderShipmentStatusTrackerData loadSaga(OrderCreatedEvent event) {
@@ -41,26 +41,28 @@ public class OrderShipmentStatusTrackerSagaLoader implements SagaLoader<OrderShi
     }
 
     private OrderShipmentStatusTrackerData findByOrderId(Long orderId) {
-        for (OrderShipmentStatusTrackerData sagaData : data) {
-            if (orderId.equals(sagaData.getOrderId())) {
-                return sagaData;
-            }
+        Query query = entityManager.createQuery("from OrderShipmentStatusTrackerData where orderId=:orderId")
+                .setParameter("orderId", orderId);
+        try {
+            return (OrderShipmentStatusTrackerData) query.getSingleResult();
+        } catch (NoResultException e) {
+            return createNewSagaData();
         }
-        return addNewSagaData();
     }
 
     private OrderShipmentStatusTrackerData findByShipmentId(Long shipmentId) {
-        for (OrderShipmentStatusTrackerData sagaData : data) {
-            if (shipmentId.equals(sagaData.getShipmentId())) {
-                return sagaData;
-            }
+        Query query = entityManager.createQuery("from OrderShipmentStatusTrackerData where shipmentId=:shipmentId")
+                .setParameter("shipmentId", shipmentId);
+        try {
+            return (OrderShipmentStatusTrackerData) query.getSingleResult();
+        } catch (NoResultException e) {
+            return createNewSagaData();
         }
-        return addNewSagaData();
     }
 
-    private OrderShipmentStatusTrackerData addNewSagaData() {
+    private OrderShipmentStatusTrackerData createNewSagaData() {
         OrderShipmentStatusTrackerData sagaData = new OrderShipmentStatusTrackerData();
-        data.add(sagaData);
+        entityManager.persist(sagaData);
         return sagaData;
     }
 }

@@ -98,18 +98,21 @@
 			<version>2.2</version>
 			<scope>runtime</scope>
 		</dependency>
-
-		<!-- test scope -->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
-			<scope>test</scope>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>r09</version>
+		</dependency>
+		<!-- test scope -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

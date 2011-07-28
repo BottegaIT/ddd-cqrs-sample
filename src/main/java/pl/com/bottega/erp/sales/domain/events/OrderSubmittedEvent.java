@@ -10,14 +10,16 @@ import pl.com.bottega.ddd.domain.DomainEvent;
  * 
  */
 @SuppressWarnings("serial")
-public class OrderSubmittedEvent extends DomainEvent<Long> {
+public class OrderSubmittedEvent implements DomainEvent {
+
+    private final Long orderId;
 
     public OrderSubmittedEvent(Long orderId) {
-        super(orderId);
+        this.orderId = orderId;
     }
 
     public Long getOrderId() {
-        return getAggregateId();
+        return orderId;
     }
 
 }

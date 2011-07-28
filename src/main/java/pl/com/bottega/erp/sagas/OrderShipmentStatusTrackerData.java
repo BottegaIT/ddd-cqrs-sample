@@ -1,6 +1,15 @@
 package pl.com.bottega.erp.sagas;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class OrderShipmentStatusTrackerData {
+
+    @Id
+    @GeneratedValue
+    private Long id;
 
     private Long orderId;
 

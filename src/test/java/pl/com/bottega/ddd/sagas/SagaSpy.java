@@ -5,15 +5,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class SagaSpy {
 
-    private boolean methodCalled;
+    private int sagaCompletedCount;
+    private int anotherEventHandledCount;
+    private int sampleEventHandledCount;
 
-    public void callMethod() {
-        methodCalled = true;
-
+    public void sampleEventHandled() {
+        sampleEventHandledCount++;
     }
 
-    public boolean methodHasBeenCalled() {
-        return methodCalled;
+    public void anotherEventHandled() {
+        anotherEventHandledCount++;
     }
 
+    public void sagaCompleted() {
+        sagaCompletedCount++;
+    }
+
+    public int getSampleEventHandledCount() {
+        return sampleEventHandledCount;
+    }
+
+    public int getAnotherEventHandledCount() {
+        return anotherEventHandledCount;
+    }
+
+    public int getSagaCompletedCount() {
+        return sagaCompletedCount;
+    }
 }

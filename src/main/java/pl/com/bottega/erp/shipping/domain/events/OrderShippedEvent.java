@@ -2,17 +2,18 @@ package pl.com.bottega.erp.shipping.domain.events;
 
 import pl.com.bottega.ddd.domain.DomainEvent;
 
-public class OrderShippedEvent extends DomainEvent<Long> {
+public class OrderShippedEvent implements DomainEvent {
 
-    private Long shipmentId;
+    private final Long orderId;
+    private final Long shipmentId;
 
     public OrderShippedEvent(Long orderId, Long shipmentId) {
-        super(orderId);
+        this.orderId = orderId;
         this.shipmentId = shipmentId;
     }
 
     public Long getOrderId() {
-        return getAggregateId();
+        return orderId;
     }
 
     public Long getShipmentId() {

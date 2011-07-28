@@ -4,7 +4,6 @@
 package pl.com.bottega.erp.sales.application.events;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import pl.com.bottega.ddd.application.annotation.ApplicationEvent;
 
@@ -37,13 +36,7 @@ public class ProductAddedToOrderEvent implements Serializable{
 		return clientId;
 	}
 
-	/**
-	 * @return
-	 */
 	public int getQuantity() {		
 		return quantity;
 	}
-	
-	
-
 }

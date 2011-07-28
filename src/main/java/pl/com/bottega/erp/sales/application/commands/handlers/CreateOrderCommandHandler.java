@@ -26,6 +26,7 @@ import pl.com.bottega.erp.sales.domain.events.OrderCreatedEvent;
  * 
  * @author Rafał Jamróz
  */
+@Transactional
 @CommandHandlerAnnotation
 public class CreateOrderCommandHandler implements CommandHandler<CreateOrderCommand, Long> {
 

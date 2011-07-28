@@ -1,37 +1,34 @@
 package pl.com.bottega.ddd.sagas;
 
-import static org.junit.Assert.assertEquals;
-
 import javax.inject.Inject;
 
-import pl.com.bottega.erp.sales.domain.events.OrderCreatedEvent;
-import pl.com.bottega.erp.sales.domain.events.OrderSubmittedEvent;
-
-/**
- * TODO LATER saga with multiple aggregates, saga with injected current user.
- */
 @Saga
 public class SimpleSaga extends SagaInstance<SimpleSagaData> {
 
+    private final SagaSpy spy;
+
     @Inject
-    private SagaSpy spy;
+    public SimpleSaga(SagaSpy spy) {
+        this.spy = spy;
+    }
 
     @SagaAction
-    public void onOrderCreated(OrderCreatedEvent event) {
-        data.setCreatedOrderId(event.getOrderId());
+    public void onSampleDomainEvent(SampleDomainEvent event) {
+        data.setAggregateId(event.getAggregateId());
+        spy.sampleEventHandled();
         completeIfPossible();
     }
 
     @SagaAction
-    public void onOrderSubmited(OrderSubmittedEvent event) {
-        data.setSubmittedOrderId(event.getOrderId());
+    public void onAnotherDomainEvent(AnotherDomainEvent event) {
+        data.setData(event.getData());
+        spy.anotherEventHandled();
         completeIfPossible();
     }
 
     private void completeIfPossible() {
-        if (data.getCreatedOrderId() != null && data.getSubmittedOrderId() != null) {
-            assertEquals(data.getCreatedOrderId(), data.getSubmittedOrderId());
-            spy.callMethod();
+        if (data.getAggregateId() != null && data.getData() != null) {
+            spy.sagaCompleted();
             markAsCompleted();
         }
     }

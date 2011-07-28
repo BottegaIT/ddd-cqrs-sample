@@ -1,47 +1,56 @@
 package pl.com.bottega.ddd.sagas;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Component;
-
-import pl.com.bottega.erp.sales.domain.events.OrderCreatedEvent;
-import pl.com.bottega.erp.sales.domain.events.OrderSubmittedEvent;
 
 @Component
 public class SimpleSagaLoader implements SagaLoader<SimpleSaga> {
 
-    private Set<SimpleSagaData> data = new HashSet<SimpleSagaData>();
-
     /**
-     * TODO change return type to SimpleSagaData(?)
+     * TODO chagne to entity manager
      */
-    @LoadSaga
-    public SimpleSagaData load(OrderCreatedEvent event) {
-        return loadByOrderId(event.getOrderId());
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @LoadSaga
-    public SimpleSagaData load(OrderSubmittedEvent event) {
-        return loadByOrderId(event.getOrderId());
+    public SimpleSagaData load(SampleDomainEvent event) {
+        return loadByAggregateId(event.getAggregateId());
     }
 
-    private SimpleSagaData loadByOrderId(Long orderId) {
-        SimpleSagaData simpleSagaData = findByOrderId(orderId);
-        if (simpleSagaData == null) {
-            simpleSagaData = new SimpleSagaData();
-            data.add(simpleSagaData);
+    @LoadSaga
+    public SimpleSagaData load(AnotherDomainEvent event) {
+        return loadByAggregateId(event.getAggregateId());
+    }
+
+    private SimpleSagaData loadByAggregateId(Long orderId) {
+        try {
+            return getByAggregateId(orderId);
+        } catch (NoResultException e) {
+            SimpleSagaData simpleSagaData = new SimpleSagaData();
+            saveNewSagaData(simpleSagaData);
+            return simpleSagaData;
         }
-        return simpleSagaData;
     }
 
-    private SimpleSagaData findByOrderId(Long orderId) {
-        for (SimpleSagaData sagaData : data) {
-            if (orderId.equals(sagaData.getCreatedOrderId())) {
-                return sagaData;
-            }
-        }
-        return null;
+    private SimpleSagaData getByAggregateId(Long aggregateId) {
+        CriteriaBuilder qb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<SimpleSagaData> criteria = qb.createQuery(SimpleSagaData.class);
+        Root<SimpleSagaData> data = criteria.from(SimpleSagaData.class);
+        criteria.where(qb.equal(data.get(SimpleSagaData.AGGREGATE_ID), aggregateId));
+        TypedQuery<SimpleSagaData> query = entityManager.createQuery(criteria);
+        query.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+        return query.getSingleResult();
     }
 
+    private void saveNewSagaData(SimpleSagaData simpleSagaData) {
+        entityManager.persist(simpleSagaData);
+    }
 }

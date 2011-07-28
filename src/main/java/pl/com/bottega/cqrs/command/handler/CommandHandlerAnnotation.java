@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 @Component
-@Transactional
 //@Secured
 public @interface CommandHandlerAnnotation {
 

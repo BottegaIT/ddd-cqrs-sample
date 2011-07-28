@@ -11,17 +11,18 @@ import pl.com.bottega.erp.crm.domain.Customer.CustomerStatus;
  * 
  */
 @SuppressWarnings("serial")
-public class CustomerStatusChangedEvent extends DomainEvent<Long> {
+public class CustomerStatusChangedEvent implements DomainEvent {
 
-    private CustomerStatus status;
+    private final Long customerId;
+    private final CustomerStatus status;
 
     public CustomerStatusChangedEvent(Long customerId, CustomerStatus status) {
-        super(customerId);
+        this.customerId = customerId;
         this.status = status;
     }
 
     public Long getCustomerId() {
-        return getAggregateId();
+        return customerId;
     }
 
     public CustomerStatus getStatus() {

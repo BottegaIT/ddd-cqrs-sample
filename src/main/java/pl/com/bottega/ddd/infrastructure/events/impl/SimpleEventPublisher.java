@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import pl.com.bottega.ddd.application.ApplicationEventPublisher;
@@ -14,6 +16,8 @@ import pl.com.bottega.ddd.infrastructure.events.impl.handlers.EventHandler;
 
 @Component
 public class SimpleEventPublisher implements DomainEventPublisher, ApplicationEventPublisher {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleEventPublisher.class);
 
     private Set<EventHandler> eventHandlers = new HashSet<EventHandler>();
 
@@ -28,7 +32,7 @@ public class SimpleEventPublisher implements DomainEventPublisher, ApplicationEv
     }
 
     @Override
-    public void publish(DomainEvent<?> event) {
+    public void publish(DomainEvent event) {
         doPublish(event);
     }
 
@@ -38,8 +42,7 @@ public class SimpleEventPublisher implements DomainEventPublisher, ApplicationEv
                 try {
                     handler.handle(event);
                 } catch (Exception e) {
-                    // TODO react on exceptions
-                    System.out.println(e);
+                    LOGGER.error("event handling error", e);
                 }
             }
         }

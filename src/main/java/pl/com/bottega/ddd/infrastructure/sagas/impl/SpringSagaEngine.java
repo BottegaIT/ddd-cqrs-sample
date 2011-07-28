@@ -1,115 +1,100 @@
 package pl.com.bottega.ddd.infrastructure.sagas.impl;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.Collection;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import pl.com.bottega.ddd.domain.DomainEvent;
 import pl.com.bottega.ddd.infrastructure.events.impl.SimpleEventPublisher;
+import pl.com.bottega.ddd.infrastructure.events.impl.handlers.EventHandler;
 import pl.com.bottega.ddd.infrastructure.sagas.SagaEngine;
 import pl.com.bottega.ddd.sagas.LoadSaga;
 import pl.com.bottega.ddd.sagas.SagaAction;
 import pl.com.bottega.ddd.sagas.SagaInstance;
-import pl.com.bottega.ddd.sagas.SagaLoader;
 
+/**
+ * @author Rafał Jamróz
+ */
 @Component
-public class SpringSagaEngine implements SagaEngine, ApplicationListener<ContextRefreshedEvent> {
+public class SpringSagaEngine implements SagaEngine {
+
+    private final SagaRegistry sagaRegistry;
+
+    private final SimpleEventPublisher eventPublisher;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Inject
-    private ConfigurableListableBeanFactory beanFactory;
+    public SpringSagaEngine(SagaRegistry sagaRegistry, SimpleEventPublisher eventPublisher) {
+        this.sagaRegistry = sagaRegistry;
+        this.eventPublisher = eventPublisher;
+    }
 
-    @Inject
-    private SimpleEventPublisher eventPublisher;
+    @PostConstruct
+    public void registerEventHandler() {
+        eventPublisher.registerEventHandler(new SagaEventHandler(this));
+    }
 
-    // TODO convert to multimap
-    private Map<Class<?>, Set<String>> loadersInterestedIn;
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-    public void handleSagasEvent(DomainEvent<?> event) {
-        Set<String> loadersBeansNames = loadersInterestedIn.get(event.getClass());
-        for (String loaderBeanName : loadersBeansNames) {
-            SagaLoader loader = beanFactory.getBean(loaderBeanName, SagaLoader.class);
-            // TODO get saga type more reliably
-            Class<? extends SagaInstance> sagaType = (Class<? extends SagaInstance>) ((ParameterizedType) loader
-                    .getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0];
-            Method handler = findHandlerMethod(loader.getClass(), event.getClass());
-            try {
-                Object sagaData = (Object) handler.invoke(loader, event);
-                SagaInstance saga = beanFactory.getBean(sagaType);
-                saga.setData(sagaData);
-                Method eventHandler = findHandlerMethod(saga.getClass(), event.getClass());
-                eventHandler.invoke(saga, event);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+    @SuppressWarnings("rawtypes")
+    @Override
+    public void handleSagasEvent(Object event) {
+        Collection<SagaInstance> sagas = sagaRegistry.loadSagasForEvent(event);
+        for (SagaInstance saga : sagas) {
+            invokeSagaActionForEvent(saga, event);
+            if (saga.isCompleted()) {
+                removeSagaInstance(saga);
             }
         }
     }
 
-    @SuppressWarnings("rawtypes")
-	private Method findHandlerMethod(Class<?> clas, Class<? extends DomainEvent> eventType) {
-        for (Method method : clas.getMethods()) {
+    private void invokeSagaActionForEvent(SagaInstance saga, Object event) {
+        Method eventHandler = findHandlerMethodForEvent(saga, event);
+        try {
+            eventHandler.invoke(saga, event);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Method findHandlerMethodForEvent(SagaInstance saga, Object event) {
+        for (Method method : saga.getClass().getMethods()) {
             if (method.getAnnotation(SagaAction.class) != null || method.getAnnotation(LoadSaga.class) != null) {
-                if (method.getParameterTypes().length == 1 && method.getParameterTypes()[0].isAssignableFrom(eventType)) {
+                if (method.getParameterTypes().length == 1
+                        && method.getParameterTypes()[0].isAssignableFrom(event.getClass())) {
                     return method;
                 }
             }
         }
-        throw new RuntimeException("no method handling " + eventType);
+        throw new RuntimeException("no method handling " + event.getClass());
     }
 
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        if (loadersInterestedIn == null) {
-            loadersInterestedIn = new HashMap<Class<?>, Set<String>>();
-            registerSagaBeans();
-        }
+    private void removeSagaInstance(SagaInstance<?> saga) {
+        Object merged = entityManager.merge(saga.getData());
+        entityManager.remove(merged);
     }
 
-    private void registerSagaBeans() {
-        String[] loadersNames = beanFactory.getBeanNamesForType(SagaLoader.class);
-        for (String loaderBeanName : loadersNames) {
-            BeanDefinition loaderBeanDefinition = beanFactory.getBeanDefinition(loaderBeanName);
-            try {
-                registerLoader(Class.forName(loaderBeanDefinition.getBeanClassName()), loaderBeanName);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+    private static class SagaEventHandler implements EventHandler {
 
-    private void registerLoader(Class<?> loaderClass, String beanName) {
-        for (Method method : loaderClass.getMethods()) {
-            if (method.getAnnotation(SagaAction.class) != null || method.getAnnotation(LoadSaga.class) != null) {
-                Class<?>[] params = method.getParameterTypes();
-                if (params.length == 1) {
-                    registerInterestedIn(params[0], beanName);
-                } else {
-                    throw new RuntimeException("incorred event hadndler: " + method);
-                }
-            }
+        private final SagaEngine sagaEngine;
 
+        public SagaEventHandler(SagaEngine sagaEngine) {
+            this.sagaEngine = sagaEngine;
         }
-    }
 
-    private void registerInterestedIn(Class<?> eventType, String beanName) {
-        Set<String> set = loadersInterestedIn.get(eventType);
-        if (set == null) {
-            set = new HashSet<String>();
-            loadersInterestedIn.put(eventType, set);
+        @Override
+        public boolean canHandle(Object event) {
+            return true;
         }
-        set.add(beanName);
-        eventPublisher.registerEventHandler(new SagaEventHandler(this, eventType));
+
+        @Override
+        public void handle(Object event) {
+            sagaEngine.handleSagasEvent(event);
+        }
     }
 }
