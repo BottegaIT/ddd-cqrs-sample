@@ -1,6 +1,16 @@
 package pl.com.bottega.ddd.sagas;
 
-//TODO czy potrzebny? moze zamiec na adnotacje z paramtrem mowiacym co loaduje
-public interface SagaLoader<T extends SagaInstance> {
+/**
+ * @author Rafał Jamróz
+ * 
+ * @param <T>
+ *            saga type
+ * @param <D>
+ *            saga data type
+ */
+public interface SagaLoader<T extends SagaInstance<D>, D> {
 
+    void removeSaga(T saga);
+
+    D createNewSagaData();
 }

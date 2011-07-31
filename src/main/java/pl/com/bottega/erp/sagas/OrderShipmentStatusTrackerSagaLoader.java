@@ -1,7 +1,6 @@
 package pl.com.bottega.erp.sagas;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -15,7 +14,8 @@ import pl.com.bottega.erp.shipping.domain.events.OrderShippedEvent;
 import pl.com.bottega.erp.shipping.domain.events.ShipmentDeliveredEvent;
 
 @Component
-public class OrderShipmentStatusTrackerSagaLoader implements SagaLoader<OrderShipmentStatusTrackerSaga> {
+public class OrderShipmentStatusTrackerSagaLoader implements
+        SagaLoader<OrderShipmentStatusTrackerSaga, OrderShipmentStatusTrackerData> {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -43,24 +43,23 @@ public class OrderShipmentStatusTrackerSagaLoader implements SagaLoader<OrderShi
     private OrderShipmentStatusTrackerData findByOrderId(Long orderId) {
         Query query = entityManager.createQuery("from OrderShipmentStatusTrackerData where orderId=:orderId")
                 .setParameter("orderId", orderId);
-        try {
-            return (OrderShipmentStatusTrackerData) query.getSingleResult();
-        } catch (NoResultException e) {
-            return createNewSagaData();
-        }
+        return (OrderShipmentStatusTrackerData) query.getSingleResult();
     }
 
     private OrderShipmentStatusTrackerData findByShipmentId(Long shipmentId) {
         Query query = entityManager.createQuery("from OrderShipmentStatusTrackerData where shipmentId=:shipmentId")
                 .setParameter("shipmentId", shipmentId);
-        try {
-            return (OrderShipmentStatusTrackerData) query.getSingleResult();
-        } catch (NoResultException e) {
-            return createNewSagaData();
-        }
+        return (OrderShipmentStatusTrackerData) query.getSingleResult();
     }
 
-    private OrderShipmentStatusTrackerData createNewSagaData() {
+    @Override
+    public void removeSaga(OrderShipmentStatusTrackerSaga saga) {
+        OrderShipmentStatusTrackerData sagaData = entityManager.merge(saga.getData());
+        entityManager.remove(sagaData);
+    }
+
+    @Override
+    public OrderShipmentStatusTrackerData createNewSagaData() {
         OrderShipmentStatusTrackerData sagaData = new OrderShipmentStatusTrackerData();
         entityManager.persist(sagaData);
         return sagaData;

@@ -2,7 +2,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence">
 
-	<persistence-unit name="defaultPU"
+	<persistence-unit name="testPU"
 		transaction-type="RESOURCE_LOCAL">
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="create" />

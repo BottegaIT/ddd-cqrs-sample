@@ -1,56 +1,45 @@
 package pl.com.bottega.ddd.sagas;
 
-import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class SimpleSagaLoader implements SagaLoader<SimpleSaga> {
+public class SimpleSagaLoader implements SagaLoader<SimpleSaga, SimpleSagaData> {
 
-    /**
-     * TODO chagne to entity manager
-     */
-    @PersistenceContext
-    private EntityManager entityManager;
+    private Set<SimpleSagaData> data = new HashSet<SimpleSagaData>();
 
     @LoadSaga
     public SimpleSagaData load(SampleDomainEvent event) {
-        return loadByAggregateId(event.getAggregateId());
+        return findByAggregateId(event.getAggregateId());
     }
 
     @LoadSaga
     public SimpleSagaData load(AnotherDomainEvent event) {
-        return loadByAggregateId(event.getAggregateId());
+        return findByAggregateId(event.getAggregateId());
     }
 
-    private SimpleSagaData loadByAggregateId(Long orderId) {
-        try {
-            return getByAggregateId(orderId);
-        } catch (NoResultException e) {
-            SimpleSagaData simpleSagaData = new SimpleSagaData();
-            saveNewSagaData(simpleSagaData);
-            return simpleSagaData;
+    private SimpleSagaData findByAggregateId(Long aggregateId) {
+        for (SimpleSagaData sagaData : data) {
+            if (aggregateId.equals(sagaData.getAggregateId())) {
+                return sagaData;
+            }
         }
+        return null;
     }
 
-    private SimpleSagaData getByAggregateId(Long aggregateId) {
-        CriteriaBuilder qb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<SimpleSagaData> criteria = qb.createQuery(SimpleSagaData.class);
-        Root<SimpleSagaData> data = criteria.from(SimpleSagaData.class);
-        criteria.where(qb.equal(data.get(SimpleSagaData.AGGREGATE_ID), aggregateId));
-        TypedQuery<SimpleSagaData> query = entityManager.createQuery(criteria);
-        query.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-        return query.getSingleResult();
+    @Override
+    public void removeSaga(SimpleSaga saga) {
+        SimpleSagaData foundData = findByAggregateId(saga.getData().getAggregateId());
+        data.remove(foundData);
     }
 
-    private void saveNewSagaData(SimpleSagaData simpleSagaData) {
-        entityManager.persist(simpleSagaData);
+    @Override
+    public SimpleSagaData createNewSagaData() {
+        SimpleSagaData newSagaData = new SimpleSagaData();
+        data.add(newSagaData);
+        return newSagaData;
     }
+
 }
