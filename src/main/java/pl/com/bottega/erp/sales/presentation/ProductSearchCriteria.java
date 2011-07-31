@@ -13,29 +13,32 @@ public class ProductSearchCriteria {
 
     private String description;
 
-    private String maxPrice;
+    //Good enough because value is not used in calculations
+    private Double maxPrice;
 
+    public ProductSearchCriteria maxPrice(Double maxPrice) {
+        this.maxPrice = maxPrice;
+        return this;
+    }
+    
+    public ProductSearchCriteria containsText(String text){    	
+    	this.name = text;
+    	this.description = text;
+    	return this;
+    }
+    
+    
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
-    public String getMaxPrice() {
+    public Double getMaxPrice() {
         return maxPrice;
     }
 
-    public void setMaxPrice(String maxPrice) {
-        this.maxPrice = maxPrice;
-    }
 }

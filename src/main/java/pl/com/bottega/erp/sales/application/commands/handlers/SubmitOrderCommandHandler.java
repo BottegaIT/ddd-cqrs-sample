@@ -28,6 +28,7 @@ import pl.com.bottega.erp.sales.domain.specification.order.ItemsCountSpecificati
 import pl.com.bottega.erp.sales.domain.specification.order.RestrictedProductsSpecification;
 import pl.com.bottega.erp.sales.domain.specification.order.TotalCostSpecification;
 
+@Transactional
 @CommandHandlerAnnotation
 public class SubmitOrderCommandHandler implements CommandHandler<SubmitOrderCommand, Void> {
 
