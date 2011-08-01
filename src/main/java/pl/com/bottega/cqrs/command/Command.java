@@ -28,7 +28,7 @@ public @interface Command {
     boolean unique() default false;
 
     /**
-     * If unique is true than this property may specify maximum timeout before same command can be executed
+     * If unique is true than this property may specify maximum timeout in miliseconds before same command can be executed
      * @return
      */
     long uniqueStorageTimeout() default 0L;

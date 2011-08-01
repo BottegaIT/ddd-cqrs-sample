@@ -1,6 +1,6 @@
 package pl.com.bottega.erp.sales.application.commands.handlers;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 
 import pl.com.bottega.cqrs.command.handler.CommandHandler;
 import pl.com.bottega.cqrs.command.handler.CommandHandlerAnnotation;
@@ -25,22 +25,22 @@ import pl.com.bottega.erp.sales.domain.errors.OrderCreationException;
 @CommandHandlerAnnotation
 public class CreateOrderCommandHandler implements CommandHandler<CreateOrderCommand, Long> {
 
-    @Resource
+    @Inject
     private OrderFactory orderFactory;
 
-    @Resource
+    @Inject
     private OrderRepository orderRepository;
 
-    @Resource
+    @Inject
     private ProductRepository productRepository;
 
-    @Resource
+    @Inject
     private ClientRepository clientRepository;
 
-    @Resource
+    @Inject
     private SystemUser systemUser;
 
-    @Resource
+    @Inject
     private ApplicationEventPublisher applicationEventPublisher;
 
     @Override

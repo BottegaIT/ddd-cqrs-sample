@@ -5,6 +5,8 @@ package pl.com.bottega.erp.sales.application.services;
 
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import pl.com.bottega.ddd.application.ApplicationEventPublisher;
 import pl.com.bottega.ddd.application.SystemUser;
 import pl.com.bottega.ddd.application.annotation.ApplicationService;
@@ -38,19 +40,25 @@ import pl.com.bottega.erp.sales.domain.specification.order.TotalCostSpecificatio
 @ApplicationService
 public class PurchaseApplicationService {
 
-    // @Autowired
+    @Inject
     private OrderRepository orderRepository;
 
+    @Inject
     private OrderFactory orderFactory;
 
+    @Inject
     private ProductRepository productRepository;
 
+    @Inject
     private InvoiceRepository invoiceRepository;
 
+    @Inject
     private InvoicingService invoicingService;
 
+    @Inject
     private SystemUser systemUser;
 
+    @Inject
     private ApplicationEventPublisher eventPublisher;
 
     /**

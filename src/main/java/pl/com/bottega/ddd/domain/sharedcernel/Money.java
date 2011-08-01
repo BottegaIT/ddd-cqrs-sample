@@ -58,12 +58,12 @@ public class Money implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        // jezeli waluty si� zgadzaj�
-
-        // jezeli daty si� zgadzaj� lub obie s� null
-
-        // TODO Auto-generated method stub
-        return super.equals(obj);
+        if (obj instanceof Money) {
+			Money money = (Money) obj;
+			return value.equals(money.value) && currencyCode.equals(money.currencyCode);
+		}
+        
+        return false;
     }
 
     public Money multiplyBy(double multiplier) {
