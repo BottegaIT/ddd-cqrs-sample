@@ -2,18 +2,12 @@ package pl.com.bottega.erp.shipping.application.commands.handlers;
 
 import javax.inject.Inject;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import pl.com.bottega.cqrs.command.handler.CommandHandler;
 import pl.com.bottega.cqrs.command.handler.CommandHandlerAnnotation;
 import pl.com.bottega.ddd.domain.DomainEventPublisher;
 import pl.com.bottega.erp.shipping.application.commands.ReceiveShipmentCommand;
 import pl.com.bottega.erp.shipping.domain.events.ShipmentDeliveredEvent;
 
-/**
- * TODO CommandHandler method??
- */
-@Transactional
 @CommandHandlerAnnotation
 public class ReceiveShipmentCommandHandler implements CommandHandler<ReceiveShipmentCommand, Void> {
 

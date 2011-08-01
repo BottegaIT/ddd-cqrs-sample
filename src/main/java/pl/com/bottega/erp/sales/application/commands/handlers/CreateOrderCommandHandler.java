@@ -2,13 +2,10 @@ package pl.com.bottega.erp.sales.application.commands.handlers;
 
 import javax.annotation.Resource;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import pl.com.bottega.cqrs.command.handler.CommandHandler;
 import pl.com.bottega.cqrs.command.handler.CommandHandlerAnnotation;
 import pl.com.bottega.ddd.application.ApplicationEventPublisher;
 import pl.com.bottega.ddd.application.SystemUser;
-import pl.com.bottega.ddd.domain.DomainEventPublisher;
 import pl.com.bottega.erp.sales.application.commands.CreateOrderCommand;
 import pl.com.bottega.erp.sales.application.events.ProductAddedToOrderEvent;
 import pl.com.bottega.erp.sales.application.services.PurchaseApplicationService;
@@ -19,14 +16,12 @@ import pl.com.bottega.erp.sales.domain.OrderFactory;
 import pl.com.bottega.erp.sales.domain.OrderRepository;
 import pl.com.bottega.erp.sales.domain.ProductRepository;
 import pl.com.bottega.erp.sales.domain.errors.OrderCreationException;
-import pl.com.bottega.erp.sales.domain.events.OrderCreatedEvent;
 
 /**
  * @see PurchaseApplicationService
  * 
  * @author Rafał Jamróz
  */
-@Transactional
 @CommandHandlerAnnotation
 public class CreateOrderCommandHandler implements CommandHandler<CreateOrderCommand, Long> {
 
@@ -49,7 +44,6 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
     private ApplicationEventPublisher applicationEventPublisher;
 
     @Override
-    @Transactional
     public Long handle(CreateOrderCommand command) {
         Client currentClient = clientRepository.load(systemUser.getUserId());
         try {
@@ -58,7 +52,7 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
                 order.addProduct(productRepository.load(productId), 1);
                 applicationEventPublisher.publish(new ProductAddedToOrderEvent(productId, systemUser.getUserId(), 1));
             }
-            orderRepository.persist(order);           
+            orderRepository.persist(order);
             return order.getId();
         } catch (OrderCreationException e) {
             throw new RuntimeException(e);

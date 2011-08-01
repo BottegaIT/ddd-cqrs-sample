@@ -4,9 +4,6 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import pl.com.bottega.cqrs.command.handler.CommandHandler;
 import pl.com.bottega.cqrs.command.handler.CommandHandlerAnnotation;
 import pl.com.bottega.ddd.application.SystemUser;
@@ -28,7 +25,6 @@ import pl.com.bottega.erp.sales.domain.specification.order.ItemsCountSpecificati
 import pl.com.bottega.erp.sales.domain.specification.order.RestrictedProductsSpecification;
 import pl.com.bottega.erp.sales.domain.specification.order.TotalCostSpecification;
 
-@Transactional
 @CommandHandlerAnnotation
 public class SubmitOrderCommandHandler implements CommandHandler<SubmitOrderCommand, Void> {
 
@@ -45,7 +41,6 @@ public class SubmitOrderCommandHandler implements CommandHandler<SubmitOrderComm
 	private SystemUser systemUser;
 
     @Override
-    @Transactional
     public Void handle(SubmitOrderCommand command) {
         Order order = orderRepository.load(command.getOrderId());
         
