@@ -5,6 +5,8 @@
 <head>
 </head>
 <body>
+	<jsp:include page="../includes/menu.jsp" />
+	
 	<c:forEach items="${orders}" var="order">
 		submit date:
 		<c:out value="${order.submitDate}" />

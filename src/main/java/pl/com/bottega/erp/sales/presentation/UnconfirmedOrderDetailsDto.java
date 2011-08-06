@@ -1,10 +1,8 @@
 package pl.com.bottega.erp.sales.presentation;
 
-import java.util.Date;
 import java.util.List;
 
 import pl.com.bottega.ddd.domain.sharedcernel.Money;
-import pl.com.bottega.erp.sales.domain.Order.OrderStatus;
 import pl.com.bottega.erp.sales.domain.OrderedProduct;
 
 /**
@@ -12,22 +10,21 @@ import pl.com.bottega.erp.sales.domain.OrderedProduct;
  * 
  * @author Rafał Jamróz
  */
-public class ClientOrderDetailsDto {
+public class UnconfirmedOrderDetailsDto {
     private Long orderId;
     private Money totalCost;
-    private Date submitDate;
-    private OrderStatus status;
+
+    /**
+     * TODO change to a type from presentation model
+     */
     private List<OrderedProduct> orderedProducts;
 
-    public ClientOrderDetailsDto() {
+    public UnconfirmedOrderDetailsDto() {
     }
-    
-    public ClientOrderDetailsDto(Long orderId, Money totalCost, Date submitDate, OrderStatus status,
-            List<OrderedProduct> orderedProducts) {
+
+    public UnconfirmedOrderDetailsDto(Long orderId, Money totalCost, List<OrderedProduct> orderedProducts) {
         this.orderId = orderId;
         this.totalCost = totalCost;
-        this.submitDate = submitDate;
-        this.status = status;
         this.orderedProducts = orderedProducts;
     }
 
@@ -45,22 +42,6 @@ public class ClientOrderDetailsDto {
 
     public void setTotalCost(Money totalCost) {
         this.totalCost = totalCost;
-    }
-
-    public Date getSubmitDate() {
-        return submitDate;
-    }
-
-    public void setSubmitDate(Date submitDate) {
-        this.submitDate = submitDate;
-    }
-
-    public OrderStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(OrderStatus status) {
-        this.status = status;
     }
 
     public List<OrderedProduct> getOrderedProducts() {

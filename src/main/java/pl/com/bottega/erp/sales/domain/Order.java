@@ -24,13 +24,10 @@ import pl.com.bottega.erp.sales.domain.errors.OrderOperationException;
 import pl.com.bottega.erp.sales.domain.events.OrderSubmittedEvent;
 
 /**
- * 
  * @author Slawek
- * 
  */
 @Entity
 @Table(name = "Orders")
-// table name ORDER is not valid in HSQL dialect
 @DomainAggregateRoot
 public class Order extends BaseAggregateRoot {
 
@@ -130,7 +127,7 @@ public class Order extends BaseAggregateRoot {
         status = OrderStatus.SUBMITTED;
         submitDate = new Timestamp(System.currentTimeMillis());
 
-        eventPubslisher.publish(new OrderSubmittedEvent(getId()));
+        eventPublisher.publish(new OrderSubmittedEvent(getId()));
     }
 
     private void checkIfDraft() {
@@ -161,7 +158,7 @@ public class Order extends BaseAggregateRoot {
 
     private OrderLine find(Product product) {
         for (OrderLine line : items) {
-            if (product.getId().equals(line.getId()))
+            if (product.getId().equals(line.getProduct().getId()))
                 return line;
         }
 

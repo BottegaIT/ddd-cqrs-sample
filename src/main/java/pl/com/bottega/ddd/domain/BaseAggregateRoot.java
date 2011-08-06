@@ -19,7 +19,7 @@ public abstract class BaseAggregateRoot extends BaseEntity {
      * Event Publisher is injected by Factory/Repo
      */
     @Transient
-    protected DomainEventPublisher eventPubslisher;
+    protected DomainEventPublisher eventPublisher;
 
     /**
      * Sample technique of injecting Event Publisher into the Aggregate.<br>
@@ -28,8 +28,8 @@ public abstract class BaseAggregateRoot extends BaseEntity {
      * Visible for package (Factory/Repository)
      */
     public void setEventPubslisher(DomainEventPublisher domainEventPubslisher) {
-        if (this.eventPubslisher != null)
+        if (this.eventPublisher != null)
             throw new IllegalStateException("Publisher is already set! Probably You have logical error in code");
-        this.eventPubslisher = domainEventPubslisher;
+        this.eventPublisher = domainEventPubslisher;
     }
 }

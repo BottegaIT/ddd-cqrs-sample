@@ -10,10 +10,9 @@ import pl.com.bottega.ddd.domain.annotations.DomainRepository;
 @DomainRepository
 public interface OrderRepository {
 
-    public void persist(Order order);
+    void persist(Order order);
 
-    public Order save(Order order);
+    Order save(Order order);
 
-    public Order load(Long orderId);
-
+    Order load(Long orderId);
 }

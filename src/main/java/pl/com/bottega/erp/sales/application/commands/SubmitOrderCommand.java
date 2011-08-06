@@ -15,9 +15,6 @@ public class SubmitOrderCommand {
         return orderId;
     }
     
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
     	if (obj instanceof SubmitOrderCommand) {
@@ -27,10 +24,7 @@ public class SubmitOrderCommand {
     	
     	return false;
     }
-    
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
+
     @Override
     public int hashCode() {
     	return orderId.hashCode();

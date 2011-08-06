@@ -6,10 +6,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -24,8 +22,6 @@ import pl.com.bottega.erp.sales.domain.Product.ProductType;
  * @deprecated development only
  */
 @Component
-@Scope(value = BeanDefinition.SCOPE_SINGLETON)
-@Lazy(false)
 public class AddSampleProductsOnStartup {
 
     @PersistenceContext

@@ -32,7 +32,7 @@ public class Money implements Serializable {
     public Money(BigDecimal value, Currency currency) {
         this(value, currency.getCurrencyCode());
     }
-    
+
     private Money(BigDecimal value, String currencyCode) {
         this.value = value;
         this.currencyCode = currencyCode;
@@ -45,12 +45,11 @@ public class Money implements Serializable {
     public Money(double value, Currency currency) {
         this(value, currency.getCurrencyCode());
     }
-    
+
     private Money(double value, String currencyCode) {
         this.value = new BigDecimal(value);
         this.currencyCode = currencyCode;
     }
-
 
     public Money(double value) {
         this(value, DEFAULT_CURRENCY);
@@ -59,10 +58,10 @@ public class Money implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Money) {
-			Money money = (Money) obj;
-			return value.equals(money.value) && currencyCode.equals(money.currencyCode);
-		}
-        
+            Money money = (Money) obj;
+            return value.equals(money.value) && currencyCode.equals(money.currencyCode);
+        }
+
         return false;
     }
 
@@ -91,7 +90,7 @@ public class Money implements Serializable {
     public String getCurrencyCode() {
         return currencyCode;
     }
-    
+
     public Currency getCurrency() {
         return Currency.getInstance(currencyCode);
     }
@@ -114,7 +113,6 @@ public class Money implements Serializable {
 
     @Override
     public String toString() {
-        return value.toPlainString() + getCurrency().getSymbol();
+        return String.format("%0$.2f %s", value, getCurrency().getSymbol());
     }
-
 }

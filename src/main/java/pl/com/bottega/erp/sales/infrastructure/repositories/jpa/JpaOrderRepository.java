@@ -27,9 +27,6 @@ public class JpaOrderRepository extends GenericJpaRepositoryForBaseEntity<Order>
     private InjectorHelper injector;
     @Inject DomainEventPublisher eventPublisher;
     
-    /* (non-Javadoc)
-     * @see pl.com.bottega.ddd.infrastructure.repo.jpa.GenericJpaRepository#persist(java.lang.Object)
-     */
     @Override
     public void persist(Order order) {    	
     	super.persist(order);

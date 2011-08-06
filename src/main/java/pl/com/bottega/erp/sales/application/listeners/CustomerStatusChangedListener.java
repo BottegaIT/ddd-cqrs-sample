@@ -1,6 +1,3 @@
-/**
- * 
- */
 package pl.com.bottega.erp.sales.application.listeners;
 
 import pl.com.bottega.ddd.infrastructure.events.EventListener;
