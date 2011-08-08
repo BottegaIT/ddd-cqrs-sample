@@ -1,5 +1,10 @@
 package pl.com.bottega.erp.sales.webui;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
@@ -13,6 +18,7 @@ import pl.com.bottega.cqrs.command.Gate;
 import pl.com.bottega.erp.sales.application.ClientBasket;
 import pl.com.bottega.erp.sales.application.commands.CreateOrderCommand;
 import pl.com.bottega.erp.sales.presentation.ProductFinder;
+import pl.com.bottega.erp.sales.presentation.ProductListItemDto;
 import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria;
 
 @Controller
@@ -40,7 +46,16 @@ public class ProductsListController {
 
     @RequestMapping(value = "/basketItems", method = RequestMethod.GET)
     public String getBasketItems(Model model) {
-        model.addAttribute("items", basket.getProductIds());
+        Map<Long, Integer> productIdsWithCounts = basket.getProductIdsWithCounts();
+        Set<Long> productIds = productIdsWithCounts.keySet();
+        List<ProductListItemDto> products = productFinder.findProductsByIds(productIds);
+        List<BasketItemDto> basketItems = new ArrayList<BasketItemDto>();
+        for (ProductListItemDto product : products) {
+            Long productId = product.getProductId();
+            Integer count = productIdsWithCounts.get(productId);
+            basketItems.add(new BasketItemDto(productId, product.getDisplayedName(), count));
+        }
+        model.addAttribute("basketItems", basketItems);
         return "sales/basketItems";
     }
 
@@ -52,7 +67,7 @@ public class ProductsListController {
 
     @RequestMapping(value = "/checkout", method = RequestMethod.POST)
     public String createOrder() {
-        Long orderId = (Long) gate.dispatch(new CreateOrderCommand(basket.getProductIds()));
+        Long orderId = (Long) gate.dispatch(new CreateOrderCommand(basket.getProductIdsWithCounts()));
         return "redirect:/sales/confirmOrder/" + orderId;
     }
 }

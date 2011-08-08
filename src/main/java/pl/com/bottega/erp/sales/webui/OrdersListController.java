@@ -14,7 +14,7 @@ import pl.com.bottega.erp.sales.presentation.OrderFinder;
 public class OrdersListController {
     @Inject
     private OrderFinder orderFinder;
-
+    
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String ordersList(Model model) {
         model.addAttribute("orders", orderFinder.findCurrentClientsOrders());

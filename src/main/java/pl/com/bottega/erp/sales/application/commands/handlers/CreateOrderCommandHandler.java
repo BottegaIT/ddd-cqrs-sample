@@ -1,5 +1,7 @@
 package pl.com.bottega.erp.sales.application.commands.handlers;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import pl.com.bottega.cqrs.command.handler.CommandHandler;
@@ -48,8 +50,10 @@ public class CreateOrderCommandHandler implements CommandHandler<CreateOrderComm
         Client currentClient = clientRepository.load(systemUser.getUserId());
         try {
             Order order = orderFactory.crateOrder(currentClient);
-            for (Long productId : command.getProductIds()) {
-                order.addProduct(productRepository.load(productId), 1);
+            for (Map.Entry<Long, Integer> productIdWithCount : command.getProductIdsWithCounts().entrySet()) {
+                Long productId = productIdWithCount.getKey();
+                Integer count = productIdWithCount.getValue();
+                order.addProduct(productRepository.load(productId), count);
                 applicationEventPublisher.publish(new ProductAddedToOrderEvent(productId, systemUser.getUserId(), 1));
             }
             orderRepository.persist(order);

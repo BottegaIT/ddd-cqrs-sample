@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<definition name="layout" templateExpression="/WEB-INF/jsp/layout/layout.jsp">
+		<put-attribute name="menu" expression="/WEB-INF/jsp/layout/menu.jsp" />
+	</definition>
+</tiles-definitions>

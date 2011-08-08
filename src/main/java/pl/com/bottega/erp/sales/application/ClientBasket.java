@@ -1,22 +1,23 @@
 package pl.com.bottega.erp.sales.application;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.Map;
 
 import pl.com.bottega.ddd.application.annotation.ApplicationStatefullComponent;
 import pl.com.bottega.ddd.infrastructure.events.EventListener;
 import pl.com.bottega.erp.sales.domain.events.OrderCreatedEvent;
+
+import com.google.common.collect.Maps;
 
 /**
  * @author Rafał Jamróz
  */
 @SuppressWarnings("serial")
 @ApplicationStatefullComponent
-public class ClientBasket implements Serializable{
+public class ClientBasket implements Serializable {
 
-    private List<Long> productIds = new ArrayList<Long>();
+    private Map<Long, Integer> productIdsWithCounts = Maps.newHashMap();
 
     @EventListener
     public void clearBasketOnSuccessfulOrderCreation(OrderCreatedEvent event) {
@@ -24,14 +25,18 @@ public class ClientBasket implements Serializable{
     }
 
     public void clearBasket() {
-        productIds.clear();
+        productIdsWithCounts.clear();
     }
 
     public void addProduct(Long productId) {
-        productIds.add(productId);
+        Integer count = productIdsWithCounts.get(productId);
+        if (count == null) {
+            count = 0;
+        }
+        productIdsWithCounts.put(productId, count + 1);
     }
 
-    public List<Long> getProductIds() {
-        return Collections.unmodifiableList(productIds);
+    public Map<Long, Integer> getProductIdsWithCounts() {
+        return Collections.unmodifiableMap(productIdsWithCounts);
     }
 }

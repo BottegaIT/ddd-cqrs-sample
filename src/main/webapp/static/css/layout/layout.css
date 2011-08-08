@@ -1,0 +1,7 @@
+.siteContent {
+	width: 1000px;
+	margin: 0 auto;
+	border: 2 solid #E1E1E1;
+	padding: 20px 20px 150px;
+	overflow: auto;
+}

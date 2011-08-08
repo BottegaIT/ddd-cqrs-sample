@@ -1,0 +1,29 @@
+.productsContainer {
+	float: left
+}
+
+.basketContainer {
+	float: right;
+	width: 300px;
+	border: 2 solid #0000FF;
+}
+
+.basketContainer  h1 {
+	background-color: #0000FF;
+	margin: auto;
+	text-align: center;
+}
+
+.basketContainer  h2 {
+	text-align: center;
+}
+
+.basketControls {
+	text-align: center;
+	overflow: auto;
+}
+
+.basketControls>div {
+	float: left;
+	margin-left: 10px;
+}

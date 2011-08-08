@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<definition name="sales/basketItems" template="/WEB-INF/jsp/sales/basketItems.jsp" />
+
+	<definition name="sales/orderConfirmation" extends="layout">
+		<put-attribute name="content"
+			value="/WEB-INF/jsp/sales/orderConfirmation.jsp" />
+	</definition>
+
+	<definition name="sales/ordersList" extends="layout">
+		<put-attribute name="content" value="/WEB-INF/jsp/sales/ordersList.jsp" />
+	</definition>
+
+	<definition name="sales/productsList" extends="layout">
+		<put-attribute name="content"
+			value="/WEB-INF/jsp/sales/productsList.jsp" />
+		<put-list-attribute name="additionalCss">
+			<add-attribute value="sales/productsList.css" />
+		</put-list-attribute>
+		<put-list-attribute name="additionalJs">
+			<add-attribute value="sales/productsList.js" />
+		</put-list-attribute>
+	</definition>
+
+</tiles-definitions>

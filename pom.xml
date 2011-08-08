@@ -103,11 +103,12 @@
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-el</artifactId>
 			<version>2.2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.tuckey</groupId>
-			<artifactId>urlrewritefilter</artifactId>
-			<version>3.1.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>jcl-over-slf4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- required for @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS) -->
 		<dependency>
@@ -121,10 +122,16 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.6.1</version>
 		</dependency>
+		<!-- commonly used utils libraries -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>r09</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.0</version>
 		</dependency>
 		<!-- test scope -->
 		<dependency>
