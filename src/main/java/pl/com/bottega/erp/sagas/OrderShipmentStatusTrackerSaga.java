@@ -21,7 +21,6 @@ public class OrderShipmentStatusTrackerSaga extends SagaInstance<OrderShipmentSt
     @SagaAction
     public void handleOrderCreated(OrderCreatedEvent event) {
         data.setOrderId(event.getOrderId());
-        System.out.println("tracking Order[id=" + data.getOrderId() + "] status=CREATED");
         completeIfPossible();
     }
 
@@ -36,8 +35,6 @@ public class OrderShipmentStatusTrackerSaga extends SagaInstance<OrderShipmentSt
     public void orderShipped(OrderShippedEvent event) {
         data.setOrderId(event.getOrderId());
         data.setShipmentId(event.getShipmentId());
-        System.out.println("tracking Order[id=" + data.getOrderId() + "] status=SHIPPED, shipmentId="
-                + data.getShipmentId());
         completeIfPossible();
     }
 
@@ -45,8 +42,6 @@ public class OrderShipmentStatusTrackerSaga extends SagaInstance<OrderShipmentSt
     public void shipmentDelivered(ShipmentDeliveredEvent event) {
         data.setShipmentId(event.getShipmentId());
         data.setShipmentReceived(true);
-        System.out.println("tracking Order[id=" + data.getOrderId() + ", shipmentId=" + data.getShipmentId()
-                + "] status=SHIPMENT_RECEIVED, order has been archived...");
         completeIfPossible();
     }
 

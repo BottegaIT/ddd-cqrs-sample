@@ -18,7 +18,7 @@ import pl.com.bottega.ddd.infrastructure.sagas.SagaEngine;
 import pl.com.bottega.ddd.sagas.LoadSaga;
 import pl.com.bottega.ddd.sagas.SagaAction;
 import pl.com.bottega.ddd.sagas.SagaInstance;
-import pl.com.bottega.ddd.sagas.SagaLoader;
+import pl.com.bottega.ddd.sagas.SagaManager;
 
 /**
  * @author Rafał Jamróz
@@ -44,8 +44,8 @@ public class SimpleSagaEngine implements SagaEngine {
     @SuppressWarnings("rawtypes")
     @Override
     public void handleSagasEvent(Object event) {
-        Collection<SagaLoader> loaders = sagaRegistry.getLoadersForEvent(event);
-        for (SagaLoader loader : loaders) {
+        Collection<SagaManager> loaders = sagaRegistry.getLoadersForEvent(event);
+        for (SagaManager loader : loaders) {
             SagaInstance sagaInstance = loadSaga(loader, event);
             invokeSagaActionForEvent(sagaInstance, event);
             if (sagaInstance.isCompleted()) {
@@ -54,7 +54,7 @@ public class SimpleSagaEngine implements SagaEngine {
         }
     }
 
-    private SagaInstance loadSaga(SagaLoader loader, Object event) {
+    private SagaInstance loadSaga(SagaManager loader, Object event) {
         Class<? extends SagaInstance> sagaType = determineSagaTypeByLoader(loader);
         Object sagaData = loadSagaData(loader, event);
         if (sagaData == null) {
@@ -66,7 +66,7 @@ public class SimpleSagaEngine implements SagaEngine {
     }
 
     // TODO determine saga type more reliably
-    private Class<? extends SagaInstance> determineSagaTypeByLoader(SagaLoader loader) {
+    private Class<? extends SagaInstance> determineSagaTypeByLoader(SagaManager loader) {
         Type type = ((ParameterizedType) loader.getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0];
         return (Class<? extends SagaInstance>) type;
     }
@@ -74,7 +74,7 @@ public class SimpleSagaEngine implements SagaEngine {
     /**
      * TODO handle exception in more generic way
      */
-    private Object loadSagaData(SagaLoader loader, Object event) {
+    private Object loadSagaData(SagaManager loader, Object event) {
         Method loaderMethod = findHandlerMethodForEvent(loader.getClass(), event);
         try {
             Object sagaData = loaderMethod.invoke(loader, event);

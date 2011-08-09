@@ -7,15 +7,15 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Component;
 
 import pl.com.bottega.ddd.sagas.LoadSaga;
-import pl.com.bottega.ddd.sagas.SagaLoader;
+import pl.com.bottega.ddd.sagas.SagaManager;
 import pl.com.bottega.erp.sales.domain.events.OrderCreatedEvent;
 import pl.com.bottega.erp.sales.domain.events.OrderSubmittedEvent;
 import pl.com.bottega.erp.shipping.domain.events.OrderShippedEvent;
 import pl.com.bottega.erp.shipping.domain.events.ShipmentDeliveredEvent;
 
 @Component
-public class OrderShipmentStatusTrackerSagaLoader implements
-        SagaLoader<OrderShipmentStatusTrackerSaga, OrderShipmentStatusTrackerData> {
+public class OrderShipmentStatusTrackerSagaManager implements
+        SagaManager<OrderShipmentStatusTrackerSaga, OrderShipmentStatusTrackerData> {
 
     @PersistenceContext
     private EntityManager entityManager;

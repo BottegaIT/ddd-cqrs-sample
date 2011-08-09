@@ -8,7 +8,7 @@ package pl.com.bottega.ddd.sagas;
  * @param <D>
  *            saga data type
  */
-public interface SagaLoader<T extends SagaInstance<D>, D> {
+public interface SagaManager<T extends SagaInstance<D>, D> {
 
     void removeSaga(T saga);
 

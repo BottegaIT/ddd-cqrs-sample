@@ -6,7 +6,7 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SimpleSagaLoader implements SagaLoader<SimpleSaga, SimpleSagaData> {
+public class SimpleSagaManager implements SagaManager<SimpleSaga, SimpleSagaData> {
 
     private Set<SimpleSagaData> data = new HashSet<SimpleSagaData>();
 

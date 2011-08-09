@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import pl.com.bottega.ddd.sagas.LoadSaga;
 import pl.com.bottega.ddd.sagas.SagaAction;
 import pl.com.bottega.ddd.sagas.SagaInstance;
-import pl.com.bottega.ddd.sagas.SagaLoader;
+import pl.com.bottega.ddd.sagas.SagaManager;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -36,11 +36,11 @@ public class SpringSagaRegistry implements SagaRegistry, ApplicationListener<Con
     private ConfigurableListableBeanFactory beanFactory;
 
     @Override
-    public Collection<SagaLoader> getLoadersForEvent(Object event) {
-        Collection<SagaLoader> results = new HashSet<SagaLoader>();
+    public Collection<SagaManager> getLoadersForEvent(Object event) {
+        Collection<SagaManager> results = new HashSet<SagaManager>();
         Collection<String> loadersBeansNames = loadersInterestedIn.get(event.getClass());
         for (String loaderBeanName : loadersBeansNames) {
-            SagaLoader loader = beanFactory.getBean(loaderBeanName, SagaLoader.class);
+            SagaManager loader = beanFactory.getBean(loaderBeanName, SagaManager.class);
             results.add(loader);
         }
         return results;
@@ -58,7 +58,7 @@ public class SpringSagaRegistry implements SagaRegistry, ApplicationListener<Con
     }
 
     private void registerSagaLoaderBeans() {
-        String[] loadersNames = beanFactory.getBeanNamesForType(SagaLoader.class);
+        String[] loadersNames = beanFactory.getBeanNamesForType(SagaManager.class);
         for (String loaderBeanName : loadersNames) {
             BeanDefinition loaderBeanDefinition = beanFactory.getBeanDefinition(loaderBeanName);
             try {
