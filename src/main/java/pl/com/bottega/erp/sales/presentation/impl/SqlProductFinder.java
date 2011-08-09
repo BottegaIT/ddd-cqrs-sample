@@ -34,10 +34,20 @@ public class SqlProductFinder implements ProductFinder {
 
     @Override
     public List<ProductListItemDto> findProducts(ProductSearchCriteria searchCriteria) {
-        String sql = "SELECT id, name, value, currencyCode FROM Product";
-        Map<String, Object> map = new HashMap<String, Object>();
-        // where search criteria ...
-        return jdbcTemplate.query(sql, map, new ProductListItemRowMapper());
+        StringBuilder query = new StringBuilder();
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        query.append("SELECT id, name, value, currencyCode FROM Product");
+        query.append(createWhereClause(searchCriteria, parameters));
+        query.append(createOrderClause(searchCriteria));
+        return jdbcTemplate.query(query.toString(), parameters, new ProductListItemRowMapper());
+    }
+
+    private String createWhereClause(ProductSearchCriteria searchCriteria, Map<String, Object> parameters) {
+        return "";
+    }
+
+    private String createOrderClause(ProductSearchCriteria searchCriteria) {
+        return "";
     }
 
     @Override
@@ -48,7 +58,7 @@ public class SqlProductFinder implements ProductFinder {
         String sql = "SELECT p.id, p.name, p.value, p.currencyCode FROM Product p WHERE p.id in ("
                 + StringUtils.join(productsIds, ", ") + ")";
         // String productsIdsString = ;
-//        Collections.singletonMap("productsIds", productsIdsString);
+        // Collections.singletonMap("productsIds", productsIdsString);
         return jdbcTemplate.query(sql, new HashMap<String, Object>(), new ProductListItemRowMapper());
     }
 
