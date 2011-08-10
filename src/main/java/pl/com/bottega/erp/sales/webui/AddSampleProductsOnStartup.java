@@ -34,9 +34,9 @@ public class AddSampleProductsOnStartup {
     public void addSampleProductsToRepo() {
         TransactionStatus tx = transactionManager.getTransaction(new DefaultTransactionDefinition());
         em.persist(product("Electronic Gizmo", 0.99));
-        em.persist(food("Cell Phone with 32GB flash memory", 299.99));
-        em.persist(drug("Software Engineering Audiobook", 17.50));
-        em.persist(product("Game including Zombies Part 3", 39.89));
+        em.persist(product("Cell Phone with 32GB flash memory", 299.99));
+        em.persist(food("Software Engineering Audiobook", 17.50));
+        em.persist(drug("PC Game including Zombies Part 3", 39.89));
         em.persist(product("Tablet with Keyboard", 459.99));
         em.persist(new Client());
         transactionManager.commit(tx);

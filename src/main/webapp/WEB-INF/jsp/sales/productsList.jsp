@@ -45,7 +45,7 @@
 		<div class="basketControls">
 			<div>
 				<form action="checkout" method="POST">
-					<input type="submit" value="proceed to checkout" />
+					<input type="submit" value="checkout" />
 				</form>
 			</div>
 			<div>

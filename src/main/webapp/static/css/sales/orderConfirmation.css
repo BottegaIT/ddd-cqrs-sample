@@ -1,0 +1,28 @@
+.orderConfirmationControls {
+	margin-top: 20px;
+	overflow: auto;
+}
+
+.inline {
+	float: left;
+}
+
+.ordersTable thead .productsColumn {
+	
+}
+
+.ordersTable thead .quantityColumn {
+	
+}
+
+.ordersTable thead .costColumn {
+	
+}
+
+.ordersTable tbody .quantityColumn {
+	text-align: center;
+}
+
+.ordersTable tbody .costColumn {
+	text-align: right;
+}

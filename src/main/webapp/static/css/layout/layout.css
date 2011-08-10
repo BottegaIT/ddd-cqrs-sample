@@ -1,10 +1,14 @@
 body {
+	margin: 0;
 	font-family: verdana, helvetica, arial, sans-serif;
 	font-size: 1.1em;
 }
 
 input,button {
 	border: 1px solid #E1E1E1;
+	font-size: 1.2em;
+	position: relative;
+	top: -2px;
 }
 
 .logo {

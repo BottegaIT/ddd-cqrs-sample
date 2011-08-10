@@ -8,6 +8,9 @@
 	<definition name="sales/orderConfirmation" extends="layout">
 		<put-attribute name="content"
 			value="/WEB-INF/jsp/sales/orderConfirmation.jsp" />
+		<put-list-attribute name="additionalCss">
+			<add-attribute value="sales/orderConfirmation.css" />
+		</put-list-attribute>
 	</definition>
 
 	<definition name="sales/ordersList" extends="layout">
