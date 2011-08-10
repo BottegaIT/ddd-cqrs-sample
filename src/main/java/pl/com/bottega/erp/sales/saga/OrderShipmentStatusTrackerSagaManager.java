@@ -1,4 +1,4 @@
-package pl.com.bottega.erp.sagas;
+package pl.com.bottega.erp.sales.saga;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
