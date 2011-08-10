@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
 <h1>order confirmation</h1>
 <div>
 	<h2>ordered items</h2>
@@ -27,7 +26,7 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="2" style="text-align: right;">total cost</td>
+				<td colspan="2" style="text-align: right; padding-right: 10px;">total cost:</td>
 				<td><c:out value="${order.totalCost}" /></td>
 			</tr>
 		</tfoot>

@@ -1,7 +1,94 @@
+body {
+	font-family: verdana, helvetica, arial, sans-serif;
+	font-size: 1.1em;
+}
+
+input,button {
+	border: 1px solid #E1E1E1;
+}
+
+.logo {
+	width: 100%;
+	height: 85px;
+	padding-top: 15px;
+	background-color: #090;
+	color: white;
+	font-size: 60px;
+	text-align: center;
+}
+
 .siteContent {
 	width: 1000px;
 	margin: 0 auto;
-	border: 2 solid #E1E1E1;
+	border: 2 solid #090;
 	padding: 20px 20px 150px;
 	overflow: auto;
+}
+
+h1 {
+	font-size: 1.3em;
+	text-align: center;
+	background-color: #090;
+	color: white;
+}
+
+h2 {
+	font-size: 1.2em;
+}
+
+h3 {
+	font-size: 1.1em;
+}
+
+a {
+	color: black;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+a:HOVER {
+	color: #090;
+}
+
+/* menu */
+.menuContainer {
+	margin-bottom: 30px;
+}
+
+.menuTitle {
+	float: left;
+}
+
+.menuItem {
+	float: left;
+	margin-left: 10px;
+}
+
+/* tables */
+table {
+	border-collapse: collapse;
+}
+
+table thead tr td {
+	background-color: #090;
+	color: white;
+	text-align: center;
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+table {
+	color: black;
+	text-align: left;
+	font-size: 1.1em;
+}
+
+table tfoot tr td{
+	padding-top: 5px;
+}
+
+table tfoot {
+	border-top-width: 2px;
+	border-top-style: solid;
+	border-top-color: #090;
 }

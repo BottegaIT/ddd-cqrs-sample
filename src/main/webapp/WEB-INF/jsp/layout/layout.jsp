@@ -3,22 +3,31 @@
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <html>
 <head>
-<link rel="stylesheet" href="<c:url value="/static/css/layout/layout.css" />"
-	type="text/css" media="all" />
-<tiles:useAttribute name="additionalCss" classname="java.util.List" ignore="true"/>
+<link rel="stylesheet"
+	href="<c:url value="/static/css/layout/layout.css" />" type="text/css"
+	media="all" />
+<tiles:useAttribute name="additionalCss" classname="java.util.List"
+	ignore="true" />
 <c:forEach var="style" items="${additionalCss}">
-	<link rel="stylesheet" href="<c:url value="/static/css/${style}" />" type="text/css" media="all" />
+	<link rel="stylesheet" href="<c:url value="/static/css/${style}" />"
+		type="text/css" media="all" />
 </c:forEach>
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-<tiles:useAttribute name="additionalJs" classname="java.util.List" ignore="true"/>
+<tiles:useAttribute name="additionalJs" classname="java.util.List"
+	ignore="true" />
 <c:forEach var="script" items="${additionalJs}">
-	<script type="text/javascript" src="<c:url value="/static/js/${script}" />" ></script>
+	<script type="text/javascript"
+		src="<c:url value="/static/js/${script}" />"></script>
 </c:forEach>
 </head>
 <body>
-	<tiles:insertAttribute name="menu" />
+	<div class="logo">DDD CQRS Sample</div>
+
 	<div class="siteContent">
+		<div class="menuContainer">
+			<tiles:insertAttribute name="menu" />
+		</div>
 		<tiles:insertAttribute name="content" />
 	</div>
 </body>

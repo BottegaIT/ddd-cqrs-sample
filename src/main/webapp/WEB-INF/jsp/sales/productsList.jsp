@@ -4,32 +4,40 @@
 
 <div class="productsContainer">
 	<h1>products available</h1>
-	<table>
-		<thead>
-			<tr>
-				<td></td>
-				<td>product name</td>
-				<td>price</td>
-				<td></td>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${products}" var="product">
+	<div class="productsContent">
+		<p>Choose from our wide range of quality products</p>
+		<table id="productsTable">
+			<thead>
 				<tr>
-					<td><img src="asdasd" /></td>
-					<td><c:out value="${product.displayedName}" /></td>
-					<td><c:out value="${product.price}" /></td>
-					<td><input name="addProductButton" type="button" value="add"
-						productId="${product.productId}" />
-					</td>
+					<td class="imageColumn"></td>
+					<td class="productNameColumn">product name</td>
+					<td class="priceColumn">price</td>
+					<td class="buttonsColumn"></td>
 				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				<c:forEach items="${products}" var="product">
+					<tr>
+						<td class="imageColumn"><img class="productImage"
+							src="asdasd" /></td>
+						<td class="productNameColumn"><c:out
+								value="${product.displayedName}" /></td>
+						<td class="priceColumn"><c:out value="${product.price}" /></td>
+						<td class="buttonsColumn"><input name="addProductButton"
+							type="button" value="add" productId="${product.productId}" />
+						</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
 </div>
 
 <div class="basketContainer">
-	<h1>your basket</h1>
+	<div class="highlight">
+		<h1>your basket</h1>
+	</div>
+
 	<div class="basketContent" style="display: none;">
 		<ul id="basketItemsList">
 		</ul>
@@ -46,6 +54,6 @@
 		</div>
 	</div>
 	<div class="basketNoContent" style="display: none;">
-		<h2>your basket is empty</h2>
+		<p class="notification">your basket is empty</p>
 	</div>
 </div>

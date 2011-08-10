@@ -33,10 +33,11 @@ public class AddSampleProductsOnStartup {
     @PostConstruct
     public void addSampleProductsToRepo() {
         TransactionStatus tx = transactionManager.getTransaction(new DefaultTransactionDefinition());
-        em.persist(product("papier toaletowy", 0.77));
-        em.persist(food("turbosprezarka", 13.37));
-        em.persist(drug("pompa do betonu", 4.31));
-        em.persist(product("wrota swiatow", 665.99));
+        em.persist(product("Electronic Gizmo", 0.99));
+        em.persist(food("Cell Phone with 32GB flash memory", 299.99));
+        em.persist(drug("Software Engineering Audiobook", 17.50));
+        em.persist(product("Game including Zombies Part 3", 39.89));
+        em.persist(product("Tablet with Keyboard", 459.99));
         em.persist(new Client());
         transactionManager.commit(tx);
     }

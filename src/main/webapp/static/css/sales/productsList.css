@@ -1,21 +1,61 @@
 .productsContainer {
-	float: left
+	float: left;
+	width: 670px;
+	border: 2px solid #090;
 }
 
+.productsContent {
+	padding: 0px 5px 0px 5px;
+}
+
+.productsContent p {
+	margin-left: 5px;
+}
+
+#productsTable thead .imageColumn {
+	width: 60px;
+}
+
+#productsTable thead .productNameColumn {
+	width: 433px;
+}
+
+#productsTable thead .priceColumn {
+	width: 110px;
+}
+
+#productsTable .buttonsColumn {
+	width: 50px;
+}
+
+#productsTable tbody td {
+	padding-left: 5px;
+}
+
+#productsTable tbody .priceColumn {
+	text-align: right;
+}
+
+.productImage {
+	width: 50px;
+	height: 50px;
+	margin: auto;
+	display: block;
+}
+/* basket */
 .basketContainer {
 	float: right;
 	width: 300px;
-	border: 2 solid #0000FF;
+	border: 2 solid #090;
 }
 
-.basketContainer  h1 {
-	background-color: #0000FF;
-	margin: auto;
-	text-align: center;
+.basketContainer p {
+	margin-left: 20px;
 }
 
-.basketContainer  h2 {
+.basketContainer  h3 {
 	text-align: center;
+	font-size: 0.9em;
 }
 
 .basketControls {
