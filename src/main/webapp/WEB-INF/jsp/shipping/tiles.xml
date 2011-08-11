@@ -5,6 +5,12 @@
 
 	<definition name="/shipping/shipmentsList" extends="layout">
 		<put-attribute name="content" value="/WEB-INF/jsp/shipping/shipmentsList.jsp" />
+		<put-list-attribute name="additionalCss">
+			<add-attribute value="shipping/shipmentsList.css" />
+		</put-list-attribute>
+		<put-list-attribute name="additionalJs">
+			<add-attribute value="shipping/shipmentsList.js" />
+		</put-list-attribute>
 	</definition>
 
 </tiles-definitions>

@@ -15,6 +15,9 @@
 
 	<definition name="sales/ordersList" extends="layout">
 		<put-attribute name="content" value="/WEB-INF/jsp/sales/ordersList.jsp" />
+		<put-list-attribute name="additionalCss">
+			<add-attribute value="sales/ordersList.css" />
+		</put-list-attribute>
 	</definition>
 
 	<definition name="sales/productsList" extends="layout">

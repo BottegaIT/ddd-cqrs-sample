@@ -1,0 +1,26 @@
+.ordersListContent {
+	border: 2px solid #090;
+}
+
+.ordersList {
+	width: 980px;
+	padding: 0px 10px 0px 10px;
+}
+
+.ordersTable {
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.ordersTable tbody .submitDateColumn {
+	padding-left: 5px;
+}
+
+.ordersTable tbody .statusColumn {
+	text-align: center;
+}
+
+.ordersTable tbody .totalCostColumn {
+	text-align: right;
+	padding-right: 5px;
+}

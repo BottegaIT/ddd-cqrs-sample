@@ -1,0 +1,35 @@
+.shipmentsListContent {
+	border: 2px solid #090;
+}
+
+.shipmentsContainer {
+	width: 980px;
+	padding: 0px 10px 0px 10px;
+}
+
+.shipmentsTable {
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.shipmentsTable tbody .shipmentIdColumn {
+	text-align: center;
+}
+
+.shipmentsTable tbody .orderIdColumn {
+	text-align: center;
+}
+
+.shipmentsTable tbody .statusColumn {
+	text-align: center;
+}
+
+.shipmentsTable tbody .buttonsColumn {
+	text-align: center;
+	overflow: auto;
+}
+
+form.inline {
+	display: block;
+	float: left;
+}

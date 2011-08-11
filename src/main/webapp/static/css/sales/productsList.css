@@ -1,39 +1,53 @@
-.productsContainer {
+.productsListContent {
 	float: left;
 	width: 670px;
 	border: 2px solid #090;
 }
 
 .productsContent {
-	padding: 0px 5px 0px 5px;
+	padding: 0px 10px 0px 10px;
 }
 
 .productsContent p {
 	margin-left: 5px;
 }
 
+#productsTable {
+	width: 100%;
+	margin-bottom: 20px;
+}
+
 #productsTable thead .imageColumn {
-	width: 60px;
+	width: 52px;
 }
 
 #productsTable thead .productNameColumn {
-	width: 433px;
+	
 }
 
 #productsTable thead .priceColumn {
-	width: 110px;
+	width: 130px;
 }
 
-#productsTable .buttonsColumn {
-	width: 50px;
+#productsTable thead .buttonsColumn {
+	width: 65px;
 }
 
-#productsTable tbody td {
+#productsTable tbody .imageColumn {
+	text-align: center;
+	padding: 1px 0px 1px 0px;
+}
+
+#productsTable tbody .productNameColumn {
 	padding-left: 5px;
 }
 
 #productsTable tbody .priceColumn {
 	text-align: right;
+}
+
+#productsTable tbody .buttonsColumn {
+	text-align: center;
 }
 
 .productImage {

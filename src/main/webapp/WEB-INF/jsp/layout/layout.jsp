@@ -24,7 +24,7 @@
 <body>
 	<div class="logo">DDD CQRS Sample</div>
 
-	<div class="siteContent">
+	<div class="siteBody">
 		<div class="menuContainer">
 			<tiles:insertAttribute name="menu" />
 		</div>

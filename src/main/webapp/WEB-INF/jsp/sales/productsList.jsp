@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<div class="productsContainer">
+<div class="productsListContent">
 	<h1>products available</h1>
 	<div class="productsContent">
 		<p>Choose from our wide range of quality products</p>

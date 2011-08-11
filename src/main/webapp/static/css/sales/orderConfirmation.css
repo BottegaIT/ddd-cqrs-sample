@@ -1,3 +1,12 @@
+.ordersConfirmationContent {
+	border: 2px solid #090;
+}
+
+.orderedItemsContainer {
+	padding: 0px 10px 0px 10px;
+	margin: auto;
+}
+
 .orderConfirmationControls {
 	margin-top: 20px;
 	overflow: auto;
@@ -7,16 +16,24 @@
 	float: left;
 }
 
+.ordersTable {
+	width: 100%;
+}
+
 .ordersTable thead .productsColumn {
-	
+	width: 70%;
 }
 
 .ordersTable thead .quantityColumn {
-	
+	width: 15%;
 }
 
 .ordersTable thead .costColumn {
-	
+	width: 15%;
+}
+
+.ordersTable tbody .productsColumn {
+	padding-left: 5px;
 }
 
 .ordersTable tbody .quantityColumn {
@@ -25,4 +42,5 @@
 
 .ordersTable tbody .costColumn {
 	text-align: right;
+	padding-right: 5px;
 }

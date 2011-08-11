@@ -21,16 +21,19 @@ input,button {
 	text-align: center;
 }
 
-.siteContent {
+.siteBody {
 	width: 1000px;
 	margin: 0 auto;
-	border: 2 solid #090;
+	border-left: 2px solid #090;
+	border-right: 2px solid #090;
+	border-bottom: 2px solid #090;
 	padding: 20px 20px 150px;
 	overflow: auto;
+	padding: 20px 20px 150px;
 }
 
 h1 {
-	font-size: 1.3em;
+	font-size: 1.4em;
 	text-align: center;
 	background-color: #090;
 	color: white;
@@ -71,9 +74,14 @@ a:HOVER {
 /* tables */
 table {
 	border-collapse: collapse;
+	border-spacing: 0px;
+	padding: 0px 0px 0px 0px;
+	color: black;
+	text-align: left;
+	font-size: 1.1em;
 }
 
-table thead tr td {
+table thead td {
 	background-color: #090;
 	color: white;
 	text-align: center;
@@ -81,13 +89,7 @@ table thead tr td {
 	font-weight: bold;
 }
 
-table {
-	color: black;
-	text-align: left;
-	font-size: 1.1em;
-}
-
-table tfoot tr td{
+table tfoot td {
 	padding-top: 5px;
 }
 
@@ -95,4 +97,8 @@ table tfoot {
 	border-top-width: 2px;
 	border-top-style: solid;
 	border-top-color: #090;
+}
+
+table td {
+	padding: 0px 0px 0px 0px;
 }
