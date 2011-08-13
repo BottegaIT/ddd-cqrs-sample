@@ -1,15 +1,20 @@
 $(document).ready(function() {
-	$(":input[name=addProductButton]").click(function() {
-		$.post("addProduct", {
-			productId : $(this).attr("productId")
-		}, function(data) {
-			handleBasketItems(data);
-		});
-	});
+	$(":input[name=addProductButton]").click(addProductToBasket);
 	$.get("basketItems", function(data) {
 		handleBasketItems(data);
 	});
+	$("#clearFiltersButton").click(function() {
+		window.location.href = window.location.pathname;
+	});
 });
+
+function addProductToBasket() {
+	$.post("addProduct", {
+		productId : $(this).attr("productId")
+	}, function(data) {
+		handleBasketItems(data);
+	});
+}
 
 function clearBasket() {
 	$.post("clearBasket", function() {

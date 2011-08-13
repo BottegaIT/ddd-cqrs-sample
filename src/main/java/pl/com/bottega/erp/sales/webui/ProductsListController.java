@@ -43,6 +43,8 @@ public class ProductsListController {
         model.addAttribute("products", productFinder.findProducts(criteria));
         model.addAttribute("sortBy", criteria.getOrderBy().toString());
         model.addAttribute("ascending", criteria.isAscending());
+        model.addAttribute("containsTextFilter",criteria.getContainsText());
+        model.addAttribute("maxPriceFilter",criteria.getMaxPrice());
         return "sales/productsList";
     }
 

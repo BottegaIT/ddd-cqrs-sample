@@ -12,9 +12,9 @@
 		<div>
 			<h3>show only products</h3>
 			<form>
-				containing text: <input name="containsText" type="text" /> </br>
-				up to price: <input name="maxPrice" type="text" /> EUR</br>
-				<input type="submit" value="filter" />
+				containing text: <input name="containsText" type="text" value="${containsTextFilter}"/> </br>
+				up to price: <input name="maxPrice" type="text" value="${maxPriceFilter}"/> EUR</br>
+				<input type="submit" value="filter" /> <input id="clearFiltersButton" type="button" value="show all" />
 			</form>
 		</div>
 

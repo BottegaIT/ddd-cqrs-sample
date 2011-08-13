@@ -42,10 +42,8 @@ public class HsqlProductFinder implements ProductFinder {
             return new PaginatedResult<ProductListItemDto>(criteria.getPageNumber(), criteria.getItemsPerPage());
         }
         Map<String, Object> parameters = new HashMap<String, Object>();
-        StringBuilder query = new StringBuilder();
-        createSqlSelectQuery(query, criteria, parameters);
-        List<ProductListItemDto> products = jdbcTemplate.query(query.toString(), parameters,
-                new ProductListItemRowMapper());
+        String sqlQuery = createSqlSelectQuery(criteria, parameters);
+        List<ProductListItemDto> products = jdbcTemplate.query(sqlQuery, parameters, new ProductListItemRowMapper());
         return new PaginatedResult<ProductListItemDto>(products, criteria.getPageNumber(), criteria.getItemsPerPage(),
                 productsCount);
     }
@@ -53,17 +51,18 @@ public class HsqlProductFinder implements ProductFinder {
     private int countProducts(ProductSearchCriteria criteria) {
         StringBuilder query = new StringBuilder();
         Map<String, Object> parameters = new HashMap<String, Object>();
-        query.append("SELECT count(*) from Product ");
+        query.append("SELECT count(*) from Product p ");
         appendWhereClause(query, criteria, parameters);
         return jdbcTemplate.queryForInt(query.toString(), parameters);
     }
 
-    private void createSqlSelectQuery(StringBuilder query, ProductSearchCriteria criteria,
-            Map<String, Object> parameters) {
-        query.append("SELECT id, name, value, currencyCode FROM Product ");
+    private String createSqlSelectQuery(ProductSearchCriteria criteria, Map<String, Object> parameters) {
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT p.id, p.name, p.value, p.currencyCode FROM Product p ");
         appendWhereClause(query, criteria, parameters);
         appendOrderByClause(query, criteria);
         appendOffsetLimitClause(query, criteria, parameters);
+        return query.toString();
     }
 
     private void appendOffsetLimitClause(StringBuilder query, ProductSearchCriteria criteria,
@@ -89,15 +88,15 @@ public class HsqlProductFinder implements ProductFinder {
 
     private void addConstraints(List<String> constraints, ProductSearchCriteria criteria, Map<String, Object> parameters) {
         if (!StringUtils.isBlank(criteria.getContainsText())) {
-            constraints.add("LCASE(name) like :searchedText");
+            constraints.add("LCASE(p.name) like :searchedText");
             parameters.put("searchedText", "%" + criteria.getContainsText().toLowerCase() + "%");
         }
         if (criteria.getMaxPrice() != null) {
-            constraints.add("value <= :maxPrice");
+            constraints.add("p.value <= :maxPrice");
             parameters.put("maxPrice", criteria.getMaxPrice());
         }
         if (criteria.hasSpecificProductIdsFilter()) {
-            constraints.add("id in (:productIds)");
+            constraints.add("p.id in (:productIds)");
             parameters.put("productIds", criteria.getSpecificProductIds());
         }
     }
@@ -112,9 +111,9 @@ public class HsqlProductFinder implements ProductFinder {
 
     private String getOrderByColumnName(ProductSearchOrder orderBy) {
         if (ProductSearchOrder.NAME.equals(orderBy)) {
-            return "name";
+            return "p.name";
         } else if (ProductSearchOrder.PRICE.equals(orderBy)) {
-            return "value";
+            return "p.value";
         } else {
             throw new IllegalArgumentException("unknow order by in ProductSearchCriteria");
         }
