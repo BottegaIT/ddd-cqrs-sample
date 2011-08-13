@@ -6,7 +6,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -33,11 +32,13 @@ public class AddSampleProductsOnStartup {
     @PostConstruct
     public void addSampleProductsToRepo() {
         TransactionStatus tx = transactionManager.getTransaction(new DefaultTransactionDefinition());
-        em.persist(product("Electronic Gizmo", 0.99));
-        em.persist(product("Cell Phone with 32GB flash memory", 299.99));
-        em.persist(food("Software Engineering Audiobook", 17.50));
-        em.persist(drug("PC Game including Zombies Part 3", 39.89));
-        em.persist(product("Tablet with Keyboard", 459.99));
+        for (int i = 1; i < 21; i++) {
+            em.persist(product(String.format("Electronic Gizmo %02d", i), 0.99));
+            em.persist(product(String.format("Cell Phone with 32GB flash memory %02d", i), 299.99));
+            em.persist(food(String.format("Software Engineering Audiobook %02d", i), 17.50));
+            em.persist(drug(String.format("PC Game including Zombies Part %02d", i), 39.89));
+            em.persist(product(String.format("Tablet with Keyboard %02d", i), 459.99));
+        }
         em.persist(new Client());
         transactionManager.commit(tx);
     }

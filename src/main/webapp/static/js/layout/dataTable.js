@@ -1,0 +1,81 @@
+$(document).ready(function() {
+	$("table.dataTable").each(initializeColumnOrder);
+	var found = $(".pagination>li:not(.currentPage)");
+	found.click(changePage);
+	$("table.dataTable .sortable").click(sortByColumn);
+});
+
+/**
+ * Checks the table for "sortedby" attribute for the column the table is sorted
+ * by. Finds this column and add .ascending or .descending class depending on
+ * the order.
+ */
+function initializeColumnOrder(index, table) {
+	var currentSort = $(table).attr("sortedby");
+
+	if (currentSort) {
+		var ascending = "ascending";
+		if ($(table).attr("ascending") === "false") {
+			ascending = "descending";
+		}
+		var found = $(table).find("td[sortby=" + currentSort + "]");
+		found.addClass(ascending);
+	}
+}
+
+/**
+ * Changes order to sort by this column. Page will be reloaded with new get
+ * arguments to reflect this change.
+ */
+function sortByColumn() {
+	var sortBy = $(this).attr("sortby");
+	var ascending = !$(this).hasClass("ascending");
+
+	var urlSearch = document.location.search;
+	urlSearch = insertUrlSearchParam(urlSearch, "page", 1);
+	urlSearch = insertUrlSearchParam(urlSearch, "sortBy", sortBy);
+	urlSearch = insertUrlSearchParam(urlSearch, "ascending", ascending);
+	document.location.search = urlSearch;
+}
+
+function changePage() {
+	var newPage = $(this).html();
+	document.location.search = insertUrlSearchParam(document.location.search,
+			"page", newPage);
+}
+
+/**
+ * Changes urlSearch parameter by key to have given value. If the parameter is
+ * not present in the url it's added.
+ * 
+ * @author annakata
+ * @see http://stackoverflow.com/questions/486896/adding-a-parameter-to-the-url-with-javascript
+ */
+function insertUrlSearchParam(urlSearch, key, value) {
+	key = escape(key);
+	value = escape(value);
+	var kvp = [];
+	if (urlSearch) {
+		if (urlSearch.indexOf("?") == 0) {
+			urlSearch = urlSearch.substr(1);
+		}
+		kvp = urlSearch.split('&');
+	}
+
+	var i = kvp.length;
+	var x;
+	while (i--) {
+		x = kvp[i].split('=');
+
+		if (x[0] == key) {
+			x[1] = value;
+			kvp[i] = x.join('=');
+			break;
+		}
+	}
+
+	if (i < 0) {
+		kvp[kvp.length] = [ key, value ].join('=');
+	}
+	return kvp.join('&');
+}

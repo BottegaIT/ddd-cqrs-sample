@@ -25,9 +25,11 @@
 			value="/WEB-INF/jsp/sales/productsList.jsp" />
 		<put-list-attribute name="additionalCss">
 			<add-attribute value="sales/productsList.css" />
+			<add-attribute value="layout/dataTable.css" />
 		</put-list-attribute>
 		<put-list-attribute name="additionalJs">
 			<add-attribute value="sales/productsList.js" />
+			<add-attribute value="layout/dataTable.js" />
 		</put-list-attribute>
 	</definition>
 

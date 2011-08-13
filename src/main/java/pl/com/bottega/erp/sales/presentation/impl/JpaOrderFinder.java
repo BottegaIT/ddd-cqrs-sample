@@ -56,7 +56,7 @@ public class JpaOrderFinder implements OrderFinder {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<ClientOrderListItemDto> findCurrentClientsOrders() {
+    public List<ClientOrderListItemDto> findOrders() {
         Query query = entityManager
                 .createQuery("select new pl.com.bottega.erp.sales.presentation.ClientOrderListItemDto("
                         + "o.id, o.totalCost, o.submitDate, o.status) from Order o");

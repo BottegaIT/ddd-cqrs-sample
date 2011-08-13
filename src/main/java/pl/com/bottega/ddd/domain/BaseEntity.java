@@ -12,7 +12,7 @@ import javax.persistence.Version;
 /**
  * 
  * @author Slawek
- *
+ * 
  */
 @MappedSuperclass
 public abstract class BaseEntity {
@@ -46,28 +46,15 @@ public abstract class BaseEntity {
         return entityStatus;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
-        // FIXME check this!
         if (!getClass().equals(obj.getClass())) {
             return false;
         }
-
         BaseEntity entity = (BaseEntity) obj;
-
         return id.equals(entity.id);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         return id == null ? 0 : id.hashCode();

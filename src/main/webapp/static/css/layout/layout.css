@@ -33,7 +33,7 @@ input,button {
 }
 
 h1 {
-	font-size: 1.4em;
+	font-size: 1.7em;
 	text-align: center;
 	background-color: #090;
 	color: white;
@@ -59,15 +59,15 @@ a:HOVER {
 
 /* menu */
 .menuContainer {
-	margin-bottom: 30px;
+	margin-bottom: 20px;
+	overflow: auto;
 }
 
-.menuTitle {
+.menuContainer>div {
 	float: left;
 }
 
 .menuItem {
-	float: left;
 	margin-left: 10px;
 }
 

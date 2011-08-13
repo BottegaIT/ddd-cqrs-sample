@@ -17,7 +17,7 @@ public class OrdersListController {
     
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String ordersList(Model model) {
-        model.addAttribute("orders", orderFinder.findCurrentClientsOrders());
+        model.addAttribute("orders", orderFinder.findOrders());
         return "sales/ordersList";
     }
 }

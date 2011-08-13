@@ -1,0 +1,57 @@
+/* data table */
+.dataTable thead td.sortable:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.dataTable thead .ascending {
+	background-image: url(../../img/layout/sortAscending.png);
+	background-repeat: no-repeat;
+	background-position: right;
+}
+
+.dataTable thead .descending {
+	background-image: url(../../img/layout/sortDescending.png);
+	background-repeat: no-repeat;
+	background-position: right;
+}
+
+/* pagination support */
+.paginationContainer {
+	overflow: auto;
+	margin: 10px 0px 10px 0px;
+}
+
+.paginationPrompt {
+	float: left;
+}
+
+.pagination {
+	float: left;
+	padding-left: 0px;
+	overflow: auto;
+	padding-left: 0px;
+	margin: 0px 0px 0px 0px;
+}
+
+.pagination>li {
+	margin-left: 10px;
+	list-style: none;
+	display: block;
+	float: left;
+	list-style: none;
+}
+
+.pagination>li:HOVER {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.pagination>li.currentPage {
+	background-color: #090;
+}
+
+.pagination>li.currentPage:HOVER {
+	text-decoration: none;
+	cursor: default;
+}

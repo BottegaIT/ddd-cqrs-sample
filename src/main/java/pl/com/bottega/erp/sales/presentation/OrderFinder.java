@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface OrderFinder {
     /**
-     * @deprecated Method for ???
+     * Method for orders manager.
      */
-    List<ClientOrderListItemDto> findCurrentClientsOrders();
+    List<ClientOrderListItemDto> findOrders();
 
     /**
      * Method for customers that want to find their own orders.
