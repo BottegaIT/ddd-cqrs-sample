@@ -3,8 +3,6 @@ package pl.com.bottega.erp.sales.presentation.impl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
@@ -98,6 +96,10 @@ public class HsqlProductFinder implements ProductFinder {
             constraints.add("value <= :maxPrice");
             parameters.put("maxPrice", criteria.getMaxPrice());
         }
+        if (criteria.hasSpecificProductIdsFilter()) {
+            constraints.add("id in (:productIds)");
+            parameters.put("productIds", criteria.getSpecificProductIds());
+        }
     }
 
     private void appendOrderByClause(StringBuilder query, ProductSearchCriteria criteria) {
@@ -116,18 +118,6 @@ public class HsqlProductFinder implements ProductFinder {
         } else {
             throw new IllegalArgumentException("unknow order by in ProductSearchCriteria");
         }
-    }
-
-    @Override
-    public List<ProductListItemDto> findProductsByIds(Collection<Long> productsIds) {
-        if (productsIds.isEmpty()) {
-            return Collections.emptyList();
-        }
-        String sql = "SELECT p.id, p.name, p.value, p.currencyCode FROM Product p WHERE p.id in ("
-                + StringUtils.join(productsIds, ", ") + ")";
-        // String productsIdsString = ;
-        // Collections.singletonMap("productsIds", productsIdsString);
-        return jdbcTemplate.query(sql, new HashMap<String, Object>(), new ProductListItemRowMapper());
     }
 
     private static class ProductListItemRowMapper implements RowMapper<ProductListItemDto> {

@@ -3,23 +3,28 @@
  */
 package pl.com.bottega.erp.sales.presentation;
 
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * @author Slawek
  */
 public class ProductSearchCriteria {
 
+    // constraints
+    private String containsText;
+    private Double maxPrice;
+    private Collection<Long> specificProductIds = Collections.emptySet();
+
+    // sorting
     public static enum ProductSearchOrder {
         NAME, PRICE;
     }
 
-    private String containsText;
-
-    // Good enough because value is not used in calculations
-    private Double maxPrice;
-
     private ProductSearchOrder orderBy = ProductSearchOrder.NAME;
     private boolean ascending = true;
 
+    // pagination support
     private int pageNumber = 1;
     private int itemsPerPage = 50;
 
@@ -37,6 +42,18 @@ public class ProductSearchCriteria {
 
     public void setMaxPrice(Double maxPrice) {
         this.maxPrice = maxPrice;
+    }
+
+    public Collection<Long> getSpecificProductIds() {
+        return specificProductIds;
+    }
+
+    public void setSpecificProductIds(Collection<Long> specificProductIds) {
+        this.specificProductIds = specificProductIds;
+    }
+
+    public boolean hasSpecificProductIdsFilter() {
+        return specificProductIds != null && !specificProductIds.isEmpty();
     }
 
     public ProductSearchOrder getOrderBy() {

@@ -39,4 +39,8 @@ public class ClientBasket implements Serializable {
     public Map<Long, Integer> getProductIdsWithCounts() {
         return Collections.unmodifiableMap(productIdsWithCounts);
     }
+
+    public boolean hasItems() {
+        return !productIdsWithCounts.isEmpty();
+    }
 }

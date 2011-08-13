@@ -1,5 +1,6 @@
 package pl.com.bottega.erp.sales.presentation;
 
+import java.util.Collections;
 import java.util.List;
 
 public class PaginatedResult<T> {
@@ -12,7 +13,7 @@ public class PaginatedResult<T> {
     public PaginatedResult(int pageNumber, int pageSize) {
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
-        items = null;
+        items = Collections.emptyList();
         pagesCount = 0;
         totalItemsCount = 0;
     }

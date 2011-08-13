@@ -47,7 +47,9 @@ public class ProductsListController {
     }
 
     private void addFiltering(ProductSearchCriteria criteria, String containsText, Double maxPrice) {
-        criteria.setContainsText(containsText);
+        if (containsText != null) {
+            criteria.setContainsText(containsText.trim());
+        }
         criteria.setMaxPrice(maxPrice);
     }
 
