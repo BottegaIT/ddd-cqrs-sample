@@ -14,9 +14,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
+import pl.com.bottega.cqrs.query.PaginatedResult;
 import pl.com.bottega.cqrs.query.annotations.Finder;
 import pl.com.bottega.ddd.domain.sharedcernel.Money;
-import pl.com.bottega.erp.sales.presentation.PaginatedResult;
 import pl.com.bottega.erp.sales.presentation.ProductFinder;
 import pl.com.bottega.erp.sales.presentation.ProductListItemDto;
 import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria;

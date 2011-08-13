@@ -1,4 +1,4 @@
-package pl.com.bottega.erp.sales.presentation;
+package pl.com.bottega.cqrs.query;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,6 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ attribute name="results" required="true" rtexprvalue="true"
-	type="pl.com.bottega.erp.sales.presentation.PaginatedResult"%>
+<%@ attribute name="results" required="true" rtexprvalue="true" type="pl.com.bottega.cqrs.query.PaginatedResult"%>
 <div class="paginationContainer">
 	<c:if test="${results.pagesCount > 0}">
 		<div class="paginationPrompt">jump to page:</div>
