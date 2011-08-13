@@ -28,7 +28,7 @@ import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria.ProductSearch
  * @author Rafał Jamróz
  */
 @Finder
-public class HsqlProductFinder implements ProductFinder {
+public class SqlProductFinder implements ProductFinder {
 
     private static final int MAX_ITEMS_PER_PAGE = 50;
 
@@ -51,7 +51,7 @@ public class HsqlProductFinder implements ProductFinder {
     private int countProducts(ProductSearchCriteria criteria) {
         StringBuilder query = new StringBuilder();
         Map<String, Object> parameters = new HashMap<String, Object>();
-        query.append("SELECT count(*) from Product p ");
+        query.append("SELECT count(*) FROM Product p ");
         appendWhereClause(query, criteria, parameters);
         return jdbcTemplate.queryForInt(query.toString(), parameters);
     }
@@ -70,8 +70,8 @@ public class HsqlProductFinder implements ProductFinder {
         int offset = criteria.getItemsPerPage() * (criteria.getPageNumber() - 1);
         int limit = Math.min(criteria.getItemsPerPage(), MAX_ITEMS_PER_PAGE);
         query.append("OFFSET :offset LIMIT :limit ");
-        parameters.put("limit", limit);
         parameters.put("offset", offset);
+        parameters.put("limit", limit);
 
     }
 
@@ -88,7 +88,7 @@ public class HsqlProductFinder implements ProductFinder {
 
     private void addConstraints(List<String> constraints, ProductSearchCriteria criteria, Map<String, Object> parameters) {
         if (!StringUtils.isBlank(criteria.getContainsText())) {
-            constraints.add("LCASE(p.name) like :searchedText");
+            constraints.add("LOWER(p.name) LIKE :searchedText");
             parameters.put("searchedText", "%" + criteria.getContainsText().toLowerCase() + "%");
         }
         if (criteria.getMaxPrice() != null) {
@@ -96,7 +96,7 @@ public class HsqlProductFinder implements ProductFinder {
             parameters.put("maxPrice", criteria.getMaxPrice());
         }
         if (criteria.hasSpecificProductIdsFilter()) {
-            constraints.add("p.id in (:productIds)");
+            constraints.add("p.id IN (:productIds)");
             parameters.put("productIds", criteria.getSpecificProductIds());
         }
     }
