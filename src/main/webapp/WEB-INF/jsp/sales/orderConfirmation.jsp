@@ -37,7 +37,7 @@
 		<div class="orderConfirmationControls">
 			<div class="inline">are you sure that you want to confirm this
 				order?</div>
-			<form action="submit" method="POST" class="inline">
+			<form id="orderConfirmationForm" action="submit" method="POST" class="inline">
 				<input type="hidden" name="orderId" value="${order.orderId}" /> <input
 					type="submit" value="Confirm" />
 			</form>

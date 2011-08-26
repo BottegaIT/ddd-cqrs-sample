@@ -35,7 +35,7 @@
 
 #productsTable tbody .imageColumn {
 	text-align: center;
-	padding: 1px 0px 1px 0px;
+	padding: 2px 0px 2px 0px;
 }
 
 #productsTable tbody .productNameColumn {
@@ -51,8 +51,8 @@
 }
 
 .productImage {
-	width: 50px;
-	height: 50px;
+	width: 48px;
+	height: 48px;
 	margin: auto;
 	display: block;
 }

@@ -1,4 +1,4 @@
-package pl.com.bottega.erp.sales.application;
+package pl.com.bottega.erp.sales.webui;
 
 import java.io.Serializable;
 import java.util.Collections;

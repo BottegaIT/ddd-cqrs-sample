@@ -8,6 +8,7 @@ import javax.persistence.Query;
 
 import pl.com.bottega.cqrs.query.annotations.Finder;
 import pl.com.bottega.erp.sales.domain.Order;
+import pl.com.bottega.erp.sales.domain.Order.OrderStatus;
 import pl.com.bottega.erp.sales.presentation.ClientOrderListItemDto;
 import pl.com.bottega.erp.sales.presentation.OrderDetailsDto;
 import pl.com.bottega.erp.sales.presentation.OrderFinder;
@@ -27,7 +28,10 @@ public class JpaOrderFinder implements OrderFinder {
     @Override
     public UnconfirmedOrderDetailsDto getUnconfirmedOrderDetails(Long orderId) {
         Order order = entityManager.find(Order.class, orderId);
-        return order == null ? null : toUnconfirmedOrderDetailsDto(order);
+        if (order != null && order.getStatus() == OrderStatus.DRAFT) {
+            return toUnconfirmedOrderDetailsDto(order);
+        }
+        return null;
     }
 
     @Override

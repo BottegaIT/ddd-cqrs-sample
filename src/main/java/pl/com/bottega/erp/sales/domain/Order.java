@@ -188,7 +188,7 @@ public class Order extends BaseAggregateRoot {
 
     /**
      * Sample access to the internal state - <b>remember to allow such access
-     * only if makes sense</b>, don't do that inanely.<br>
+     * only if makes sense</b>, don't do that by default!<br>
      * <br>
      * Notice that there is no setter!
      * 

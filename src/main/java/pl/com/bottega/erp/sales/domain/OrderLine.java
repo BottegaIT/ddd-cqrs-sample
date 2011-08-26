@@ -31,7 +31,7 @@ public class OrderLine extends BaseEntity {
 	@Embedded
 	@AttributeOverrides({
 		@AttributeOverride(name = "value", column = @Column(name = "regularCost_value")),
-		@AttributeOverride(name = "currencyCode", column = @Column(name = "regularCost_currencyCode")), })
+		@AttributeOverride(name = "currencyCode", column = @Column(name = "regularCost_currencyCode")) })
 	private Money regularCost;
 
 	/**
@@ -40,7 +40,7 @@ public class OrderLine extends BaseEntity {
 	@Embedded
 	@AttributeOverrides({
 			@AttributeOverride(name = "value", column = @Column(name = "effectiveCost_value")),
-			@AttributeOverride(name = "currencyCode", column = @Column(name = "effectiveCost_currencyCode")), })
+			@AttributeOverride(name = "currencyCode", column = @Column(name = "effectiveCost_currencyCode")) })
 	private Money effectiveCost;
 
 	/**

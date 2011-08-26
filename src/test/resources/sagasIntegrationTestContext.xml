@@ -10,13 +10,13 @@
 	<bean
 		class="pl.com.bottega.ddd.infrastructure.events.impl.SimpleEventPublisher" />
 
-	<bean class="pl.com.bottega.ddd.infrastructure.sagas.impl.SpringSagaEngine" />
+	<bean class="pl.com.bottega.ddd.infrastructure.sagas.impl.SimpleSagaEngine" />
 
 	<bean class="pl.com.bottega.ddd.infrastructure.sagas.impl.SpringSagaRegistry" />
 
 	<bean class="pl.com.bottega.ddd.sagas.SagaSpy" />
 
-	<bean class="pl.com.bottega.ddd.sagas.SimpleSagaLoader" />
+	<bean class="pl.com.bottega.ddd.sagas.SimpleSagaManager" />
 	<bean class="pl.com.bottega.ddd.sagas.SimpleSaga" />
 
 	<!-- data source -->

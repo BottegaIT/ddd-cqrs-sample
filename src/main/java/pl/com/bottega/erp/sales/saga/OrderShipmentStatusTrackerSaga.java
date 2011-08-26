@@ -50,6 +50,7 @@ public class OrderShipmentStatusTrackerSaga extends SagaInstance<OrderShipmentSt
             Order shippedOrder = orderRepository.load(data.getOrderId());
             shippedOrder.archive();
             orderRepository.save(shippedOrder);
+            markAsCompleted();
         }
     }
 }

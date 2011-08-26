@@ -11,7 +11,7 @@
 		<p>Choose from our wide range of quality products</p>
 		<div>
 			<h3>show only products</h3>
-			<form>
+			<form class="filterProductsForm">
 				containing text: <input name="containsText" type="text" value="${containsTextFilter}"/> </br>
 				up to price: <input name="maxPrice" type="text" value="${maxPriceFilter}"/> EUR</br>
 				<input type="submit" value="filter" /> <input id="clearFiltersButton" type="button" value="show all" />
@@ -35,7 +35,7 @@
 				<c:forEach items="${products.items}" var="product">
 					<tr>
 						<td class="imageColumn"><img class="productImage"
-							src="<c:url value="/static/img/"/>" />
+							src="<c:url value="/static/img/sales/noProductPicture.png "/>" />
 						</td>
 						<td class="productNameColumn"><c:out
 								value="${product.displayedName}" />

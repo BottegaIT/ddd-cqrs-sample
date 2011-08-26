@@ -13,35 +13,24 @@ import pl.com.bottega.ddd.application.annotation.ApplicationStatefullComponent;
 import pl.com.bottega.erp.sales.domain.Client;
 
 /**
+ * Mock implmentation of currenly authenticated user.
+ * 
  * @author Slawek
- *
  */
 @SuppressWarnings("serial")
 @ApplicationStatefullComponent
-public class SystemUser implements Serializable{
+public class SystemUser implements Serializable {
 
-	/**
-	 * ID of the JPA entity
-	 */
-	private Long userId;
-	
-	@PersistenceContext
+    @PersistenceContext
     private EntityManager entityManager;
 
-	@SuppressWarnings("unchecked")
-	public Long getUserId() {
-		//return userId;
-		List<Client> clients = entityManager.createQuery("from Client").getResultList();
-	    return clients.get(0).getId();
-	}
-	
-	//TODO: to be called from spring security
-	public void authenticate(Long userId){
-		this.userId = userId;
-	}
-	
-
-	
-
- 
+    /**
+     * @return any user id
+     */
+    @SuppressWarnings("unchecked")
+    public Long getUserId() {
+        // return userId;
+        List<Client> clients = entityManager.createQuery("from Client").getResultList();
+        return clients.get(0).getId();
+    }
 }

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pl.com.bottega.cqrs.command.Gate;
-import pl.com.bottega.erp.sales.application.ClientBasket;
 import pl.com.bottega.erp.sales.application.commands.CreateOrderCommand;
 import pl.com.bottega.erp.sales.presentation.ProductFinder;
 import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria;
