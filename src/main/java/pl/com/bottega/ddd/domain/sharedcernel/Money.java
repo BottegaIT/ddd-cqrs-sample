@@ -2,6 +2,7 @@ package pl.com.bottega.ddd.domain.sharedcernel;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Currency;
 
 import javax.persistence.Embeddable;
@@ -20,7 +21,7 @@ public class Money implements Serializable {
 
     public static final Currency DEFAULT_CURRENCY = Currency.getInstance("EUR");
 
-    public static final Money ZERO = new Money(0.0);
+    public static final Money ZERO = new Money(BigDecimal.ZERO);
 
     private BigDecimal value;
 
@@ -34,7 +35,7 @@ public class Money implements Serializable {
     }
 
     private Money(BigDecimal value, String currencyCode) {
-        this.value = value;
+        this.value = value.setScale(2, RoundingMode.HALF_EVEN);
         this.currencyCode = currencyCode;
     }
 
@@ -43,12 +44,7 @@ public class Money implements Serializable {
     }
 
     public Money(double value, Currency currency) {
-        this(value, currency.getCurrencyCode());
-    }
-
-    private Money(double value, String currencyCode) {
-        this.value = new BigDecimal(value);
-        this.currencyCode = currencyCode;
+        this(new BigDecimal(value), currency.getCurrencyCode());
     }
 
     public Money(double value) {
@@ -59,9 +55,8 @@ public class Money implements Serializable {
     public boolean equals(Object obj) {
         if (obj instanceof Money) {
             Money money = (Money) obj;
-            return value.equals(money.value) && currencyCode.equals(money.currencyCode);
+            return compatibleCurrency(money) && value.equals(money.value);
         }
-
         return false;
     }
 
@@ -74,17 +69,38 @@ public class Money implements Serializable {
     }
 
     public Money add(Money money) {
-        if (!currencyCode.equals(money.getCurrencyCode()))
+        if (!compatibleCurrency(money)) {
             throw new IllegalArgumentException("Currency mismatch");
+        }
 
-        return new Money(value.add(money.value), currencyCode);
+        return new Money(value.add(money.value), determineCurrencyCode(money));
     }
 
     public Money subtract(Money money) {
-        if (!currencyCode.equals(money.getCurrencyCode()))
+        if (!compatibleCurrency(money))
             throw new IllegalArgumentException("Currency mismatch");
 
-        return new Money(value.subtract(money.value), currencyCode);
+        return new Money(value.subtract(money.value), determineCurrencyCode(money));
+    }
+
+    /**
+     * Currency is compatible if the same or either money object has zero value.
+     */
+    private boolean compatibleCurrency(Money money) {
+        return isZero(value) || isZero(money.value) || currencyCode.equals(money.getCurrencyCode());
+    }
+
+    private boolean isZero(BigDecimal testedValue) {
+        return BigDecimal.ZERO.compareTo(testedValue) == 0;
+    }
+
+    /**
+     * @return currency from this object or otherCurrencyCode. Preferred is the
+     *         one that comes from Money that has non-zero value.
+     */
+    private Currency determineCurrencyCode(Money otherMoney) {
+        String resultingCurrenctCode = isZero(value) ? otherMoney.currencyCode : currencyCode;
+        return Currency.getInstance(resultingCurrenctCode);
     }
 
     public String getCurrencyCode() {
@@ -103,10 +119,6 @@ public class Money implements Serializable {
         return value.compareTo(other.value) < 0;
     }
 
-    /**
-     * @param debt
-     * @return
-     */
     public boolean lessOrEquals(Money other) {
         return value.compareTo(other.value) <= 0;
     }

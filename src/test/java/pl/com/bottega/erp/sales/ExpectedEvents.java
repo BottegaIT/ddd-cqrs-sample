@@ -1,7 +1,6 @@
 package pl.com.bottega.erp.sales;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -19,6 +18,14 @@ import pl.com.bottega.ddd.domain.DomainEvent;
 import pl.com.bottega.ddd.infrastructure.events.impl.SimpleEventPublisher;
 import pl.com.bottega.ddd.infrastructure.events.impl.handlers.EventHandler;
 
+/**
+ * JUnit test rule for convenient asserting expected events. Rule will track
+ * which events were published during the test method execution. Validating if
+ * the expected events occurred will happen after the whole method executes
+ * correctly.
+ * 
+ * @author Rafał Jamróz
+ */
 @Component
 public class ExpectedEvents implements TestRule {
 
@@ -39,8 +46,8 @@ public class ExpectedEvents implements TestRule {
     }
 
     /**
-     * Expects specified events in any order. Passes if other events are found
-     * as well.
+     * Expects specified events in any order. (Also passes if other events were
+     * published)
      */
     public void expect(DomainEvent... events) {
         expectedEvents.addAll(asList(events));

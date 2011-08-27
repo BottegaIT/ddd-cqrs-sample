@@ -14,9 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import pl.com.bottega.ddd.domain.DomainEventPublisher;
 
-/**
- * TODO LATER saga with multiple aggregates, saga with injected current user.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/sagasIntegrationTestContext.xml")
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)

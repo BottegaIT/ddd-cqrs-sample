@@ -28,10 +28,15 @@ import pl.com.bottega.erp.sales.presentation.ProductListItemDto;
 import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria;
 import pl.com.bottega.erp.sales.presentation.UnconfirmedOrderDetailsDto;
 
+/**
+ * Functional tests for ordering products by clients.
+ * 
+ * @author Rafał Jamróz
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/functionalTestsContext.xml")
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-public class ProductsOrderingTest {
+public class ProductsOrderingFunctionalTest {
 
     @Inject
     @Rule
@@ -69,6 +74,7 @@ public class ProductsOrderingTest {
         assertOrderIsConfirmed(orderId);
     }
 
+    // helper methods
     // given
     private ProductListItemDto anyProduct() {
         return productFinder.findProducts(new ProductSearchCriteria()).getItems().get(0);

@@ -158,10 +158,9 @@ public class Order extends BaseAggregateRoot {
 
     private OrderLine find(Product product) {
         for (OrderLine line : items) {
-            if (product.getId().equals(line.getProduct().getId()))
+            if (product.equals(line.getProduct()))
                 return line;
         }
-
         return null;
     }
 

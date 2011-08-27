@@ -13,7 +13,7 @@ import pl.com.bottega.erp.sales.domain.RebatePolicy;
  * Calculate x% of the rebate if quantity of the product is greater than q
  * 
  * @author Slawek
- *
+ * 
  */
 @DomainPolicyImpl
 public class StandardRebate implements RebatePolicy {
@@ -34,7 +34,7 @@ public class StandardRebate implements RebatePolicy {
 
 	@Override
 	public Money calculateRebate(Product product, int quantity, Money regularCost){
-		if (quantity > mininalQuantity)
+		if (quantity >= mininalQuantity)
 			return regularCost.multiplyBy(rebateRatio);
 		return Money.ZERO;
 	}

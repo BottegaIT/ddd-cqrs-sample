@@ -17,8 +17,8 @@ import javax.persistence.Version;
 @MappedSuperclass
 public abstract class BaseEntity {
 
-    // ALWAYS ADD NEW STATUS AT THE END - because status field is annotated ad
-    // ordinal in sake of performance
+    // ALWAYS ADD NEW STATUS AT THE END - because the entityStatus field is
+    // annotated as ordinal in sake of performance
     public static enum EntityStatus {
         ACTIVE, ARCHIVE
     }
@@ -46,12 +46,24 @@ public abstract class BaseEntity {
         return entityStatus;
     }
 
+    /**
+     * Two entities are equal if they are the same instance or both are the same
+     * class and have equal id.
+     * 
+     * If they are the same class but both have null id they are not equal.
+     */
     @Override
     public boolean equals(Object obj) {
-        if (!getClass().equals(obj.getClass())) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || !getClass().equals(obj.getClass())) {
             return false;
         }
         BaseEntity entity = (BaseEntity) obj;
+        if (id == null || entity.id == null) {
+            return false;
+        }
         return id.equals(entity.id);
     }
 
