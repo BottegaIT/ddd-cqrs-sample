@@ -25,41 +25,44 @@ import pl.com.bottega.erp.sales.domain.errors.OrderCreationException;
  * @author Rafał Jamróz
  */
 @CommandHandlerAnnotation
-public class CreateOrderCommandHandler implements CommandHandler<CreateOrderCommand, Long> {
+public class CreateOrderCommandHandler implements
+		CommandHandler<CreateOrderCommand, Long> {
 
-    @Inject
-    private OrderFactory orderFactory;
+	@Inject
+	private OrderFactory orderFactory;
 
-    @Inject
-    private OrderRepository orderRepository;
+	@Inject
+	private OrderRepository orderRepository;
 
-    @Inject
-    private ProductRepository productRepository;
+	@Inject
+	private ProductRepository productRepository;
 
-    @Inject
-    private ClientRepository clientRepository;
+	@Inject
+	private ClientRepository clientRepository;
 
-    @Inject
-    private SystemUser systemUser;
+	@Inject
+	private SystemUser systemUser;
 
-    @Inject
-    private ApplicationEventPublisher applicationEventPublisher;
+	@Inject
+	private ApplicationEventPublisher applicationEventPublisher;
 
-    @Override
-    public Long handle(CreateOrderCommand command) {
-        Client currentClient = clientRepository.load(systemUser.getUserId());
-        try {
-            Order order = orderFactory.crateOrder(currentClient);
-            for (Map.Entry<Long, Integer> productIdWithCount : command.getProductIdsWithCounts().entrySet()) {
-                Long productId = productIdWithCount.getKey();
-                Integer count = productIdWithCount.getValue();
-                order.addProduct(productRepository.load(productId), count);
-                applicationEventPublisher.publish(new ProductAddedToOrderEvent(productId, systemUser.getUserId(), 1));
-            }
-            orderRepository.persist(order);
-            return order.getId();
-        } catch (OrderCreationException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	@Override
+	public Long handle(CreateOrderCommand command) {
+		Client currentClient = clientRepository.load(systemUser.getUserId());
+
+		Order order = orderFactory.crateOrder(currentClient);
+		
+		for (Map.Entry<Long, Integer> productIdWithCount : command.getProductIdsWithCounts().entrySet()) {
+			Long productId = productIdWithCount.getKey();
+			Integer count = productIdWithCount.getValue();
+			
+			order.addProduct(productRepository.load(productId), count);
+			
+			applicationEventPublisher.publish(new ProductAddedToOrderEvent(productId, systemUser.getUserId(), 1));
+		}
+		
+		orderRepository.persist(order);
+		
+		return order.getId();
+	}
 }

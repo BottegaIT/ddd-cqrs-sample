@@ -1,7 +1,7 @@
 package pl.com.bottega.erp.sales.domain.errors;
 
 @SuppressWarnings("serial")
-public class OrderCreationException extends Exception{
+public class OrderCreationException extends RuntimeException{
 
 	private Long clientId;
 	
