@@ -90,7 +90,7 @@ public class PurchaseApplicationService {
         orderRepository.save(order);
 
         // if we want to Spy Clients:)
-        eventPublisher.publish(new ProductAddedToOrderEvent(product.getId(), systemUser.getUserId(), quantity));
+        eventPublisher.publish(new ProductAddedToOrderEvent(product.getEntityId(), systemUser.getUserId(), quantity));
     }
 
     /**
@@ -104,7 +104,7 @@ public class PurchaseApplicationService {
 
         Specification<Order> orderSpecification = generateSpecification(systemUser);
         if (!orderSpecification.isSatisfiedBy(order))
-            throw new OrderOperationException("Order does not meet specification", order.getId());
+            throw new OrderOperationException("Order does not meet specification", order.getEntityId());
 
         // Domain logic
         order.submit();

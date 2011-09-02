@@ -34,7 +34,7 @@ public class Shipment extends BaseAggregateRoot {
             throw new IllegalStateException("cannot ship in status " + status);
         }
         status = ShippingStatus.SENT;
-        eventPublisher.publish(new OrderShippedEvent(orderId, getId()));
+        eventPublisher.publish(new OrderShippedEvent(orderId, getEntityId()));
     }
 
     /**
@@ -45,7 +45,7 @@ public class Shipment extends BaseAggregateRoot {
             throw new IllegalStateException("cannot deliver in status " + status);
         }
         status = ShippingStatus.DELIVERED;
-        eventPublisher.publish(new ShipmentDeliveredEvent(getId()));
+        eventPublisher.publish(new ShipmentDeliveredEvent(getEntityId()));
     }
 
     public Long getOrderId() {

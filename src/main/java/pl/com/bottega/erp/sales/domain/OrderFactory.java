@@ -46,7 +46,7 @@ public class OrderFactory {
     private void checkIfclientCanPerformPurchase(Client client) throws OrderCreationException {
         if (client.getEntityStatus() != EntityStatus.ACTIVE)
             throw new OrderCreationException("Can not perform purchase, because of the Client status: "
-                    + client.getEntityStatus(), client.getId());
+                    + client.getEntityStatus(), client.getEntityId());
     }
 
     /**

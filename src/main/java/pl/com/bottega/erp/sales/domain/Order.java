@@ -127,12 +127,12 @@ public class Order extends BaseAggregateRoot {
         status = OrderStatus.SUBMITTED;
         submitDate = new Timestamp(System.currentTimeMillis());
 
-        eventPublisher.publish(new OrderSubmittedEvent(getId()));
+        eventPublisher.publish(new OrderSubmittedEvent(getEntityId()));
     }
 
     private void checkIfDraft() {
         if (status != OrderStatus.DRAFT)
-            throw new OrderOperationException("Operation allowed only in DRAFT status", client.getId(), getId());
+            throw new OrderOperationException("Operation allowed only in DRAFT status", client.getEntityId(), getEntityId());
     }
 
     /**
@@ -178,7 +178,7 @@ public class Order extends BaseAggregateRoot {
         List<OrderedProduct> result = new ArrayList<OrderedProduct>(items.size());
 
         for (OrderLine line : items) {
-            result.add(new OrderedProduct(line.getProduct().getId(), line.getProduct().getName(), line.getQuantity(),
+            result.add(new OrderedProduct(line.getProduct().getEntityId(), line.getProduct().getName(), line.getQuantity(),
                     line.getEffectiveCost(), line.getRegularCost()));
         }
 

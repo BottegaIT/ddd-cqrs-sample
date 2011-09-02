@@ -34,6 +34,6 @@ public class Customer extends BaseAggregateRoot{
 		this.status = status;
 		
 		//Sample Case: give 10% rebate for all draft orders - communication via events with different Bounded Context to achieve decoupling
-		eventPublisher.publish(new CustomerStatusChangedEvent(getId(), status));
+		eventPublisher.publish(new CustomerStatusChangedEvent(getEntityId(), status));
 	}
 }

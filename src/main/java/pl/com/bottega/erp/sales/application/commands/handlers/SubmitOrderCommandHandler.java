@@ -46,7 +46,7 @@ public class SubmitOrderCommandHandler implements CommandHandler<SubmitOrderComm
         
         Specification<Order> orderSpecification = generateSpecification(systemUser);
 		if (! orderSpecification.isSatisfiedBy(order))
-			throw new OrderOperationException("Order does not meet specification", order.getId());            
+			throw new OrderOperationException("Order does not meet specification", order.getEntityId());            
                 		
 		//Domain logic
 		order.submit();		

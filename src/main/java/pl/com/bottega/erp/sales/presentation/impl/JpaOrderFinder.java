@@ -42,7 +42,7 @@ public class JpaOrderFinder implements OrderFinder {
 
     private UnconfirmedOrderDetailsDto toUnconfirmedOrderDetailsDto(Order order) {
         UnconfirmedOrderDetailsDto dto = new UnconfirmedOrderDetailsDto();
-        dto.setOrderId(order.getId());
+        dto.setOrderId(order.getEntityId());
         dto.setTotalCost(order.getTotalCost());
         dto.setOrderedProducts(order.getOrderedProducts());
         return dto;
@@ -50,7 +50,7 @@ public class JpaOrderFinder implements OrderFinder {
 
     private OrderDetailsDto toOrderDetailsDto(Order order) {
         OrderDetailsDto dto = new OrderDetailsDto();
-        dto.setOrderId(order.getId());
+        dto.setOrderId(order.getEntityId());
         dto.setTotalCost(order.getTotalCost());
         dto.setOrderedProducts(order.getOrderedProducts());
         dto.setSubmitDate(order.getSubmitDate());

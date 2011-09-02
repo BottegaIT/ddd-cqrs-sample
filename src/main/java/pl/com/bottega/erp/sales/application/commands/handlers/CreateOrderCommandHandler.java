@@ -63,6 +63,6 @@ public class CreateOrderCommandHandler implements
 		
 		orderRepository.persist(order);
 		
-		return order.getId();
+		return order.getEntityId();
 	}
 }

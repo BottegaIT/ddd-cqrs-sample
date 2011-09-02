@@ -30,7 +30,7 @@ public class JpaOrderRepository extends GenericJpaRepositoryForBaseEntity<Order>
     @Override
     public void persist(Order order) {    	
     	super.persist(order);
-    	 eventPublisher.publish(new OrderCreatedEvent(order.getId()));
+    	 eventPublisher.publish(new OrderCreatedEvent(order.getEntityId()));
     }
 
     @Override

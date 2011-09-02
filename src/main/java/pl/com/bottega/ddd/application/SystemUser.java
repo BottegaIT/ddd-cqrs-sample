@@ -31,6 +31,6 @@ public class SystemUser implements Serializable {
     public Long getUserId() {
         // return userId;
         List<Client> clients = entityManager.createQuery("from Client").getResultList();
-        return clients.get(0).getId();
+        return clients.get(0).getEntityId();
     }
 }

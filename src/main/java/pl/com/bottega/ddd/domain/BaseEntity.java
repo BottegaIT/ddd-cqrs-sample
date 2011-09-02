@@ -23,9 +23,10 @@ public abstract class BaseEntity {
         ACTIVE, ARCHIVE
     }
 
+    //entityId because ID can mean something (some domain concept) in some Bounded Context
     @Id
     @GeneratedValue
-    private Long id;
+    private Long entityId;
 
     @SuppressWarnings("unused")
 	@Version
@@ -38,8 +39,8 @@ public abstract class BaseEntity {
         entityStatus = EntityStatus.ARCHIVE;
     }
 
-    public Long getId() {
-        return id;
+    public Long getEntityId() {
+        return entityId;
     }
 
     public EntityStatus getEntityStatus() {
@@ -61,14 +62,14 @@ public abstract class BaseEntity {
             return false;
         }
         BaseEntity entity = (BaseEntity) obj;
-        if (id == null || entity.id == null) {
+        if (entityId == null || entity.entityId == null) {
             return false;
         }
-        return id.equals(entity.id);
+        return entityId.equals(entity.entityId);
     }
 
     @Override
     public int hashCode() {
-        return id == null ? 0 : id.hashCode();
+        return entityId == null ? 0 : entityId.hashCode();
     }
 }
