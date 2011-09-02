@@ -27,9 +27,9 @@ public abstract class BaseEntity {
     @GeneratedValue
     private Long id;
 
-    @Version
     @SuppressWarnings("unused")
-    private Timestamp lastModificationTime;
+	@Version
+    private Long version;
 
     @Enumerated(EnumType.ORDINAL)
     private EntityStatus entityStatus = EntityStatus.ACTIVE;
