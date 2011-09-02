@@ -1,7 +1,5 @@
 package pl.com.bottega.ddd.domain;
 
-import java.sql.Timestamp;
-
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -45,31 +43,5 @@ public abstract class BaseEntity {
 
     public EntityStatus getEntityStatus() {
         return entityStatus;
-    }
-
-    /**
-     * Two entities are equal if they are the same instance or both are the same
-     * class and have equal id.
-     * 
-     * If they are the same class but both have null id they are not equal.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || !getClass().equals(obj.getClass())) {
-            return false;
-        }
-        BaseEntity entity = (BaseEntity) obj;
-        if (entityId == null || entity.entityId == null) {
-            return false;
-        }
-        return entityId.equals(entity.entityId);
-    }
-
-    @Override
-    public int hashCode() {
-        return entityId == null ? 0 : entityId.hashCode();
     }
 }
