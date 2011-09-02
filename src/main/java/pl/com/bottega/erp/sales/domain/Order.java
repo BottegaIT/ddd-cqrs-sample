@@ -19,7 +19,7 @@ import javax.persistence.Transient;
 
 import pl.com.bottega.ddd.domain.BaseAggregateRoot;
 import pl.com.bottega.ddd.domain.annotations.DomainAggregateRoot;
-import pl.com.bottega.ddd.domain.sharedcernel.Money;
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
 import pl.com.bottega.erp.sales.domain.errors.OrderOperationException;
 import pl.com.bottega.erp.sales.domain.events.OrderSubmittedEvent;
 

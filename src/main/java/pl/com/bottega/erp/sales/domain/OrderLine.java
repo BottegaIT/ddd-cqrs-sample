@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 
 import pl.com.bottega.ddd.domain.BaseEntity;
 import pl.com.bottega.ddd.domain.annotations.DomainEntity;
-import pl.com.bottega.ddd.domain.sharedcernel.Money;
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
 
 /**
  * 

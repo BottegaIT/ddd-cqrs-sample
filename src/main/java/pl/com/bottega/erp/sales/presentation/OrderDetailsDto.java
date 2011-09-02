@@ -3,7 +3,7 @@ package pl.com.bottega.erp.sales.presentation;
 import java.util.Date;
 import java.util.List;
 
-import pl.com.bottega.ddd.domain.sharedcernel.Money;
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
 import pl.com.bottega.erp.sales.domain.Order.OrderStatus;
 import pl.com.bottega.erp.sales.domain.OrderedProduct;
 

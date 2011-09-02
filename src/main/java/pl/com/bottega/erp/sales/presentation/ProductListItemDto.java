@@ -3,7 +3,7 @@
  */
 package pl.com.bottega.erp.sales.presentation;
 
-import pl.com.bottega.ddd.domain.sharedcernel.Money;
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
 
 /**
  * @author Slawek

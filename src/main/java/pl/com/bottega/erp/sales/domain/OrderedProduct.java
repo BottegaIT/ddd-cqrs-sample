@@ -3,7 +3,7 @@ package pl.com.bottega.erp.sales.domain;
 import java.io.Serializable;
 
 import pl.com.bottega.ddd.domain.annotations.ValueObject;
-import pl.com.bottega.ddd.domain.sharedcernel.Money;
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
 
 /**
  * VO used to present ordered items and encapsulate Order internal impl

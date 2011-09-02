@@ -4,7 +4,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 
 import pl.com.bottega.ddd.domain.annotations.ValueObject;
-import pl.com.bottega.ddd.domain.sharedcernel.Money;
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
 
 /**
  * 

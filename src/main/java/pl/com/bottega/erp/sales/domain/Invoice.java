@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 
 import pl.com.bottega.ddd.domain.BaseAggregateRoot;
 import pl.com.bottega.ddd.domain.annotations.DomainAggregateRoot;
-import pl.com.bottega.ddd.domain.sharedcernel.Money;
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
 
 /**
  * 

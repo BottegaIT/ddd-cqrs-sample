@@ -7,6 +7,8 @@ import java.util.Currency;
 
 import org.junit.Test;
 
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
+
 public class MoneyTest {
 
     private static final Currency USD = Currency.getInstance("USD");

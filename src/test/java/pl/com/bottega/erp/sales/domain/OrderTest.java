@@ -17,7 +17,7 @@ import org.mockito.MockitoAnnotations;
 
 import pl.com.bottega.ddd.domain.DomainEvent;
 import pl.com.bottega.ddd.domain.DomainEventPublisher;
-import pl.com.bottega.ddd.domain.sharedcernel.Money;
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
 import pl.com.bottega.ddd.domain.support.InjectorHelper;
 import pl.com.bottega.erp.sales.domain.Order.OrderStatus;
 import pl.com.bottega.erp.sales.domain.Product.ProductType;

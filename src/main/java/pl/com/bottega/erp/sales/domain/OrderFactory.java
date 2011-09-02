@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import pl.com.bottega.ddd.domain.BaseEntity.EntityStatus;
 import pl.com.bottega.ddd.domain.annotations.DomainFactory;
-import pl.com.bottega.ddd.domain.sharedcernel.Money;
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
 import pl.com.bottega.ddd.domain.support.InjectorHelper;
 import pl.com.bottega.erp.sales.domain.Order.OrderStatus;
 import pl.com.bottega.erp.sales.domain.errors.OrderCreationException;

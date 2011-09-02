@@ -1,4 +1,4 @@
-package pl.com.bottega.ddd.domain.sharedcernel;
+package pl.com.bottega.ddd.domain.sharedkernel;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

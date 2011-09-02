@@ -12,7 +12,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import pl.com.bottega.ddd.domain.sharedcernel.Money;
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
 import pl.com.bottega.erp.sales.domain.Client;
 import pl.com.bottega.erp.sales.domain.Product;
 import pl.com.bottega.erp.sales.domain.Product.ProductType;

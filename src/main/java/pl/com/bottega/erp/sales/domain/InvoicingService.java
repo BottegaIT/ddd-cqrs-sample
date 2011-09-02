@@ -3,7 +3,7 @@ package pl.com.bottega.erp.sales.domain;
 import javax.inject.Inject;
 
 import pl.com.bottega.ddd.domain.annotations.DomainService;
-import pl.com.bottega.ddd.domain.sharedcernel.Money;
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
 
 /**
  * Sample Domain Service that contains logic that:

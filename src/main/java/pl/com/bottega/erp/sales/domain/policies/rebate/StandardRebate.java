@@ -3,7 +3,7 @@ package pl.com.bottega.erp.sales.domain.policies.rebate;
 import java.math.BigDecimal;
 
 import pl.com.bottega.ddd.domain.annotations.DomainPolicyImpl;
-import pl.com.bottega.ddd.domain.sharedcernel.Money;
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
 import pl.com.bottega.erp.sales.domain.Product;
 import pl.com.bottega.erp.sales.domain.RebatePolicy;
 

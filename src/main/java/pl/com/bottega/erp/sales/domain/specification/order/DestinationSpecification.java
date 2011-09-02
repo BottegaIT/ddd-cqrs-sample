@@ -6,7 +6,7 @@ package pl.com.bottega.erp.sales.domain.specification.order;
 import java.util.Locale;
 
 import pl.com.bottega.ddd.domain.annotations.DomainSpecification;
-import pl.com.bottega.ddd.domain.sharedcernel.specification.CompositeSpecification;
+import pl.com.bottega.ddd.domain.sharedkernel.specification.CompositeSpecification;
 import pl.com.bottega.erp.sales.domain.Order;
 
 /**

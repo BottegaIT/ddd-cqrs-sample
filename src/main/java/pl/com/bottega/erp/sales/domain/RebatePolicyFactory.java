@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import pl.com.bottega.ddd.application.SystemUser;
 import pl.com.bottega.ddd.domain.annotations.DomainFactory;
-import pl.com.bottega.ddd.domain.sharedcernel.Money;
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
 import pl.com.bottega.erp.sales.domain.policies.rebate.StandardRebate;
 import pl.com.bottega.erp.sales.domain.policies.rebate.decorators.VipRebate;
 

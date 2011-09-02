@@ -4,8 +4,8 @@
 package pl.com.bottega.erp.sales.domain.specification.order;
 
 import pl.com.bottega.ddd.domain.annotations.DomainSpecification;
-import pl.com.bottega.ddd.domain.sharedcernel.Money;
-import pl.com.bottega.ddd.domain.sharedcernel.specification.CompositeSpecification;
+import pl.com.bottega.ddd.domain.sharedkernel.Money;
+import pl.com.bottega.ddd.domain.sharedkernel.specification.CompositeSpecification;
 import pl.com.bottega.erp.sales.domain.Client;
 import pl.com.bottega.erp.sales.domain.Order;
 
