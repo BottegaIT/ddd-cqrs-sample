@@ -58,7 +58,7 @@ public class SqlProductFinder implements ProductFinder {
 
     private String createSqlSelectQuery(ProductSearchCriteria criteria, Map<String, Object> parameters) {
         StringBuilder query = new StringBuilder();
-        query.append("SELECT p.id, p.name, p.value, p.currencyCode FROM Product p ");
+        query.append("SELECT p.entityId, p.name, p.value, p.currencyCode FROM Product p ");
         appendWhereClause(query, criteria, parameters);
         appendOrderByClause(query, criteria);
         appendOffsetLimitClause(query, criteria, parameters);
@@ -96,7 +96,7 @@ public class SqlProductFinder implements ProductFinder {
             parameters.put("maxPrice", criteria.getMaxPrice());
         }
         if (criteria.hasSpecificProductIdsFilter()) {
-            constraints.add("p.id IN (:productIds)");
+            constraints.add("p.entityId IN (:productIds)");
             parameters.put("productIds", criteria.getSpecificProductIds());
         }
     }
@@ -124,7 +124,7 @@ public class SqlProductFinder implements ProductFinder {
         @Override
         public ProductListItemDto mapRow(ResultSet rs, int rowNum) throws SQLException {
             ProductListItemDto dto = new ProductListItemDto();
-            dto.setProductId(rs.getLong("id"));
+            dto.setProductId(rs.getLong("entityId"));
             dto.setDisplayedName(rs.getString("name"));
             dto.setPrice(new Money(rs.getBigDecimal("value"), Currency.getInstance(rs.getString("currencyCode"))));
             return dto;
