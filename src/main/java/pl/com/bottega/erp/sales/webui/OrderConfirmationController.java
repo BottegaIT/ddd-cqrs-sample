@@ -25,13 +25,13 @@ public class OrderConfirmationController {
 
     @RequestMapping("/{orderId}")
     public String orderConfirmation(@PathVariable("orderId") Long orderId, Model model) {
-        model.addAttribute("order", orderFinder.getUnconfirmedOrderDetails(orderId));
+        model.addAttribute("order", orderFinder.getClientOrderDetails(orderId));
         return "sales/orderConfirmation";
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     public String submitOrder(@RequestParam("orderId") Long orderId) {
         gate.dispatch(new SubmitOrderCommand(orderId));
-        return "redirect:/";
+        return "redirect:/sales/confirmOrder/" + orderId;
     }
 }

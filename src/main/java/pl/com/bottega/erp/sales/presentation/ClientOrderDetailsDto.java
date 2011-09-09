@@ -7,7 +7,7 @@ import pl.com.bottega.ddd.domain.sharedkernel.Money;
 import pl.com.bottega.erp.sales.domain.Order.OrderStatus;
 import pl.com.bottega.erp.sales.domain.OrderedProduct;
 
-public class OrderDetailsDto {
+public class ClientOrderDetailsDto {
 
     private Long orderId;
     private Money totalCost;

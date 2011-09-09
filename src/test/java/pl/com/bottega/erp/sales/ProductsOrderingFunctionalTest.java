@@ -2,7 +2,6 @@ package pl.com.bottega.erp.sales;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import java.util.Collections;
 
@@ -10,7 +9,6 @@ import javax.inject.Inject;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -20,14 +18,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import pl.com.bottega.cqrs.command.Gate;
 import pl.com.bottega.erp.sales.application.commands.CreateOrderCommand;
 import pl.com.bottega.erp.sales.application.commands.SubmitOrderCommand;
+import pl.com.bottega.erp.sales.domain.Order.OrderStatus;
 import pl.com.bottega.erp.sales.domain.OrderedProduct;
 import pl.com.bottega.erp.sales.domain.events.OrderCreatedEvent;
 import pl.com.bottega.erp.sales.domain.events.OrderSubmittedEvent;
+import pl.com.bottega.erp.sales.presentation.ClientOrderDetailsDto;
 import pl.com.bottega.erp.sales.presentation.OrderFinder;
 import pl.com.bottega.erp.sales.presentation.ProductFinder;
 import pl.com.bottega.erp.sales.presentation.ProductListItemDto;
 import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria;
-import pl.com.bottega.erp.sales.presentation.UnconfirmedOrderDetailsDto;
 
 /**
  * Functional tests for ordering products by clients.
@@ -71,8 +70,8 @@ public class ProductsOrderingFunctionalTest {
         Long orderId = createOrderWithProduct(existingProductId);
         submitOrder(orderId);
         // then
+        assertEquals(OrderStatus.SUBMITTED, orderFinder.getClientOrderDetails(orderId).getOrderStatus());
         events.expect(new OrderCreatedEvent(orderId), new OrderSubmittedEvent(orderId));
-        assertOrderIsConfirmed(orderId);
     }
 
     // helper methods
@@ -93,12 +92,9 @@ public class ProductsOrderingFunctionalTest {
 
     // then
     private void assertUnconfirmedOrderExistsWithProduct(Long orderId, Long productId) {
-        UnconfirmedOrderDetailsDto order = orderFinder.getUnconfirmedOrderDetails(orderId);
+        ClientOrderDetailsDto order = orderFinder.getClientOrderDetails(orderId);
         OrderedProduct onlyProduct = getOnlyElement(order.getOrderedProducts());
+        assertEquals(OrderStatus.DRAFT, order.getOrderStatus());
         assertEquals(productId, onlyProduct.getProductId());
-    }
-
-    private void assertOrderIsConfirmed(Long orderId) {
-        assertNull(orderFinder.getUnconfirmedOrderDetails(orderId));
     }
 }

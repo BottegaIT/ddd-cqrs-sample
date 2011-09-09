@@ -9,10 +9,9 @@ import javax.persistence.Query;
 import pl.com.bottega.cqrs.query.annotations.Finder;
 import pl.com.bottega.erp.sales.domain.Order;
 import pl.com.bottega.erp.sales.domain.Order.OrderStatus;
+import pl.com.bottega.erp.sales.presentation.ClientOrderDetailsDto;
 import pl.com.bottega.erp.sales.presentation.ClientOrderListItemDto;
-import pl.com.bottega.erp.sales.presentation.OrderDetailsDto;
 import pl.com.bottega.erp.sales.presentation.OrderFinder;
-import pl.com.bottega.erp.sales.presentation.UnconfirmedOrderDetailsDto;
 
 /**
  * TODO basic security checks
@@ -26,30 +25,13 @@ public class JpaOrderFinder implements OrderFinder {
     private EntityManager entityManager;
 
     @Override
-    public UnconfirmedOrderDetailsDto getUnconfirmedOrderDetails(Long orderId) {
-        Order order = entityManager.find(Order.class, orderId);
-        if (order != null && order.getStatus() == OrderStatus.DRAFT) {
-            return toUnconfirmedOrderDetailsDto(order);
-        }
-        return null;
-    }
-
-    @Override
-    public OrderDetailsDto getOrderDetails(Long orderId) {
+    public ClientOrderDetailsDto getClientOrderDetails(Long orderId) {
         Order order = entityManager.find(Order.class, orderId);
         return order == null ? null : toOrderDetailsDto(order);
     }
 
-    private UnconfirmedOrderDetailsDto toUnconfirmedOrderDetailsDto(Order order) {
-        UnconfirmedOrderDetailsDto dto = new UnconfirmedOrderDetailsDto();
-        dto.setOrderId(order.getEntityId());
-        dto.setTotalCost(order.getTotalCost());
-        dto.setOrderedProducts(order.getOrderedProducts());
-        return dto;
-    }
-
-    private OrderDetailsDto toOrderDetailsDto(Order order) {
-        OrderDetailsDto dto = new OrderDetailsDto();
+    private ClientOrderDetailsDto toOrderDetailsDto(Order order) {
+        ClientOrderDetailsDto dto = new ClientOrderDetailsDto();
         dto.setOrderId(order.getEntityId());
         dto.setTotalCost(order.getTotalCost());
         dto.setOrderedProducts(order.getOrderedProducts());

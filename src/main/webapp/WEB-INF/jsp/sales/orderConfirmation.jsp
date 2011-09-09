@@ -21,8 +21,7 @@
 						<td class="quantityColumn"><c:out value="${product.quantity}" />
 						</td>
 						<td class="costColumn"><c:out
-								value="${product.effectiveCost}" />
-						</td>
+								value="${product.effectiveCost}" /></td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -30,14 +29,19 @@
 				<tr>
 					<td colspan="2" style="text-align: right; padding-right: 10px;">total
 						cost:</td>
-					<td><c:out value="${order.totalCost}" /></td>
+					<td><c:out value="${order.totalCost}" />
+					</td>
 				</tr>
 			</tfoot>
 		</table>
+		<div>
+			Order status: <span class="orderConfirmationStatus">${order.orderStatus}</span>
+		</div>
 		<div class="orderConfirmationControls">
 			<div class="inline">are you sure that you want to confirm this
 				order?</div>
-			<form id="orderConfirmationForm" action="submit" method="POST" class="inline">
+			<form id="orderConfirmationForm" action="submit" method="POST"
+				class="inline">
 				<input type="hidden" name="orderId" value="${order.orderId}" /> <input
 					type="submit" value="Confirm" />
 			</form>

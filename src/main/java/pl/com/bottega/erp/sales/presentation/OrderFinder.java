@@ -9,12 +9,7 @@ public interface OrderFinder {
     List<ClientOrderListItemDto> findOrders();
 
     /**
-     * Method for customers that want to find their unconfirmed own orders.
+     * Method for customers that want to find their own orders.
      */
-    UnconfirmedOrderDetailsDto getUnconfirmedOrderDetails(Long orderId);
-
-    /**
-     * Method for privileged users.
-     */
-    OrderDetailsDto getOrderDetails(Long orderId);
+    ClientOrderDetailsDto getClientOrderDetails(Long orderId);
 }
