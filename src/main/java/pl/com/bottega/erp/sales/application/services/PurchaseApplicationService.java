@@ -124,8 +124,8 @@ public class PurchaseApplicationService {
      */
     @SuppressWarnings("unchecked")
     private Specification<Order> generateSpecification(SystemUser systemUser) {
-        Specification<Order> specification = new ConjunctionSpecification<Order>(new DestinationSpecification(
-                Locale.CHINA).not(),// do not send to China
+        Specification<Order> specification = new ConjunctionSpecification<Order>(//
+                new DestinationSpecification(Locale.CHINA).not(),// do not send to China
                 new ItemsCountSpecification(100),// max 100 items
                 new DebtorSpecification()// not debts or max 1000 => debtors can
                                          // buy for max 1000

@@ -5,25 +5,22 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.util.Currency;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import pl.com.bottega.ddd.domain.DomainEvent;
 import pl.com.bottega.ddd.domain.DomainEventPublisher;
 import pl.com.bottega.ddd.domain.sharedkernel.Money;
-import pl.com.bottega.ddd.domain.support.InjectorHelper;
 import pl.com.bottega.erp.sales.domain.Order.OrderStatus;
 import pl.com.bottega.erp.sales.domain.Product.ProductType;
 import pl.com.bottega.erp.sales.domain.errors.OrderOperationException;
 import pl.com.bottega.erp.sales.domain.events.OrderSubmittedEvent;
-import pl.com.bottega.erp.sales.domain.policies.rebate.StandardRebate;
 
 public class OrderTest {
     /**
@@ -31,21 +28,17 @@ public class OrderTest {
      */
     private Order order;
 
-    @InjectMocks
-    private OrderFactory orderFactory = new OrderFactory();
-    @Mock
-    private RebatePolicyFactory rebatePolicyFactory;
-    @Mock
-    private InjectorHelper injector;
-    @Mock
-    private DomainEventPublisher eventPublisher;
+    private DomainEventPublisher eventPublisherMock;
+    private RebatePolicy rebatePolicyMock;
 
     @Before
     public void beforeEachMethod() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        given(rebatePolicyFactory.createRebatePolicy()).willReturn(new StandardRebate(0, 0));
-        order = orderFactory.crateOrder(new Client());
-        order.setEventPubslisher(eventPublisher);
+        rebatePolicyMock = mock(RebatePolicy.class);
+        eventPublisherMock = mock(DomainEventPublisher.class);
+        applyRebate(Money.ZERO);
+        order = new Order(new Client(), Money.ZERO, OrderStatus.DRAFT);
+        order.setRebatePolicy(rebatePolicyMock);
+        order.setEventPubslisher(eventPublisherMock);
     }
 
     @Test
@@ -85,25 +78,14 @@ public class OrderTest {
     }
 
     @Test
-    public void shouldCountTotalCostWithRabateThatWasNotEffective() throws Exception {
-        // given
-        order.applyRebate(new StandardRebate(10, 3));
-        // when
-        order.addProduct(productCosting(1.10, "PLN"), 1);
-        order.addProduct(productCosting(2.10, "PLN"), 2);
-        // then
-        assertEquals(money(5.30, "PLN"), order.getTotalCost());
-    }
-
-    @Test
     public void shouldCountTotalCostWithRabate() throws Exception {
         // given
-        order.applyRebate(new StandardRebate(10, 1));
+        applyRebate(money(0.15, "PLN"));
         // when
         order.addProduct(productCosting(1.10, "PLN"), 1);
         order.addProduct(productCosting(2.20, "PLN"), 1);
         // then
-        assertEquals(money(2.97, "PLN"), order.getTotalCost());
+        assertEquals(money(3.00, "PLN"), order.getTotalCost());
     }
 
     @Test
@@ -137,11 +119,14 @@ public class OrderTest {
     }
 
     private void expectEvent(Class<? extends DomainEvent> eventClass) {
-        verify(eventPublisher).publish(any(eventClass));
+        verify(eventPublisherMock).publish(any(eventClass));
     }
 
     private Money money(double value, String currencyCode) {
         return new Money(value, Currency.getInstance(currencyCode));
     }
 
+    private void applyRebate(Money rebate) {
+        given(rebatePolicyMock.calculateRebate(any(Product.class), anyInt(), any(Money.class))).willReturn(rebate);
+    }
 }
