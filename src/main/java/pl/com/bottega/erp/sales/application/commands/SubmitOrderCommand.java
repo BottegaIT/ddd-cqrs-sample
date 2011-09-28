@@ -1,9 +1,12 @@
 package pl.com.bottega.erp.sales.application.commands;
 
+import java.io.Serializable;
+
 import pl.com.bottega.cqrs.command.Command;
 
+@SuppressWarnings("serial")
 @Command(unique=true)
-public class SubmitOrderCommand {
+public class SubmitOrderCommand implements Serializable{
 
     private final Long orderId;
 
