@@ -1,12 +1,14 @@
 /**
  * 
  */
-package pl.com.bottega.cqrs.command;
+package pl.com.bottega.cqrs.command.impl;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import pl.com.bottega.cqrs.command.Command;
 
 /**
  * Manages command execution history based on {@link Command} annotation attributes<br>

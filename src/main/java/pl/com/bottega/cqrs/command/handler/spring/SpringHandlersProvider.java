@@ -13,8 +13,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import pl.com.bottega.cqrs.command.RunEnvironment.HandlersProvider;
 import pl.com.bottega.cqrs.command.handler.CommandHandler;
+import pl.com.bottega.cqrs.command.impl.RunEnvironment.HandlersProvider;
 
 @Component
 public class SpringHandlersProvider implements HandlersProvider, ApplicationListener<ContextRefreshedEvent> {

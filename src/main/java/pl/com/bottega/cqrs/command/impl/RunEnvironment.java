@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pl.com.bottega.cqrs.command;
+package pl.com.bottega.cqrs.command.impl;
 
 import javax.inject.Inject;
 
