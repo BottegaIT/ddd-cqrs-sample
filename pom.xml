@@ -9,6 +9,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
 		<spring.version>3.1.0.M2</spring.version>
 	</properties>
 
@@ -149,4 +151,221 @@
 			<url>http://maven.springframework.org/milestone </url>
 		</repository>
 	</repositories>
+
+	<profiles>
+		<!-- this profiles needs to be active to compile and run the acceptance tests. This separation was 
+			done for readability as the acceptance tests use different dependencies, properties and plugins than 
+			the production code -->
+		<profile>
+			<id>acceptance</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<selenium.version>2.4.0</selenium.version>
+				<jbehave.web.version>3.3.4</jbehave.web.version>
+				<jbehave.core.version>3.4.5</jbehave.core.version>
+
+				<warContextPath>cqrs-web</warContextPath>
+				<serverPort>8080</serverPort>
+
+				<firefox.skip>false</firefox.skip>
+				<chrome.skip>true</chrome.skip>
+				<ie.skip>true</ie.skip>
+				<!-- path to chromedriver executable to control Chromium, download from http://code.google.com/p/chromium/downloads/list -->
+				<chrome.driver>chromedriver.exe</chrome.driver>
+				<!-- path to Chromium binary if it's not the default location -->
+				<chrome.binary></chrome.binary>
+			</properties>
+
+			<build>
+				<testResources>
+					<testResource>
+						<directory>src/test/resources</directory>
+						<filtering>true</filtering>
+					</testResource>
+				</testResources>
+				<plugins>
+					<!-- Execute acceptnace tests using multiple different browsers -->
+					<plugin>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<version>2.6</version>
+						<executions>
+							<execution>
+								<id>firefox integration tests</id>
+								<goals>
+									<goal>integration-test</goal>
+								</goals>
+								<configuration>
+									<skipTests>${firefox.skip}</skipTests>
+									<reportsDirectory>${project.build.directory}/failsafe-reports/firefox</reportsDirectory>
+									<summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-firefox.xml</summaryFile>
+									<systemPropertyVariables>
+										<browser>firefox</browser>
+									</systemPropertyVariables>
+								</configuration>
+							</execution>
+							<execution>
+								<id>Chrome integration tests</id>
+								<goals>
+									<goal>integration-test</goal>
+								</goals>
+								<configuration>
+									<skipTests>${chrome.skip}</skipTests>
+									<reportsDirectory>${project.build.directory}/failsafe-reports/chrome</reportsDirectory>
+									<summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-chrome.xml</summaryFile>
+									<systemPropertyVariables>
+										<browser>chrome</browser>
+										<webdriver.chrome.driver>${chrome.driver}</webdriver.chrome.driver>
+										<chrome.binary>${chrome.binary}</chrome.binary>
+									</systemPropertyVariables>
+								</configuration>
+							</execution>
+							<execution>
+								<id>Internet Explorer integration tests</id>
+								<goals>
+									<goal>integration-test</goal>
+								</goals>
+								<configuration>
+									<skipTests>${ie.skip}</skipTests>
+									<reportsDirectory>${project.build.directory}/failsafe-reports/ie
+							</reportsDirectory>
+									<summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-ie.xml
+							</summaryFile>
+									<systemPropertyVariables>
+										<browser>ie</browser>
+									</systemPropertyVariables>
+								</configuration>
+							</execution>
+							<execution>
+								<id>verify</id>
+								<goals>
+									<goal>verify</goal>
+								</goals>
+								<configuration>
+									<summaryFiles>
+										<summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-firefox.xml
+								</summaryFile>
+										<summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-chrome.xml
+								</summaryFile>
+										<summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-ie.xml
+								</summaryFile>
+									</summaryFiles>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+
+					<!-- copy dummy failsafe-summary-* files required for maven-failsafe-plugin:goal (in case tests 
+						will be skipped for some of the browsers) -->
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-resources</id>
+								<phase>process-test-resources</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${basedir}/target/failsafe-reports</outputDirectory>
+									<resources>
+										<resource>
+											<directory>src/test/failsafe-dummy-reports</directory>
+										</resource>
+									</resources>
+									<overwrite>true</overwrite>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- Running application WAR using Jetty -->
+					<plugin>
+						<groupId>org.mortbay.jetty</groupId>
+						<artifactId>maven-jetty-plugin</artifactId>
+						<version>6.1.26</version>
+						<configuration>
+							<contextPath>${warContextPath}</contextPath>
+							<stopPort>63333</stopPort>
+							<stopKey>ASDF</stopKey>
+							<connectors>
+								<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+									<port>${serverPort}</port>
+								</connector>
+							</connectors>
+						</configuration>
+						<executions>
+							<execution>
+								<id>start-jetty</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<daemon>true</daemon>
+								</configuration>
+							</execution>
+							<execution>
+								<id>stop-jetty</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+
+			<dependencies>
+				<dependency>
+					<groupId>org.seleniumhq.selenium</groupId>
+					<artifactId>selenium-support</artifactId>
+					<version>${selenium.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.seleniumhq.selenium</groupId>
+					<artifactId>selenium-firefox-driver</artifactId>
+					<version>${selenium.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.seleniumhq.selenium</groupId>
+					<artifactId>selenium-chrome-driver</artifactId>
+					<version>${selenium.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.seleniumhq.selenium</groupId>
+					<artifactId>selenium-ie-driver</artifactId>
+					<version>${selenium.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.jbehave.web</groupId>
+					<artifactId>jbehave-web-selenium</artifactId>
+					<version>${jbehave.web.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>org.seleniumhq.selenium</groupId>
+							<artifactId>selenium-remote-control</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.seleniumhq.selenium</groupId>
+							<artifactId>selenium-support</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				<dependency>
+					<groupId>org.jbehave</groupId>
+					<artifactId>jbehave-core</artifactId>
+					<version>${jbehave.core.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.jbehave</groupId>
+					<artifactId>jbehave-spring</artifactId>
+					<version>${jbehave.core.version}</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 </project>
