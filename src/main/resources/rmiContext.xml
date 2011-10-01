@@ -1,17 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
 	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
-		<!-- does not necessarily have to be the same name as the bean to be exported -->
 		<property name="serviceName" value="Gate" />
 		<property name="service" ref="standardGate" />
 		<property name="serviceInterface" value="pl.com.bottega.cqrs.command.Gate" />
-		<!-- defaults to 1099 -->
+		<property name="registryPort" value="1199" />
+	</bean>
+
+	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+		<property name="serviceName" value="OrderFinder" />
+		<property name="service" ref="jpaOrderFinder" />
+		<property name="serviceInterface" value="pl.com.bottega.erp.sales.presentation.OrderFinder" />
+		<property name="registryPort" value="1199" />
+	</bean>
+	
+	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+		<property name="serviceName" value="ProductFinder" />
+		<property name="service" ref="sqlProductFinder" />
+		<property name="serviceInterface" value="pl.com.bottega.erp.sales.presentation.ProductFinder" />
+		<property name="registryPort" value="1199" />
+	</bean>
+	
+	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+		<property name="serviceName" value="ShipmentFinder" />
+		<property name="service" ref="jpaShipmentFinder" />
+		<property name="serviceInterface" value="pl.com.bottega.erp.shipping.presentation.ShipmentFinder" />
 		<property name="registryPort" value="1199" />
 	</bean>
 </beans>

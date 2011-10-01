@@ -8,14 +8,11 @@ import javax.persistence.Query;
 
 import pl.com.bottega.cqrs.query.annotations.Finder;
 import pl.com.bottega.erp.sales.domain.Order;
-import pl.com.bottega.erp.sales.domain.Order.OrderStatus;
 import pl.com.bottega.erp.sales.presentation.ClientOrderDetailsDto;
 import pl.com.bottega.erp.sales.presentation.ClientOrderListItemDto;
 import pl.com.bottega.erp.sales.presentation.OrderFinder;
 
 /**
- * TODO basic security checks
- * 
  * @author Rafał Jamróz
  */
 @Finder

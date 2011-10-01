@@ -1,0 +1,25 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<bean id="gate" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+		<property name="serviceUrl" value="rmi://localhost:1199/Gate" />
+		<property name="serviceInterface" value="pl.com.bottega.cqrs.command.Gate" />
+	</bean>
+
+	<bean id="orderFinder" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+		<property name="serviceUrl" value="rmi://localhost:1199/OrderFinder" />
+		<property name="serviceInterface" value="pl.com.bottega.erp.sales.presentation.OrderFinder" />
+	</bean>
+
+	<bean id="productFinder" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+		<property name="serviceUrl" value="rmi://localhost:1199/ProductFinder" />
+		<property name="serviceInterface" value="pl.com.bottega.erp.sales.presentation.ProductFinder" />
+	</bean>
+
+	<bean id="shipmentFinder" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+		<property name="serviceUrl" value="rmi://localhost:1199/ShipmentFinder" />
+		<property name="serviceInterface" value="pl.com.bottega.erp.shipping.presentation.ShipmentFinder" />
+	</bean>
+</beans>

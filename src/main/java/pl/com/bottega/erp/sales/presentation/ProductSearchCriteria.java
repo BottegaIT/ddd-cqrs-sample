@@ -3,24 +3,23 @@
  */
 package pl.com.bottega.erp.sales.presentation;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * @author Slawek
  */
-public class ProductSearchCriteria {
+public class ProductSearchCriteria implements Serializable {
+    public enum ProductSearchOrder {
+        NAME, PRICE;
+    }
 
     // constraints
     private String containsText;
     private Double maxPrice;
-    private Collection<Long> specificProductIds = Collections.emptySet();
-
-    // sorting
-    public static enum ProductSearchOrder {
-        NAME, PRICE;
-    }
-
+    private Collection<Long> specificProductIds = new ArrayList<Long>();
+    //
     private ProductSearchOrder orderBy = ProductSearchOrder.NAME;
     private boolean ascending = true;
 

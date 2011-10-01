@@ -3,13 +3,15 @@
  */
 package pl.com.bottega.erp.sales.presentation;
 
+import java.io.Serializable;
+
 import pl.com.bottega.ddd.domain.sharedkernel.Money;
 
 /**
  * @author Slawek
  * 
  */
-public class ProductListItemDto {
+public class ProductListItemDto implements Serializable {
     private Long productId;
     private String displayedName;
     private Money price;

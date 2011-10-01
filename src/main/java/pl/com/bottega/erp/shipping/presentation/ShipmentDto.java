@@ -1,8 +1,10 @@
 package pl.com.bottega.erp.shipping.presentation;
 
+import java.io.Serializable;
+
 import pl.com.bottega.erp.shipping.domain.ShippingStatus;
 
-public class ShipmentDto {
+public class ShipmentDto implements Serializable {
 
     private Long shipmentId;
     private Long orderId;

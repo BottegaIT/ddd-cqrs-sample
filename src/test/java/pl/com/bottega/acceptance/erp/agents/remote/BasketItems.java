@@ -13,20 +13,15 @@ import pl.com.bottega.acceptance.commons.RemoteAgent;
  * @author Rafał Jamróz
  */
 @RemoteAgent
-public class CurrentOrder {
+public class BasketItems {
+    private Map<Long, Integer> productsIdsWithCounts = new HashMap<Long, Integer>();
 
-    private Long orderId;
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public Map<Long, Integer> getProductsIdsWithCounts() {
+        return productsIdsWithCounts;
     }
 
     @AfterScenario
     public void clearContext() {
-        orderId = null;
+        productsIdsWithCounts = new HashMap<Long, Integer>();
     }
 }

@@ -14,5 +14,5 @@ public interface ProductsListAgent {
     /**
      * @return true if no products are available
      */
-    boolean hasProducts();
+    boolean productsExist();
 }

@@ -13,7 +13,7 @@ public class ProductsListPage implements ProductsListAgent {
     private BrowserAgentDriver driver;
 
     @Override
-    public boolean hasProducts() {
+    public boolean productsExist() {
         ensureOnCurrentPage();
         return !driver.elements("#productsTable tbody tr").isEmpty();
     }

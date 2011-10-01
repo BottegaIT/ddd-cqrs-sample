@@ -169,6 +169,8 @@
 				<warContextPath>cqrs-web</warContextPath>
 				<serverPort>8080</serverPort>
 
+				<!-- acceptance tests using RMI -->
+				<rmi.skip>false</rmi.skip>
 				<firefox.skip>false</firefox.skip>
 				<chrome.skip>true</chrome.skip>
 				<ie.skip>true</ie.skip>
@@ -192,7 +194,7 @@
 						<version>2.6</version>
 						<executions>
 							<execution>
-								<id>firefox integration tests</id>
+								<id>Firefox acceptance tests</id>
 								<goals>
 									<goal>integration-test</goal>
 								</goals>
@@ -206,7 +208,7 @@
 								</configuration>
 							</execution>
 							<execution>
-								<id>Chrome integration tests</id>
+								<id>Chrome acceptance tests</id>
 								<goals>
 									<goal>integration-test</goal>
 								</goals>
@@ -222,7 +224,7 @@
 								</configuration>
 							</execution>
 							<execution>
-								<id>Internet Explorer integration tests</id>
+								<id>Internet Explorer acceptance tests</id>
 								<goals>
 									<goal>integration-test</goal>
 								</goals>
@@ -238,6 +240,22 @@
 								</configuration>
 							</execution>
 							<execution>
+								<id>RMI acceptance tests</id>
+								<goals>
+									<goal>integration-test</goal>
+								</goals>
+								<configuration>
+									<skipTests>${rmi.skip}</skipTests>
+									<reportsDirectory>${project.build.directory}/failsafe-reports/rmi
+							</reportsDirectory>
+									<summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-rmi.xml
+							</summaryFile>
+									<systemPropertyVariables>
+										<useAgent>remote</useAgent>
+									</systemPropertyVariables>
+								</configuration>
+							</execution>
+							<execution>
 								<id>verify</id>
 								<goals>
 									<goal>verify</goal>
@@ -249,6 +267,8 @@
 										<summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-chrome.xml
 								</summaryFile>
 										<summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-ie.xml
+								</summaryFile>
+										<summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary-rmi.xml
 								</summaryFile>
 									</summaryFiles>
 								</configuration>

@@ -4,6 +4,10 @@ import javax.inject.Inject;
 
 import pl.com.bottega.acceptance.commons.RemoteAgent;
 import pl.com.bottega.acceptance.erp.agents.OrderConfirmationAgent;
+import pl.com.bottega.cqrs.command.Gate;
+import pl.com.bottega.erp.sales.application.commands.SubmitOrderCommand;
+import pl.com.bottega.erp.sales.domain.Order.OrderStatus;
+import pl.com.bottega.erp.sales.presentation.OrderFinder;
 
 /**
  * @author Rafał Jamróz
@@ -17,22 +21,25 @@ public class OrderConfirmationRemote implements OrderConfirmationAgent {
      * @see ProductsListRemote#currentOrder
      */
     @Inject
-    private CurrentOrder currentOder;
+    private CurrentOrder currentOrder;
+    @Inject
+    private Gate gate;
+    @Inject
+    private OrderFinder orderFinder;
 
     @Override
     public int getProductsCount() {
-        // return finder.getOrder(currentOrder.getId()).getProductsCount();
-        return 1;
+        return orderFinder.getClientOrderDetails(currentOrder.getOrderId()).getOrderedProducts().size();
     }
 
     @Override
     public void submit() {
-        // send(new SubmitOrderCommand(currentOrder.getId())
+        gate.dispatch(new SubmitOrderCommand(currentOrder.getOrderId()));
     }
 
     @Override
     public boolean isSubmitted() {
-        // return finder.getOrder(currentOrder.getId()).isConfirmed();
-        return true;
+        OrderStatus orderStatus = orderFinder.getClientOrderDetails(currentOrder.getOrderId()).getOrderStatus();
+        return OrderStatus.SUBMITTED.equals(orderStatus);
     }
 }

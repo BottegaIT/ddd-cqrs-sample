@@ -26,7 +26,7 @@ public class ProductsOrderingSteps {
     @Given("Products are available")
     public void productsAreAvailable() {
         // assume there are products
-        assertTrue(productsList.hasProducts());
+        assertTrue(productsList.productsExist());
     }
 
     @When("I add any product to basket")

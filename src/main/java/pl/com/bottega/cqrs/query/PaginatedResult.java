@@ -1,9 +1,10 @@
 package pl.com.bottega.cqrs.query;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-public class PaginatedResult<T> {
+public class PaginatedResult<T> implements Serializable {
     private final List<T> items;
     private final int pageSize;
     private final int pageNumber;

@@ -1,5 +1,6 @@
 package pl.com.bottega.erp.sales.presentation;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import pl.com.bottega.ddd.domain.sharedkernel.Money;
@@ -10,7 +11,7 @@ import pl.com.bottega.erp.sales.domain.Order.OrderStatus;
  * 
  * @author Rafał Jamróz
  */
-public class ClientOrderListItemDto {
+public class ClientOrderListItemDto implements Serializable {
 
     private Long orderId;
     private Money totalCost;
