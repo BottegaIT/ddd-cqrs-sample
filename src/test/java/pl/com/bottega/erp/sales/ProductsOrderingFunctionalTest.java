@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import pl.com.bottega.cqrs.command.Gate;
+import pl.com.bottega.erp.sales.application.commands.AddProductToOrderCommand;
 import pl.com.bottega.erp.sales.application.commands.CreateOrderCommand;
 import pl.com.bottega.erp.sales.application.commands.SubmitOrderCommand;
 import pl.com.bottega.erp.sales.domain.Order.OrderStatus;
@@ -73,11 +74,39 @@ public class ProductsOrderingFunctionalTest {
         assertEquals(OrderStatus.SUBMITTED, orderFinder.getClientOrderDetails(orderId).getOrderStatus());
         events.expect(new OrderCreatedEvent(orderId), new OrderSubmittedEvent(orderId));
     }
+    
+    @Test
+    public void shouldAddAlreadyAddedProdcyByIncreasingQuantity(){
+    	//given
+    	Long existingProductId = anyProduct().getProductId();
+    	//when
+    	Long orderId = createOrderWithProduct(existingProductId);
+    	addProduct(existingProductId, orderId);
+    	//then
+    	 assertEquals(1, orderFinder.getClientOrderDetails(orderId).getOrderedProducts().size());
+    }
+    
+    @Test
+    public void shouldAddProdct(){
+    	//given
+    	Long existingProductId = anyProduct().getProductId();
+    	Long otherProductId = anyOtherProduct().getProductId();
+    	//when
+    	Long orderId = createOrderWithProduct(existingProductId);
+    	addProduct(otherProductId, orderId);
+    	//then
+    	 assertEquals(2, orderFinder.getClientOrderDetails(orderId).getOrderedProducts().size());
+    }
 
-    // helper methods
+  
+
+	// helper methods
     // given
     private ProductListItemDto anyProduct() {
         return productFinder.findProducts(new ProductSearchCriteria()).getItems().get(0);
+    }
+    private ProductListItemDto anyOtherProduct() {
+        return productFinder.findProducts(new ProductSearchCriteria()).getItems().get(1);
     }
 
     // when
@@ -89,6 +118,11 @@ public class ProductsOrderingFunctionalTest {
     private void submitOrder(Long orderId) {
         gate.dispatch(new SubmitOrderCommand(orderId));
     }
+    
+    private void addProduct(Long productId, Long orderId) {
+		AddProductToOrderCommand command = new AddProductToOrderCommand(orderId, productId, 1);
+		gate.dispatch(command);
+	}
 
     // then
     private void assertUnconfirmedOrderExistsWithProduct(Long orderId, Long productId) {
