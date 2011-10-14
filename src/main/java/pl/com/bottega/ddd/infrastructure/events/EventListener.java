@@ -16,6 +16,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface EventListener {
 
-    boolean aynchronous() default false;
+    boolean asynchronous() default false;
 
 }

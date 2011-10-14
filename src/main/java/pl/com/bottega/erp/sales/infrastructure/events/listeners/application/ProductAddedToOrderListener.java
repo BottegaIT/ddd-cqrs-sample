@@ -14,7 +14,7 @@ import pl.com.bottega.erp.sales.application.events.ProductAddedToOrderEvent;
 @EventListeners
 public class ProductAddedToOrderListener{
 
-	@EventListener(aynchronous=true)
+	@EventListener(asynchronous=true)
 	public void handle(ProductAddedToOrderEvent event) {
 		System.out.println("Spy report:: client: " + event.getClientId() + " have added product: " + event.getProductid());
 		

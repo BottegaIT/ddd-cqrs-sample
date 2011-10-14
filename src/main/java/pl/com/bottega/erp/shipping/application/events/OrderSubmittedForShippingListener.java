@@ -33,7 +33,7 @@ public class OrderSubmittedForShippingListener {
     @Inject
     private ShipmentRepository repository;
 
-    @EventListener(aynchronous = true)
+    @EventListener(asynchronous = true)
     public void handle(OrderSubmittedEvent event) {
         ClientOrderDetailsDto orderDetails = orderFinder.getClientOrderDetails(event.getOrderId());
         Shipment shipment = factory.createShipment(orderDetails);

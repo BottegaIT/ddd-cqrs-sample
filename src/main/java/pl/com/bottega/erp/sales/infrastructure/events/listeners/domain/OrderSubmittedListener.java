@@ -14,7 +14,7 @@ import pl.com.bottega.erp.sales.domain.events.OrderSubmittedEvent;
 @EventListeners
 public class OrderSubmittedListener {
 
-	@EventListener(aynchronous=true)
+	@EventListener(asynchronous=true)
 	public void handle(OrderSubmittedEvent event) {
 		System.out.println("Sending mail aboud order: " + event.getOrderId());	
 	}

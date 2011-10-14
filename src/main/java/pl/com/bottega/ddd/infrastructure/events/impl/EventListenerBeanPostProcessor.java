@@ -36,7 +36,7 @@ public class EventListenerBeanPostProcessor implements BeanPostProcessor, BeanFa
                 
             	Class<?> eventType = method.getParameterTypes()[0];
                 
-                if (listenerAnnotation.aynchronous()){
+                if (listenerAnnotation.asynchronous()){
                 	//TODO just a temporary fake impl
                 	EventHandler handler = new AsynchronousEventHandler(eventType, beanName, method, beanFactory);
                 	//TODO add to some queue

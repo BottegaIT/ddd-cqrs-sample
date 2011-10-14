@@ -14,7 +14,7 @@ import pl.com.bottega.erp.crm.domain.events.CustomerStatusChangedEvent;
 @EventListeners
 public class CustomerStatusChangedListener{
 
-	@EventListener(aynchronous=true)	
+	@EventListener(asynchronous=true)	
 	public void handle(CustomerStatusChangedEvent event) {
 		if (event.getStatus() == CustomerStatus.VIP){
 			calculateReabteForAllDraftOrders(event.getCustomerId(), 10);

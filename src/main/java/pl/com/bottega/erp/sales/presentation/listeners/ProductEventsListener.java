@@ -25,7 +25,7 @@ public class ProductEventsListener {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	@EventListener(aynchronous=true)
+	@EventListener(asynchronous=true)
 	public void handle(ProductAddedToOrderEvent event){
 		entityManager.persist(new OrderedProduct(event.getProductid(), event.getClientId(), event.getQuantity(), new Date()));
 	}
