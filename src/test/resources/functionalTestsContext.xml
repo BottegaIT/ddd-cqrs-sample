@@ -4,4 +4,18 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<import resource="classpath:/configurationContext.xml" />
+	
+	<!-- fake Session and Request Scope impl - needed for testing Session Scoped Beans -->
+	 <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+	    <property name="scopes">
+	      <map>
+	        <entry key="session">
+	          <bean class="pl.com.bottega.acceptance.utils.SimpleMapScope" />
+	        </entry>
+	        <entry key="request">
+	          <bean class="pl.com.bottega.acceptance.utils.SimpleMapScope" />
+	        </entry>
+	      </map>
+	    </property>
+	  </bean>
 </beans>
