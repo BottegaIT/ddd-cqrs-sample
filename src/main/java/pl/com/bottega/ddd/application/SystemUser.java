@@ -3,13 +3,13 @@
  */
 package pl.com.bottega.ddd.application;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import pl.com.bottega.ddd.application.annotation.ApplicationStatefullComponent;
+import org.springframework.stereotype.Component;
+
 import pl.com.bottega.erp.sales.domain.Client;
 
 /**
@@ -17,20 +17,19 @@ import pl.com.bottega.erp.sales.domain.Client;
  * 
  * @author Slawek
  */
-@SuppressWarnings("serial")
-@ApplicationStatefullComponent
-public class SystemUser implements Serializable {
+@Component
+public class SystemUser {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+	@PersistenceContext
+	private EntityManager entityManager;
 
-    /**
-     * @return any user id
-     */
-    @SuppressWarnings("unchecked")
-    public Long getUserId() {
-        // return userId;
-        List<Client> clients = entityManager.createQuery("from Client").getResultList();
-        return clients.get(0).getEntityId();
-    }
+	/**
+	 * @return any user id
+	 */
+	@SuppressWarnings("unchecked")
+	public Long getUserId() {
+		// return userId;
+		List<Client> clients = entityManager.createQuery("from Client").getResultList();
+		return clients.get(0).getEntityId();
+	}
 }
