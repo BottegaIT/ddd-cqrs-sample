@@ -1,93 +1,152 @@
-/*
- * Copyright 2011-2012 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package pl.com.bottega.erp.sales.webui;
 
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.sun.mail.imap.protocol.SearchSequence;
 
-import pl.com.bottega.cqrs.command.Gate;
-import pl.com.bottega.erp.sales.application.commands.CreateOrderCommand;
+import pl.com.bottega.cqrs.query.PaginatedResult;
 import pl.com.bottega.erp.sales.presentation.ProductFinder;
+import pl.com.bottega.erp.sales.presentation.ProductListItemDto;
 import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria;
 import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria.ProductSearchOrder;
 
-@Controller
-@RequestMapping("/sales/products")
+@ManagedBean(name="products")
+@SessionScoped
 public class ProductsListController {
 
-    @Inject
-    private ProductFinder productFinder;
-    @Inject
-    private ClientBasket basket;
-    @Inject
-    private Gate gate;
+	@Inject
+	private ProductFinder finder;
 
-    private static final int RESULTS_PER_PAGE = 10;
+	private ProductSearchCriteria searchCriteria = new ProductSearchCriteria();
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String productsList(Model model, @RequestParam(value = "sortBy", required = false) String sortBy,
-            @RequestParam(value = "ascending", required = false) Boolean ascending,
-            @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "maxPrice", required = false) Double maxPrice,
-            @RequestParam(value = "containsText", required = false) String containsText) {
+	private PaginatedResult<ProductListItemDto> finderResult;
 
-        ProductSearchCriteria criteria = new ProductSearchCriteria();
-        addFiltering(criteria, containsText, maxPrice);
-        addPagination(criteria, page, RESULTS_PER_PAGE);
-        addOrdering(criteria, sortBy, ascending);
+	private static final int RESULTS_PER_PAGE = 10;
+	private static final int START_PAGE = 1;
 
-        model.addAttribute("products", productFinder.findProducts(criteria));
-        model.addAttribute("sortBy", criteria.getOrderBy().toString());
-        model.addAttribute("ascending", criteria.isAscending());
-        model.addAttribute("containsTextFilter", criteria.getContainsText());
-        model.addAttribute("maxPriceFilter", criteria.getMaxPrice());
-        return "sales/productsList";
-    }
+	private int pageNumber()
+	{
 
-    private void addFiltering(ProductSearchCriteria criteria, String containsText, Double maxPrice) {
-        if (containsText != null) {
-            criteria.setContainsText(containsText.trim());
-        }
-        criteria.setMaxPrice(maxPrice);
-    }
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		String param = (String) facesContext.getExternalContext().getRequestParameterMap().get("page");
+		if (param == null)
+		{
+			return START_PAGE;
+		}
+		try
+		{
+			Integer intParam = Integer.parseInt(param);
+			return intParam;
+		}
+		catch (NumberFormatException e)
+		{
+			return START_PAGE;
+		}
 
-    private void addPagination(ProductSearchCriteria criteria, Integer page, int resultsPerPage) {
-        if (page != null) {
-            criteria.setPageNumber(page);
-        }
-        criteria.setItemsPerPage(RESULTS_PER_PAGE);
-    }
+	}
 
-    private void addOrdering(ProductSearchCriteria criteria, String sortBy, Boolean ascending) {
-        if (sortBy != null) {
-            criteria.setOrderBy(ProductSearchOrder.valueOf(sortBy));
-        }
-        if (ascending != null) {
-            criteria.setAscending(ascending);
-        }
-    }
+	public boolean isAscending()
+	{
+		return searchCriteria.isAscending();
+	}
+	
+	public ProductSearchOrder getOrderBy()
+	{
+		return searchCriteria.getOrderBy();
+	}
+	public List<ProductListItemDto> getItems()
+	{
+		fetch();
+		return finderResult.getItems();
+	}
 
-    @RequestMapping(value = "/checkout", method = RequestMethod.POST)
-    public String createOrder() {
-        Long orderId = (Long) gate.dispatch(new CreateOrderCommand(basket.getProductIdsWithCounts()));
-        return "redirect:/sales/confirmOrder/" + orderId;
-    }
+	public int getTotalItemsCount()
+	{
+		if (finderResult == null)
+		{
+			fetch();
+		}
+
+		return finderResult.getTotalItemsCount();
+	}
+
+	public void sortByName()
+	{
+		if (ProductSearchOrder.NAME.equals(searchCriteria.getOrderBy()))
+		{
+			searchCriteria.setAscending(!searchCriteria.isAscending());
+
+		}
+		searchCriteria.setOrderBy(ProductSearchOrder.NAME);
+	}
+
+	public void sortByPrice()
+	{
+		if (ProductSearchOrder.PRICE.equals(searchCriteria.getOrderBy()))
+		{
+			searchCriteria.setAscending(!searchCriteria.isAscending());
+		}
+		searchCriteria.setOrderBy(ProductSearchOrder.PRICE);
+	}
+
+	private void fetch()
+	{
+		searchCriteria.setPageNumber(pageNumber());
+		searchCriteria.setItemsPerPage(RESULTS_PER_PAGE);
+		finderResult =  finder.findProducts(searchCriteria);
+	}
+
+	public int getPagesCount()
+	{
+		if (finderResult == null)
+		{
+			fetch();
+		}
+
+		return finderResult.getPagesCount();
+	}
+
+	public String getContainsTextFilter()
+	{
+		return searchCriteria.getContainsText();
+	}
+
+	public void setContainsTextFilter(String containsText)
+	{
+		if (containsText != null) {
+			searchCriteria.setContainsText(containsText.trim());
+		}
+	}
+
+	public void setMaxPriceFilter(Double d)
+	{
+		searchCriteria.setMaxPrice(d);
+	}
+
+	public Double getMaxPriceFilter()
+	{
+		return searchCriteria.getMaxPrice();
+	}
+
+	public void addToOrder(Long productId)
+	{
+
+	}
+
+	public String doFilter()
+	{
+		return null;
+	}
+
+	public String clearFilter()
+	{
+		searchCriteria = new ProductSearchCriteria();
+		finderResult = null;
+		return null;
+	}
 }

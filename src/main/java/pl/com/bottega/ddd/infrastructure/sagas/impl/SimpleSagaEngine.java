@@ -1,18 +1,3 @@
-/*
- * Copyright 2011-2012 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package pl.com.bottega.ddd.infrastructure.sagas.impl;
 
 import java.lang.reflect.InvocationTargetException;
@@ -21,14 +6,12 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.NoResultException;
 
-import org.springframework.stereotype.Component;
-
-import pl.com.bottega.ddd.infrastructure.events.impl.SimpleEventPublisher;
-import pl.com.bottega.ddd.infrastructure.events.impl.handlers.EventHandler;
+import pl.com.bottega.ddd.infrastructure.events.EventListener;
+import pl.com.bottega.ddd.infrastructure.events.EventListeners;
 import pl.com.bottega.ddd.infrastructure.sagas.SagaEngine;
 import pl.com.bottega.ddd.sagas.LoadSaga;
 import pl.com.bottega.ddd.sagas.SagaAction;
@@ -38,28 +21,22 @@ import pl.com.bottega.ddd.sagas.SagaManager;
 /**
  * @author Rafał Jamróz
  */
-@Component
+@EventListeners
+@Named
 public class SimpleSagaEngine implements SagaEngine {
 
     private final SagaRegistry sagaRegistry;
 
-    private final SimpleEventPublisher eventPublisher;
-
     @Inject
-    public SimpleSagaEngine(SagaRegistry sagaRegistry, SimpleEventPublisher eventPublisher) {
+    public SimpleSagaEngine(SagaRegistry sagaRegistry) {
         this.sagaRegistry = sagaRegistry;
-        this.eventPublisher = eventPublisher;
-    }
-
-    @PostConstruct
-    public void registerEventHandler() {
-        eventPublisher.registerEventHandler(new SagaEventHandler(this));
     }
 
     @SuppressWarnings("rawtypes")
     @Override
+    @EventListener
     public void handleSagasEvent(Object event) {
-        Collection<SagaManager> loaders = sagaRegistry.getLoadersForEvent(event);
+        Collection<SagaManager<?,?>> loaders = sagaRegistry.getLoadersForEvent(event);
         for (SagaManager loader : loaders) {
             SagaInstance sagaInstance = loadSaga(loader, event);
             invokeSagaActionForEvent(sagaInstance, event);
@@ -70,20 +47,25 @@ public class SimpleSagaEngine implements SagaEngine {
     }
 
     private SagaInstance loadSaga(SagaManager loader, Object event) {
-        Class<? extends SagaInstance> sagaType = determineSagaTypeByLoader(loader);
+        Class<? extends SagaInstance<?>> sagaType = determineSagaTypeByLoader(loader);
         Object sagaData = loadSagaData(loader, event);
         if (sagaData == null) {
             sagaData = loader.createNewSagaData();
         }
         SagaInstance sagaInstance = sagaRegistry.createSagaInstance(sagaType);
+        
+        
         sagaInstance.setData(sagaData);
         return sagaInstance;
     }
 
     // TODO determine saga type more reliably
-    private Class<? extends SagaInstance> determineSagaTypeByLoader(SagaManager loader) {
-        Type type = ((ParameterizedType) loader.getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0];
-        return (Class<? extends SagaInstance>) type;
+    private Class<? extends SagaInstance<?>> determineSagaTypeByLoader(SagaManager<?,?> loader) 
+    {
+    	Class<?> managerClass = loader.getClass();
+    	Type firstInterface = managerClass.getGenericInterfaces()[0];
+        Type type = ((ParameterizedType) firstInterface).getActualTypeArguments()[0];
+        return (Class<? extends SagaInstance<?>>) type;
     }
 
     /**
@@ -127,22 +109,5 @@ public class SimpleSagaEngine implements SagaEngine {
         throw new RuntimeException("no method handling " + event.getClass());
     }
 
-    private static class SagaEventHandler implements EventHandler {
 
-        private final SagaEngine sagaEngine;
-
-        public SagaEventHandler(SagaEngine sagaEngine) {
-            this.sagaEngine = sagaEngine;
-        }
-
-        @Override
-        public boolean canHandle(Object event) {
-            return true;
-        }
-
-        @Override
-        public void handle(Object event) {
-            sagaEngine.handleSagasEvent(event);
-        }
-    }
 }
