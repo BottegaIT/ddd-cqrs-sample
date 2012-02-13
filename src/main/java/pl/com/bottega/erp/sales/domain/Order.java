@@ -168,7 +168,7 @@ public class Order extends BaseAggregateRoot {
 
     /**
      * Sample encapsulation of unstable internal implementation - assumption:
-     * this impl may vary in time. So we use projection of the internal state of
+     * this cdi may vary in time. So we use projection of the internal state of
      * this Aggregate<br>
      * <br>
      * Projection hides internal structure using Value Objects. Projection is

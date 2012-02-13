@@ -2,32 +2,29 @@ package pl.com.bottega.erp.sales.webui;
 
 import java.util.List;
 
+import javax.enterprise.inject.Model;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-
-import com.sun.mail.imap.protocol.SearchSequence;
 
 import pl.com.bottega.cqrs.query.PaginatedResult;
 import pl.com.bottega.erp.sales.presentation.ProductFinder;
 import pl.com.bottega.erp.sales.presentation.ProductListItemDto;
 import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria;
-import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria.ProductSearchOrder;
 
 @ManagedBean(name="products")
-@SessionScoped
+@RequestScoped
 public class ProductsListController {
+
+    private static final int RESULTS_PER_PAGE = 10;
+    private static final int START_PAGE = 1;
+
+    private ProductSearchCriteria searchCriteria = new ProductSearchCriteria();
+    private PaginatedResult<ProductListItemDto> finderResult;
 
 	@Inject
 	private ProductFinder finder;
-
-	private ProductSearchCriteria searchCriteria = new ProductSearchCriteria();
-
-	private PaginatedResult<ProductListItemDto> finderResult;
-
-	private static final int RESULTS_PER_PAGE = 10;
-	private static final int START_PAGE = 1;
 
 	private int pageNumber()
 	{
@@ -50,103 +47,119 @@ public class ProductsListController {
 
 	}
 
-	public boolean isAscending()
-	{
-		return searchCriteria.isAscending();
-	}
-	
-	public ProductSearchOrder getOrderBy()
-	{
-		return searchCriteria.getOrderBy();
-	}
-	public List<ProductListItemDto> getItems()
-	{
-		fetch();
-		return finderResult.getItems();
-	}
+    public List<ProductListItemDto> getItems()
+    {
+        fetch();
+        return finderResult.getItems();
+    }
 
-	public int getTotalItemsCount()
-	{
-		if (finderResult == null)
-		{
-			fetch();
-		}
+    public int getTotalItemsCount()
+    {
+        if (finderResult == null)
+        {
+            fetch();
+        }
 
-		return finderResult.getTotalItemsCount();
-	}
+        return finderResult.getTotalItemsCount();
+    }
 
-	public void sortByName()
-	{
-		if (ProductSearchOrder.NAME.equals(searchCriteria.getOrderBy()))
-		{
-			searchCriteria.setAscending(!searchCriteria.isAscending());
+    public int getPagesCount()
+    {
+        if (finderResult == null)
+        {
+            fetch();
+        }
 
-		}
-		searchCriteria.setOrderBy(ProductSearchOrder.NAME);
-	}
-
-	public void sortByPrice()
-	{
-		if (ProductSearchOrder.PRICE.equals(searchCriteria.getOrderBy()))
-		{
-			searchCriteria.setAscending(!searchCriteria.isAscending());
-		}
-		searchCriteria.setOrderBy(ProductSearchOrder.PRICE);
-	}
+        return finderResult.getPagesCount();
+    }
 
 	private void fetch()
 	{
 		searchCriteria.setPageNumber(pageNumber());
-		searchCriteria.setItemsPerPage(RESULTS_PER_PAGE);
-		finderResult =  finder.findProducts(searchCriteria);
+        searchCriteria.setItemsPerPage(RESULTS_PER_PAGE);
+		finderResult = finder.findProducts(searchCriteria);
 	}
 
-	public int getPagesCount()
-	{
-		if (finderResult == null)
-		{
-			fetch();
-		}
 
-		return finderResult.getPagesCount();
-	}
+    public boolean isAscending()
+    {
+        return searchCriteria.isAscending();
+    }
 
-	public String getContainsTextFilter()
-	{
-		return searchCriteria.getContainsText();
-	}
+    public ProductSearchCriteria.ProductSearchOrder getOrderBy()
+    {
+        return searchCriteria.getOrderBy();
+    }
 
-	public void setContainsTextFilter(String containsText)
-	{
-		if (containsText != null) {
-			searchCriteria.setContainsText(containsText.trim());
-		}
-	}
+    public ProductSearchCriteria getSearchCriteria() {
+        return searchCriteria;
+    }
 
-	public void setMaxPriceFilter(Double d)
-	{
-		searchCriteria.setMaxPrice(d);
-	}
+    public void setFinderResult(PaginatedResult<ProductListItemDto> finderResult) {
+        this.finderResult = finderResult;
+    }
 
-	public Double getMaxPriceFilter()
-	{
-		return searchCriteria.getMaxPrice();
-	}
+    public void sortByName()
+    {
+        if (ProductSearchCriteria.ProductSearchOrder.NAME.equals(searchCriteria.getOrderBy()))
+        {
+            searchCriteria.setAscending(!searchCriteria.isAscending());
 
-	public void addToOrder(Long productId)
-	{
+        }
+        searchCriteria.setOrderBy(ProductSearchCriteria.ProductSearchOrder.NAME);
+    }
 
-	}
+    public PaginatedResult<ProductListItemDto> getFinderResult() {
+        return finderResult;
+    }
 
-	public String doFilter()
-	{
-		return null;
-	}
+    public void sortByPrice()
+    {
+        if (ProductSearchCriteria.ProductSearchOrder.PRICE.equals(searchCriteria.getOrderBy()))
+        {
+            searchCriteria.setAscending(!searchCriteria.isAscending());
+        }
+        searchCriteria.setOrderBy(ProductSearchCriteria.ProductSearchOrder.PRICE);
+    }
 
-	public String clearFilter()
-	{
-		searchCriteria = new ProductSearchCriteria();
-		finderResult = null;
-		return null;
-	}
+
+    public String getContainsTextFilter()
+    {
+        return searchCriteria.getContainsText();
+    }
+
+    public void setContainsTextFilter(String containsText)
+    {
+        if (containsText != null) {
+            searchCriteria.setContainsText(containsText.trim());
+        }
+    }
+
+    public void setMaxPriceFilter(Double d)
+    {
+        searchCriteria.setMaxPrice(d);
+    }
+
+    public Double getMaxPriceFilter()
+    {
+        return searchCriteria.getMaxPrice();
+    }
+
+    public void addToOrder(Long productId)
+    {
+
+    }
+
+    public String doFilter()
+    {
+        return null;
+    }
+
+    public String clearFilter()
+    {
+        searchCriteria = new ProductSearchCriteria();
+        finderResult = null;
+        return null;
+    }
+
 }

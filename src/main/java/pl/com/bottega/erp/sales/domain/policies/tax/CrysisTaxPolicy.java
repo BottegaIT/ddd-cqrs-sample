@@ -9,7 +9,7 @@ import pl.com.bottega.erp.sales.domain.Tax;
 import pl.com.bottega.erp.sales.domain.TaxPolicy;
 
 /**
- * Sample Policy impl<br> 
+ * Sample Policy cdi<br>
  * 
  * @author Slawek
  *
