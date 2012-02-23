@@ -6,16 +6,11 @@
 
 
 	<persistence-unit name="defaultPU"  transaction-type="JTA">
-
-		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jdbc/ddd-cqrs-sample</jta-data-source>
 
 		<properties>
-			<property name="openjpa.ConnectionURL" value="jdbc:derby://localhost:1528/db_ddd_cqrs" />
-			<property name="openjpa.ConnectionDriverName" value="org.apache.derby.jdbc.ClientDriver" />
-
-			<property name="openjpa.jdbc.Schema" value="db_ddd_cqrs" />
-			<property name="openjpa.Log" value="DefaultLevel=ERROR, Tool=INFO, Runtime=TRACE" />
-			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(SchemaAction='add,deleteTableContents')" />
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
 		</properties>
 		
 	</persistence-unit>

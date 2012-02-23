@@ -19,7 +19,7 @@ public class AddSampleProductsOnStartup {
 
 	private boolean initialized = false;
 	
-	@PersistenceContext(name="defaultPU")
+	@PersistenceContext
     private EntityManager em;
 
 	public void run()

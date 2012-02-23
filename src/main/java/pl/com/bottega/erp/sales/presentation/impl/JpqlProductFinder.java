@@ -1,6 +1,6 @@
 package pl.com.bottega.erp.sales.presentation.impl;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import pl.com.bottega.cqrs.query.PaginatedResult;
 import pl.com.bottega.cqrs.query.annotations.Finder;
 import pl.com.bottega.erp.sales.presentation.ProductFinder;

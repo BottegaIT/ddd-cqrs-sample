@@ -136,10 +136,6 @@ public class CDISagaRegistry implements SagaRegistry {
                 Class<?>[] params = method.getParameterTypes();
                 if (params.length == 1) {
                     loadersInterestedIn.put(params[0], beanName);
-                    // TODO not reliable
-                    Type firstInterface = loaderClass.getGenericInterfaces()[0];
-                    Type type = ((ParameterizedType) firstInterface).getActualTypeArguments()[0];
-
                 } else {
                     throw new RuntimeException("incorrect event hadndler: "
                             + method);

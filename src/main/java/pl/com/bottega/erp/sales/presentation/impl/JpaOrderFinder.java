@@ -19,7 +19,7 @@ import pl.com.bottega.erp.sales.presentation.OrderFinder;
 @Finder
 public class JpaOrderFinder implements OrderFinder {
 
-	@PersistenceContext(unitName="defaultPU")
+	@PersistenceContext
     private EntityManager entityManager;
 
     @Override

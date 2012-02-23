@@ -74,8 +74,7 @@ public class SimpleSagaEngine implements SagaEngine {
     private Object loadSagaData(SagaManager loader, Object event) {
         Method loaderMethod = findHandlerMethodForEvent(loader.getClass(), event);
         try {
-            Object sagaData = loaderMethod.invoke(loader, event);
-            return sagaData;
+            return loaderMethod.invoke(loader, event);
         } catch (InvocationTargetException e) {
             // NRE is ok here, it means that saga hasn't been started yet
             if (e.getTargetException() instanceof NoResultException) {

@@ -30,7 +30,7 @@ class GateHistory {
 		protected boolean removeEldestEntry(Map.Entry<Object, Date> eldest) {
 			return this.size() > maxHistoryCapacity;
 		}
-	};
+	}
 
 	private static final int DEFAULT_MAX_HISTORY_CAPACITY = 3;
 

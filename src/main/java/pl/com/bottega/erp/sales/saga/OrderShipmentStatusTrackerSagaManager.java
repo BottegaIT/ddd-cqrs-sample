@@ -16,7 +16,7 @@ import pl.com.bottega.erp.shipping.domain.events.ShipmentDeliveredEvent;
 public class OrderShipmentStatusTrackerSagaManager implements
         SagaManager<OrderShipmentStatusTrackerSaga, OrderShipmentStatusTrackerData> {
 
-	@PersistenceContext(unitName="defaultPU")
+	@PersistenceContext
     private EntityManager entityManager;
 
     @LoadSaga
