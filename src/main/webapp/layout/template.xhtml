@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<f:view contentType="text/html">
+<ui:insert name="metadata"/>
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../static/css/layout/layout.css" />
+	<link rel="stylesheet" href="../static/css/layout/dataTable.css" />
+	<link rel="stylesheet" href="../static/css/sales/productsList.css" />
+	
+	<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	<!--<h:outputScript library="javascript" name="dataTable.js" />-->
+	<h:outputScript library="javascript/sales" name="productsList.js" />
+	<title>DDD CQRS Sample</title>
+</h:head>
+
+<h:body>
+
+	<div class="logo">DDD CQRS Sample</div>
+	<div class="siteBody">
+		<h:outputText class="warning" value="JSF UI in progress..." />
+		<div class="menuContainer">
+			<div>jump to module:</div>
+			<div class="menuItem">
+				<a href="TODO/sales/products/list">products</a>
+			</div>
+			<div class="menuItem">
+				<a href="TODO/sales/orders/list">orders</a>
+			</div>
+			<div class="menuItem">
+				<a href="TODO/shipping/shipment/list">shipping</a>
+			</div>
+		</div>
+
+		<div>
+			<ui:insert name="content">Content</ui:insert>
+		</div>
+
+	</div>
+</h:body>
+      </f:view>
+</html>
