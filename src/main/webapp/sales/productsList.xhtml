@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:custom="http://ddd-cqrs-sample.org/facelets">
+<h:head>
+    <title/>
+</h:head>
+<h:body>
+    <ui:composition template="./../layout/template.xhtml">
+
+        <ui:define name="metadata">
+            <f:metadata>
+                <f:viewParam name="page" value="#{products.searchCriteria.pageNumber}"/>
+                <f:event type="preRenderView" listener="#{products.loadAction}"/>
+            </f:metadata>
+        </ui:define>
+
+        <ui:define name="content">
+
+            <div class="productsListContent">
+                <h1>products available</h1>
+
+                <div class="productsContent">
+                    <p>Choose from our wide range of quality products</p>
+
+                    <div>
+                        <h3>show only products</h3>
+                        <h:form class="filterProductsForm">
+                            <h:outputText value="containing text:"/>
+                            <h:inputText name="containsText" value="${products.containsTextFilter}"/>
+                            <br/>
+                            <h:outputText value="up to price:"/>
+                            <h:inputText name="maxPrice" value="#{products.maxPriceFilter}"/>
+                            <h:outputText value="EUR"/>
+                            <br/>
+                            <h:commandButton value="filter" action="${products.doFilter}">
+                                <f:param name="page" value="1"/>
+                            </h:commandButton>
+
+                            <h:commandButton value="show all" action="${products.clearFilter}"/>
+                        </h:form>
+                    </div>
+
+                    <p>${products.totalItemsCount} products found</p>
+
+
+                    <h:dataTable value="#{products.items}"
+                                 id="productsTable" class="dataTable"
+                                 headerClass="priceColumn"
+                                 columnClasses="imageColumn, productNameColumn, priceColumn, buttonColumn"
+                                 var="product"
+                                 sortedby="${products.sortedBy}"
+                                 ascending="$products.isAscending}"
+                            >
+
+                        <h:column class="imageColumn">
+                            <f:facet name="header"/>
+                            <img class="productImage"
+                                 src="../static/img/sales/noProductPicture.png" alt="img"/>
+
+                        </h:column>
+
+                        <h:column class="productNameColumn">
+                            <f:facet name="header">
+                                <h:form>
+                                    <h:commandLink value="Product name" action="${products.sortByName}"/>
+                                </h:form>
+                            </f:facet>
+                            ${product.displayedName}</h:column>
+
+                        <h:column class="priceColumn">
+                            <f:facet name="header">
+                                <h:form>
+                                    <h:commandLink value="Price" action="${products.sortByPrice}"/>
+                                </h:form>
+
+                            </f:facet>
+                            ${product.price}</h:column>
+
+                        <h:column class="buttonsColumn">
+                            <h:form>
+                                <h:commandButton value="add" type="submit"
+                                                 action="#{products.addToOrder}">
+                                    <f:param name="productId" value="${product.productId}"/>
+                                </h:commandButton>
+                            </h:form>
+                        </h:column>
+                    </h:dataTable>
+                    <custom:pagination results="${products}"/>
+
+                </div>
+                <div class="basketNoContent" style="display: none;">
+                    <p class="notification">your basket is empty</p>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

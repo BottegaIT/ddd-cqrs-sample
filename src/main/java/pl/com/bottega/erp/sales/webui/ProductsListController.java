@@ -1,9 +1,11 @@
 package pl.com.bottega.erp.sales.webui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
@@ -24,54 +26,48 @@ public class ProductsListController {
 
 	private ProductSearchCriteria searchCriteria = new ProductSearchCriteria();
 
-	private PaginatedResult<ProductListItemDto> finderResult;
+	private PaginatedResult<ProductListItemDto> finderResult = new PaginatedResult<ProductListItemDto>(START_PAGE, 0);
 
 	private static final int RESULTS_PER_PAGE = 10;
 	private static final int START_PAGE = 1;
 
-	private int pageNumber()
-	{
-
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		String param = (String) facesContext.getExternalContext().getRequestParameterMap().get("page");
-		if (param == null)
-		{
-			return START_PAGE;
-		}
-		try
-		{
-			Integer intParam = Integer.parseInt(param);
-			return intParam;
-		}
-		catch (NumberFormatException e)
-		{
-			return START_PAGE;
-		}
-
-	}
 
 	public boolean isAscending()
 	{
 		return searchCriteria.isAscending();
 	}
-	
+
+    public ProductSearchCriteria getSearchCriteria()
+    {
+        return searchCriteria;
+    }
+
+    public void setSearchCriteria(ProductSearchCriteria searchCriteria)
+    {
+        this.searchCriteria = searchCriteria;
+    }
+
 	public ProductSearchOrder getOrderBy()
 	{
 		return searchCriteria.getOrderBy();
 	}
 	public List<ProductListItemDto> getItems()
 	{
-		fetch();
-		return finderResult.getItems();
+        return finderResult.getItems();
 	}
+
+    public List<Integer> getPages()
+    {
+        return finderResult.getPages();
+    }
+
+    public void loadAction()
+    {
+        fetch();
+    }
 
 	public int getTotalItemsCount()
 	{
-		if (finderResult == null)
-		{
-			fetch();
-		}
-
 		return finderResult.getTotalItemsCount();
 	}
 
@@ -96,19 +92,13 @@ public class ProductsListController {
 
 	private void fetch()
 	{
-		searchCriteria.setPageNumber(pageNumber());
 		searchCriteria.setItemsPerPage(RESULTS_PER_PAGE);
 		finderResult =  finder.findProducts(searchCriteria);
 	}
 
 	public int getPagesCount()
 	{
-		if (finderResult == null)
-		{
-			fetch();
-		}
-
-		return finderResult.getPagesCount();
+        return finderResult.getPagesCount();
 	}
 
 	public String getContainsTextFilter()
@@ -149,4 +139,5 @@ public class ProductsListController {
 		finderResult = null;
 		return null;
 	}
+
 }

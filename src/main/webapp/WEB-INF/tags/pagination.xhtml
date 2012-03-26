@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:fragment rendered="${results.pagesCount > 0}">
+        <div class="paginationContainer">
+            <div class="paginationPrompt">jump to page:</div>
+            <ul class="pagination">
+                <ui:repeat var="pageNumber" value="${results.pages}" varStatus="status">
+                    <li class=""><h:link value="${pageNumber}" includeViewParams="true">
+
+                        <f:param name="page" value="${pageNumber}"/>
+                    </h:link></li>
+                </ui:repeat>
+            </ul>
+        </div>
+    </ui:fragment>
+</ui:composition>
