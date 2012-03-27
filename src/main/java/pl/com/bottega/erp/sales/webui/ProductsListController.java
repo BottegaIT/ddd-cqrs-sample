@@ -2,6 +2,7 @@ package pl.com.bottega.erp.sales.webui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -18,11 +19,13 @@ import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria;
 import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria.ProductSearchOrder;
 
 @ManagedBean(name="products")
-@SessionScoped
+@ViewScoped
 public class ProductsListController {
 
 	@Inject
 	private ProductFinder finder;
+    @Inject
+    private ClientBasket basket;
 
 	private ProductSearchCriteria searchCriteria = new ProductSearchCriteria();
 
@@ -123,10 +126,13 @@ public class ProductsListController {
 		return searchCriteria.getMaxPrice();
 	}
 
-	public void addToOrder(Long productId)
+	public void addToOrder()
 	{
-
-	}
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map requestMap = context.getExternalContext().getRequestParameterMap();
+        String value = (String)requestMap.get("productId");
+        basket.addProduct(Long.parseLong(value));
+    }
 
 	public String doFilter()
 	{

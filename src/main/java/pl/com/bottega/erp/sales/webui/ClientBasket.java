@@ -6,15 +6,20 @@ import java.util.Map;
 
 import pl.com.bottega.ddd.application.annotation.ApplicationStatefullComponent;
 import pl.com.bottega.ddd.infrastructure.events.EventListener;
+import pl.com.bottega.ddd.infrastructure.events.EventListeners;
 import pl.com.bottega.erp.sales.domain.events.OrderCreatedEvent;
 
 import com.google.common.collect.Maps;
+
+import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ManagedBean;
 
 /**
  * @author Rafał Jamróz
  */
 @SuppressWarnings("serial")
-@ApplicationStatefullComponent
+@EventListeners
+@SessionScoped
 public class ClientBasket implements Serializable {
 
     private Map<Long, Integer> productIdsWithCounts = Maps.newHashMap();

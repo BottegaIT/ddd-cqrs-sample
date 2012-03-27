@@ -12,6 +12,8 @@
         <ui:define name="metadata">
             <f:metadata>
                 <f:viewParam name="page" value="#{products.searchCriteria.pageNumber}"/>
+                <f:viewParam name="text" value="#{products.containsTextFilter}"/>
+                <f:viewParam name="price" value="#{products.maxPriceFilter}"/>
                 <f:event type="preRenderView" listener="#{products.loadAction}"/>
             </f:metadata>
         </ui:define>
@@ -79,21 +81,46 @@
                             ${product.price}</h:column>
 
                         <h:column class="buttonsColumn">
-                            <h:form>
+                        <h:form>
                                 <h:commandButton value="add" type="submit"
                                                  action="#{products.addToOrder}">
                                     <f:param name="productId" value="${product.productId}"/>
                                 </h:commandButton>
                             </h:form>
                         </h:column>
-                    </h:dataTable>
+                     </h:dataTable>
                     <custom:pagination results="${products}"/>
 
                 </div>
-                <div class="basketNoContent" style="display: none;">
-                    <p class="notification">your basket is empty</p>
-                </div>
             </div>
+            <ui:fragment rendered="#{!basket.emptyBasket}">
+
+            <div class="basketContainer">
+                       <div class="highlight">
+                           <h1>your basket</h1>
+                           </div>
+                <div class="basketContent">
+                <ul>
+                <ui:repeat value="${basket.basketItems}" var="item">
+                    <li><h:outputText value="${item.productName} (x${item.count})"/></li>
+
+                </ui:repeat>
+                </ul>
+            </div>
+                  <div class="basketControls">
+                      <h:form>
+                                        <h:commandButton value="checkout" type="submit" action="#{products.checkout}"/>
+                          <h:commandButton value="clear" type="submit" action="#{basket.clearBasket}"/>
+
+                      </h:form>
+                  </div>
+            </div>
+            </ui:fragment>
+        <ui:fragment rendered="#{basket.emptyBasket}">
+            <div class="basketNoContent">
+                <p class="notification">your basket is empty</p>
+            </div>
+        </ui:fragment>
         </ui:define>
     </ui:composition>
 </h:body>
