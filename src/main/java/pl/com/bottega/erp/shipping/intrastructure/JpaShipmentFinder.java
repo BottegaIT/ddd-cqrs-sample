@@ -14,7 +14,7 @@ import pl.com.bottega.erp.shipping.presentation.ShipmentFinder;
 @Finder
 public class JpaShipmentFinder implements ShipmentFinder {
 
-	@PersistenceContext(unitName="defaultPU")
+	@PersistenceContext
     private EntityManager entityManager;
 
     @Override

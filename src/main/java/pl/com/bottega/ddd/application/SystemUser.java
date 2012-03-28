@@ -19,7 +19,7 @@ import pl.com.bottega.erp.sales.domain.Client;
 @Stateful
 public class SystemUser {
 
-    @PersistenceContext(unitName="defaultPU")
+    @PersistenceContext
     private EntityManager entityManager;
 
     /**

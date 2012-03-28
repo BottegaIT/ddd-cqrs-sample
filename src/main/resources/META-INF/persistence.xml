@@ -6,13 +6,11 @@
 
 
 	<persistence-unit name="defaultPU"  transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jdbc/ddd-cqrs-sample</jta-data-source>
 
-		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
-        <jta-data-source>jdbc/db_ddd_cqrs</jta-data-source>
 		<properties>
-			<property name="openjpa.jdbc.Schema" value="db_ddd_cqrs" />
-			<property name="openjpa.Log" value="DefaultLevel=ERROR, Tool=INFO, Runtime=TRACE" />
-			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(SchemaAction='add,deleteTableContents')" />
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
 		</properties>
 		
 	</persistence-unit>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:custom="http://ddd-cqrs-sample.org/facelets">
+    <f:metadata>
+        <f:viewParam name="page" value="#{products.searchCriteria.pageNumber}"/>
+        <f:viewParam name="ascending" value="#{products.searchCriteria.ascending}"/>
+        <f:viewParam name="order" value="#{products.searchCriteria.orderBy}"/>
+        <f:viewParam name="containsText" value="#{products.searchCriteria.containsText}"/>
+        <f:viewParam name="maxPrice" value="#{products.searchCriteria.maxPrice}"/>
+    </f:metadata>
+
+    <div class="productsListContent">
+        <h1>products available</h1>
+        <div class="productsContent">
+            <p>Choose from our wide range of quality products</p>
+            <div>
+                <h3>show only products</h3>
+                <h:form class="filterProductsForm">
+                    <h:outputText value="containing text:" />
+                    <h:inputText name="containsText" value="$containsText" />
+                    <br />
+                    <h:outputText value="up to price:" />
+                    <h:inputText name="maxPrice" value="$maxPrice" />
+                    <h:outputText value="EUR" />
+                    <br />
+                    <h:commandButton value="filter" action="${products.doFilter}"/>
+                    <h:commandButton value="show all" action="${products.clearFilter}" />
+                </h:form>
+            </div>
+
+            <p>${products.totalItemsCount} products found</p>
+
+
+            <h:dataTable  value="#{products.items}"
+                          id="productsTable" class="dataTable"
+                          headerClass="priceColumn"
+                          columnClasses="imageColumn, productNameColumn, priceColumn, buttonColumn"
+                          var="product"
+                          ascending="$ascend"
+                    >
+
+                <h:column class="imageColumn">
+                    <f:facet name="header"/>
+                    <img class="productImage"
+                         src="../static/img/sales/noProductPicture.png" alt="no product"/>
+                </h:column>
+
+                <h:column class="productNameColumn">
+                    <f:facet name="header">
+                        <h:form>
+                            <h:commandLink value="Product name" action="${products.sortByName}"/>
+                        </h:form>
+                    </f:facet>
+                    ${product.displayedName}</h:column>
+
+                <h:column class="priceColumn">
+                    <f:facet name="header">
+                        <h:form>
+                            <h:commandLink value="Price" action="${products.sortByPrice}"/>
+                        </h:form>
+
+                    </f:facet>
+                    ${product.price}</h:column>
+
+                <h:column class="buttonsColumn">
+                    <h:form>
+                        <h:commandButton value="add" type="submit"
+                                         action="#{products.addToOrder}">
+                            <f:param name="productId" value="${product.productId}" />
+                        </h:commandButton>
+                    </h:form>
+                </h:column>
+            </h:dataTable>
+            <custom:pagination results="${products}" />
+
+        </div>
+        <div class="basketNoContent" style="display: none;">
+            <p class="notification">your basket is empty</p>
+        </div>
+    </div>
+
+</ui:composition>

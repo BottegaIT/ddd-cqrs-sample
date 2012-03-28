@@ -1,76 +1,41 @@
 package pl.com.bottega.erp.sales.webui;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-
-import com.sun.mail.imap.protocol.SearchSequence;
-
 import pl.com.bottega.cqrs.query.PaginatedResult;
 import pl.com.bottega.erp.sales.presentation.ProductFinder;
 import pl.com.bottega.erp.sales.presentation.ProductListItemDto;
 import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria;
 import pl.com.bottega.erp.sales.presentation.ProductSearchCriteria.ProductSearchOrder;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.inject.Inject;
+import java.util.List;
+
 @ManagedBean(name="products")
-@ViewScoped
+@SessionScoped
 public class ProductsListController {
 
 	@Inject
 	private ProductFinder finder;
-    @Inject
-    private ClientBasket basket;
 
 	private ProductSearchCriteria searchCriteria = new ProductSearchCriteria();
-
-	private PaginatedResult<ProductListItemDto> finderResult = new PaginatedResult<ProductListItemDto>(START_PAGE, 0);
+	private PaginatedResult<ProductListItemDto> finderResult;
 
 	private static final int RESULTS_PER_PAGE = 10;
-	private static final int START_PAGE = 1;
 
-
-	public boolean isAscending()
-	{
-		return searchCriteria.isAscending();
-	}
-
-    public ProductSearchCriteria getSearchCriteria()
-    {
-        return searchCriteria;
-    }
-
-    public void setSearchCriteria(ProductSearchCriteria searchCriteria)
-    {
-        this.searchCriteria = searchCriteria;
-    }
-
-	public ProductSearchOrder getOrderBy()
-	{
-		return searchCriteria.getOrderBy();
-	}
 	public List<ProductListItemDto> getItems()
 	{
-        return finderResult.getItems();
+		fetch();
+		return finderResult.getItems();
 	}
-
-    public List<Integer> getPages()
-    {
-        return finderResult.getPages();
-    }
-
-    public void loadAction()
-    {
-        fetch();
-    }
 
 	public int getTotalItemsCount()
 	{
+		if (finderResult == null)
+		{
+			fetch();
+		}
+
 		return finderResult.getTotalItemsCount();
 	}
 
@@ -101,38 +66,22 @@ public class ProductsListController {
 
 	public int getPagesCount()
 	{
-        return finderResult.getPagesCount();
-	}
-
-	public String getContainsTextFilter()
-	{
-		return searchCriteria.getContainsText();
-	}
-
-	public void setContainsTextFilter(String containsText)
-	{
-		if (containsText != null) {
-			searchCriteria.setContainsText(containsText.trim());
+		if (finderResult == null)
+		{
+			fetch();
 		}
+
+		return finderResult.getPagesCount();
 	}
 
-	public void setMaxPriceFilter(Double d)
-	{
-		searchCriteria.setMaxPrice(d);
-	}
-
-	public Double getMaxPriceFilter()
-	{
-		return searchCriteria.getMaxPrice();
-	}
-
-	public void addToOrder()
-	{
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map requestMap = context.getExternalContext().getRequestParameterMap();
-        String value = (String)requestMap.get("productId");
-        basket.addProduct(Long.parseLong(value));
+    public ProductSearchCriteria getSearchCriteria() {
+        return searchCriteria;
     }
+
+ 	public void addToOrder(Long productId)
+	{
+
+	}
 
 	public String doFilter()
 	{
@@ -145,5 +94,4 @@ public class ProductsListController {
 		finderResult = null;
 		return null;
 	}
-
 }

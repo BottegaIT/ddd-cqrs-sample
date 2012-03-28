@@ -30,7 +30,7 @@ public class JpaOrderRepository implements OrderRepository {
     private InjectorHelper injector;
     @Inject DomainEventPublisher eventPublisher;
     
-	@PersistenceContext
+	@PersistenceContext(unitName = "defaultPU")
     protected EntityManager entityManager;
     
     @Override

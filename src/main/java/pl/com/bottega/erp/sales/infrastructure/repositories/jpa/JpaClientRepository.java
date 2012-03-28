@@ -11,7 +11,7 @@ import pl.com.bottega.erp.sales.domain.ClientRepository;
 @DomainRepositoryImpl
 public class JpaClientRepository implements ClientRepository {
 
-	@PersistenceContext
+	@PersistenceContext(unitName="defaultPU")
     protected EntityManager entityManager;
 
 
