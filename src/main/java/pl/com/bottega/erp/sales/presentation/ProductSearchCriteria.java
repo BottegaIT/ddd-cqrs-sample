@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public class ProductSearchCriteria implements Serializable {
     public enum ProductSearchOrder {
-        NAME, PRICE;
+        NAME, PRICE
     }
 
     // constraints

@@ -6,7 +6,7 @@ import pl.com.bottega.ddd.domain.annotations.ValueObject;
 import pl.com.bottega.ddd.domain.sharedkernel.Money;
 
 /**
- * VO used to present ordered items and encapsulate Order internal impl
+ * VO used to present ordered items and encapsulate Order internal cdi
  * 
  * @author Slawek
  *

@@ -14,7 +14,7 @@
 			<property name="openjpa.Log" value="DefaultLevel=ERROR, Tool=INFO, Runtime=TRACE" />
 			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(SchemaAction='add,deleteTableContents')" />
 		</properties>
-		
+
 	</persistence-unit>
 
 </persistence>

@@ -23,7 +23,7 @@ public class JpaInvoiceRepository implements InvoiceRepository {
     @Inject
     private InjectorHelper injector;
     
-	@PersistenceContext
+	@PersistenceContext(unitName="defaultPU")
     protected EntityManager entityManager;
 
     private Class<Invoice> clazz;
