@@ -15,27 +15,75 @@
  */
 package pl.com.bottega.acceptance.erp;
 
-import org.jbehave.core.annotations.Configure;
-import org.jbehave.core.annotations.UsingEmbedder;
-import org.jbehave.core.annotations.UsingPaths;
-import org.jbehave.core.annotations.spring.UsingSpring;
-import org.jbehave.core.failures.FailingUponPendingStep;
-import org.jbehave.core.junit.spring.SpringAnnotatedPathRunner;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.jbehave.core.Embeddable;
+import org.jbehave.core.configuration.Configuration;
+import org.jbehave.core.io.CodeLocations;
+import org.jbehave.core.io.LoadFromClasspath;
+import org.jbehave.core.io.StoryFinder;
+import org.jbehave.core.junit.JUnitStories;
+import org.jbehave.core.reporters.Format;
 import org.jbehave.core.reporters.StoryReporterBuilder;
+import org.jbehave.core.steps.InjectableStepsFactory;
+import org.jbehave.core.steps.SilentStepMonitor;
+import org.jbehave.core.steps.spring.SpringStepsFactory;
+import org.jbehave.web.selenium.ContextView;
+import org.jbehave.web.selenium.LocalFrameContextView;
+import org.jbehave.web.selenium.PropertyWebDriverProvider;
+import org.jbehave.web.selenium.SeleniumConfiguration;
+import org.jbehave.web.selenium.SeleniumContext;
+import org.jbehave.web.selenium.SeleniumStepMonitor;
+import org.jbehave.web.selenium.WebDriverProvider;
 import org.junit.runner.RunWith;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 
-import pl.com.bottega.acceptance.erp.SpringEnabledScenarioRunnerIT.MyReportBuilder;
+import com.google.common.util.concurrent.MoreExecutors;
 
-@RunWith(SpringAnnotatedPathRunner.class)
-@UsingPaths(searchIn = "src/test/resources")
-@Configure(storyReporterBuilder = MyReportBuilder.class, pendingStepStrategy = FailingUponPendingStep.class)
-@UsingEmbedder
-@UsingSpring(resources = { "classpath:/stepsConfiguration.xml", "classpath:/rmiClientContext.xml" })
-public class SpringEnabledScenarioRunnerIT {
+import de.codecentric.jbehave.junit.monitoring.JUnitReportingRunner;
 
-    public static class MyReportBuilder extends StoryReporterBuilder {
-        public MyReportBuilder() {
-            withFailureTrace(true).withFormats(org.jbehave.core.reporters.Format.CONSOLE);
-        }
-    }
+@RunWith(JUnitReportingRunner.class)
+public class SpringEnabledScenarioRunnerIT extends JUnitStories {
+
+	private Configuration configuration;
+
+	public SpringEnabledScenarioRunnerIT() {
+		configuredEmbedder().useExecutorService(MoreExecutors.sameThreadExecutor());
+		configuredEmbedder().useMetaFilters(Arrays.asList("-skip"));
+
+		WebDriverProvider driverProvider = new PropertyWebDriverProvider();
+		SeleniumContext context = new SeleniumContext();
+		ContextView contextView = new LocalFrameContextView().sized(500, 100);
+
+		Class<? extends Embeddable> embeddableClass = this.getClass();
+		configuration = new SeleniumConfiguration()
+		        .useSeleniumContext(context)
+		        .useWebDriverProvider(driverProvider)
+		        .useStepMonitor(new SeleniumStepMonitor(contextView, context, new SilentStepMonitor()))
+		        .useStoryLoader(new LoadFromClasspath(embeddableClass))
+		        .useStoryReporterBuilder(
+		                new StoryReporterBuilder()
+		                        .withCodeLocation(CodeLocations.codeLocationFromClass(embeddableClass))
+		                        .withDefaultFormats().withFormats(Format.CONSOLE, Format.TXT, Format.HTML, Format.XML));
+	}
+
+	@Override
+	protected List<String> storyPaths() {
+		return new StoryFinder().findPaths("src/test/resources", Arrays.asList("**/*.story"), new ArrayList<String>());
+	}
+
+	@Override
+	public Configuration configuration() {
+		return configuration;
+	}
+
+	@Override
+	public InjectableStepsFactory stepsFactory() {
+		ApplicationContext applicationContext = new GenericXmlApplicationContext("classpath:/stepsConfiguration.xml",
+		        "classpath:/rmiClientContext.xml");
+		return new SpringStepsFactory(configuration, applicationContext);
+	}
 }

@@ -53,7 +53,7 @@ public class BrowserAgentDriverProvider extends PropertyWebDriverProvider {
 
     @AfterStories
     public void afterStories() throws Exception {
-        get().quit();
+        end();
     }
 
     @BeforeScenario
